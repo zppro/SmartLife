@@ -7,7 +7,8 @@
 //
 
 #import "ZPAppDelegate.h"
-
+#import "HomeController.h" 
+ 
 @implementation ZPAppDelegate
 
 - (void)dealloc
@@ -18,9 +19,20 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    [theSkinManager loadWithContentsOfFile:@"SkinIndex"];
+    
+    
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.backgroundColor = [UIColor blackColor];
+    
+    
+    
+    HomeController *homeController = [[[HomeController alloc] init] autorelease];
+    [_window setRootViewController:[[[UINavigationController alloc] initWithRootViewController:homeController] autorelease]];
+    
+ 
     [self.window makeKeyAndVisible];
     return YES;
 }

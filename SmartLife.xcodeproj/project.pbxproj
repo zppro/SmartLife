@@ -16,7 +16,37 @@
 		AC15B078165B528C00E856E4 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = AC15B077165B528C00E856E4 /* Default.png */; };
 		AC15B07A165B528C00E856E4 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC15B079165B528C00E856E4 /* Default@2x.png */; };
 		AC15B07C165B528C00E856E4 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = AC15B07B165B528C00E856E4 /* Default-568h@2x.png */; };
+		AC15B08D165B52F300E856E4 /* libcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC15B08A165B52BD00E856E4 /* libcore.a */; };
+		AC15B09D165B56D400E856E4 /* AppBaseController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC15B09A165B56D400E856E4 /* AppBaseController.m */; };
+		AC15B09E165B56D400E856E4 /* GlobalObjectsContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = AC15B09C165B56D400E856E4 /* GlobalObjectsContainer.m */; };
+		AC15B0A1165BC00200E856E4 /* HomeController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC15B0A0165BC00100E856E4 /* HomeController.m */; };
+		AC15B0AE165BC22F00E856E4 /* Documents in Resources */ = {isa = PBXBuildFile; fileRef = AC15B0AD165BC22F00E856E4 /* Documents */; };
+		AC15B0D4165BD2CE00E856E4 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC15B0D3165BD2CE00E856E4 /* GameKit.framework */; };
+		AC15B0D6165BD2D600E856E4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC15B0D5165BD2D600E856E4 /* SystemConfiguration.framework */; };
+		AC15B0D8165BD2E800E856E4 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC15B0D7165BD2E800E856E4 /* MobileCoreServices.framework */; };
+		AC15B0DA165BD2F800E856E4 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC15B0D9165BD2F700E856E4 /* CoreFoundation.framework */; };
+		AC15B0DC165BD30200E856E4 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC15B0DB165BD30200E856E4 /* QuartzCore.framework */; };
+		AC15B0DE165BD31600E856E4 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC15B0DD165BD31600E856E4 /* CoreData.framework */; };
+		AC15B0E0165BD41100E856E4 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AC15B0DF165BD41100E856E4 /* libz.dylib */; };
+		AC15B0E4165BD5A700E856E4 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AC15B0E3165BD5A700E856E4 /* libxml2.dylib */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AC15B089165B52BD00E856E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC15B082165B52BD00E856E4 /* core.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ACDDF37A1531BFE400011F06;
+			remoteInfo = core;
+		};
+		AC15B08B165B52E600E856E4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AC15B082165B52BD00E856E4 /* core.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = ACDDF3791531BFE400011F06;
+			remoteInfo = core;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		AC15B061165B528C00E856E4 /* SmartLife.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SmartLife.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -32,6 +62,22 @@
 		AC15B077165B528C00E856E4 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		AC15B079165B528C00E856E4 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		AC15B07B165B528C00E856E4 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		AC15B082165B52BD00E856E4 /* core.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = core.xcodeproj; path = ../../com.zppro/core/core.xcodeproj; sourceTree = "<group>"; };
+		AC15B099165B56D400E856E4 /* AppBaseController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppBaseController.h; path = AppCore/AppBaseController.h; sourceTree = "<group>"; };
+		AC15B09A165B56D400E856E4 /* AppBaseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppBaseController.m; path = AppCore/AppBaseController.m; sourceTree = "<group>"; };
+		AC15B09B165B56D400E856E4 /* GlobalObjectsContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GlobalObjectsContainer.h; path = AppCore/GlobalObjectsContainer.h; sourceTree = "<group>"; };
+		AC15B09C165B56D400E856E4 /* GlobalObjectsContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GlobalObjectsContainer.m; path = AppCore/GlobalObjectsContainer.m; sourceTree = "<group>"; };
+		AC15B09F165BC00100E856E4 /* HomeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeController.h; sourceTree = "<group>"; };
+		AC15B0A0165BC00100E856E4 /* HomeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeController.m; sourceTree = "<group>"; };
+		AC15B0AD165BC22F00E856E4 /* Documents */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Documents; sourceTree = "<group>"; };
+		AC15B0D3165BD2CE00E856E4 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		AC15B0D5165BD2D600E856E4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		AC15B0D7165BD2E800E856E4 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		AC15B0D9165BD2F700E856E4 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		AC15B0DB165BD30200E856E4 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		AC15B0DD165BD31600E856E4 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		AC15B0DF165BD41100E856E4 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		AC15B0E3165BD5A700E856E4 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,7 +85,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC15B0E4165BD5A700E856E4 /* libxml2.dylib in Frameworks */,
+				AC15B0E0165BD41100E856E4 /* libz.dylib in Frameworks */,
+				AC15B0DE165BD31600E856E4 /* CoreData.framework in Frameworks */,
 				AC15B066165B528C00E856E4 /* UIKit.framework in Frameworks */,
+				AC15B0DC165BD30200E856E4 /* QuartzCore.framework in Frameworks */,
+				AC15B0DA165BD2F800E856E4 /* CoreFoundation.framework in Frameworks */,
+				AC15B0D8165BD2E800E856E4 /* MobileCoreServices.framework in Frameworks */,
+				AC15B0D6165BD2D600E856E4 /* SystemConfiguration.framework in Frameworks */,
+				AC15B0D4165BD2CE00E856E4 /* GameKit.framework in Frameworks */,
+				AC15B08D165B52F300E856E4 /* libcore.a in Frameworks */,
 				AC15B068165B528C00E856E4 /* Foundation.framework in Frameworks */,
 				AC15B06A165B528C00E856E4 /* CoreGraphics.framework in Frameworks */,
 			);
@@ -68,6 +123,15 @@
 		AC15B064165B528C00E856E4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AC15B082165B52BD00E856E4 /* core.xcodeproj */,
+				AC15B0DF165BD41100E856E4 /* libz.dylib */,
+				AC15B0E3165BD5A700E856E4 /* libxml2.dylib */,
+				AC15B0DD165BD31600E856E4 /* CoreData.framework */,
+				AC15B0DB165BD30200E856E4 /* QuartzCore.framework */,
+				AC15B0D9165BD2F700E856E4 /* CoreFoundation.framework */,
+				AC15B0D7165BD2E800E856E4 /* MobileCoreServices.framework */,
+				AC15B0D5165BD2D600E856E4 /* SystemConfiguration.framework */,
+				AC15B0D3165BD2CE00E856E4 /* GameKit.framework */,
 				AC15B065165B528C00E856E4 /* UIKit.framework */,
 				AC15B067165B528C00E856E4 /* Foundation.framework */,
 				AC15B069165B528C00E856E4 /* CoreGraphics.framework */,
@@ -78,9 +142,12 @@
 		AC15B06B165B528C00E856E4 /* SmartLife */ = {
 			isa = PBXGroup;
 			children = (
+				AC15B098165B56C000E856E4 /* AppCore */,
+				AC15B06C165B528C00E856E4 /* Supporting Files */,
+				AC15B09F165BC00100E856E4 /* HomeController.h */,
+				AC15B0A0165BC00100E856E4 /* HomeController.m */,
 				AC15B074165B528C00E856E4 /* ZPAppDelegate.h */,
 				AC15B075165B528C00E856E4 /* ZPAppDelegate.m */,
-				AC15B06C165B528C00E856E4 /* Supporting Files */,
 			);
 			path = SmartLife;
 			sourceTree = "<group>";
@@ -88,6 +155,7 @@
 		AC15B06C165B528C00E856E4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				AC15B0AD165BC22F00E856E4 /* Documents */,
 				AC15B06D165B528C00E856E4 /* SmartLife-Info.plist */,
 				AC15B06E165B528C00E856E4 /* InfoPlist.strings */,
 				AC15B071165B528C00E856E4 /* main.m */,
@@ -97,6 +165,25 @@
 				AC15B07B165B528C00E856E4 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		AC15B083165B52BD00E856E4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AC15B08A165B52BD00E856E4 /* libcore.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		AC15B098165B56C000E856E4 /* AppCore */ = {
+			isa = PBXGroup;
+			children = (
+				AC15B099165B56D400E856E4 /* AppBaseController.h */,
+				AC15B09A165B56D400E856E4 /* AppBaseController.m */,
+				AC15B09B165B56D400E856E4 /* GlobalObjectsContainer.h */,
+				AC15B09C165B56D400E856E4 /* GlobalObjectsContainer.m */,
+			);
+			name = AppCore;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -113,6 +200,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				AC15B08C165B52E600E856E4 /* PBXTargetDependency */,
 			);
 			name = SmartLife;
 			productName = SmartLife;
@@ -139,12 +227,28 @@
 			mainGroup = AC15B056165B528C00E856E4;
 			productRefGroup = AC15B062165B528C00E856E4 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = AC15B083165B52BD00E856E4 /* Products */;
+					ProjectRef = AC15B082165B52BD00E856E4 /* core.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				AC15B060165B528C00E856E4 /* SmartLife */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		AC15B08A165B52BD00E856E4 /* libcore.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libcore.a;
+			remoteRef = AC15B089165B52BD00E856E4 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		AC15B05F165B528C00E856E4 /* Resources */ = {
@@ -155,6 +259,7 @@
 				AC15B078165B528C00E856E4 /* Default.png in Resources */,
 				AC15B07A165B528C00E856E4 /* Default@2x.png in Resources */,
 				AC15B07C165B528C00E856E4 /* Default-568h@2x.png in Resources */,
+				AC15B0AE165BC22F00E856E4 /* Documents in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,10 +272,21 @@
 			files = (
 				AC15B072165B528C00E856E4 /* main.m in Sources */,
 				AC15B076165B528C00E856E4 /* ZPAppDelegate.m in Sources */,
+				AC15B09D165B56D400E856E4 /* AppBaseController.m in Sources */,
+				AC15B09E165B56D400E856E4 /* GlobalObjectsContainer.m in Sources */,
+				AC15B0A1165BC00200E856E4 /* HomeController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AC15B08C165B52E600E856E4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = core;
+			targetProxy = AC15B08B165B52E600E856E4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		AC15B06E165B528C00E856E4 /* InfoPlist.strings */ = {
@@ -237,7 +353,13 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SmartLife/SmartLife-Prefix.pch";
 				INFOPLIST_FILE = "SmartLife/SmartLife-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "../../com.zppro/core/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -248,7 +370,13 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SmartLife/SmartLife-Prefix.pch";
 				INFOPLIST_FILE = "SmartLife/SmartLife-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-all_load",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				USER_HEADER_SEARCH_PATHS = "../../com.zppro/core/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -272,6 +400,7 @@
 				AC15B081165B528C00E856E4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
