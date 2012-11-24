@@ -33,6 +33,7 @@
     [self.waitView setFrame:CGRectMake(0, 0, 1024, 768)];
     self.waitView.delegate = self;
     
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -7,6 +7,7 @@
 //
 
 #import "HomeController.h"
+#import "LoginController.h"
 
 
 @interface HomeController ()
@@ -29,6 +30,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+   
+    
     UIView *mainMenu = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
           
     SkinContainer *container = [[[SkinManager sharedInstance] currentSkin] getContainer:NSStringFromClass([self class])];
@@ -41,6 +44,12 @@
     } 
     [self.view addSubview:mainMenu];
     [mainMenu release];
+    
+    BOOL isSignIn = FALSE;
+    if(!isSignIn){ 
+        LoginController *loginController = [[LoginController alloc] init];
+        [self presentModalViewController:loginController animated: YES];
+    }
     
 }
 
