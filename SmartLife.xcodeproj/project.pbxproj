@@ -30,6 +30,8 @@
 		AC15B0E0165BD41100E856E4 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AC15B0DF165BD41100E856E4 /* libz.dylib */; };
 		AC15B0E4165BD5A700E856E4 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AC15B0E3165BD5A700E856E4 /* libxml2.dylib */; };
 		ACACC6761660F70C00CE5BC0 /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACACC6751660F70C00CE5BC0 /* LoginController.m */; };
+		ACACC68E1661142A00CE5BC0 /* ProvideForTheAgedIndexController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACACC68D1661142A00CE5BC0 /* ProvideForTheAgedIndexController.m */; };
+		ACACC6A116611C1A00CE5BC0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACACC6A016611C1900CE5BC0 /* AudioToolbox.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +83,9 @@
 		AC15B0E3165BD5A700E856E4 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		ACACC6741660F70C00CE5BC0 /* LoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginController.h; path = LoginAndRegister/LoginController.h; sourceTree = "<group>"; };
 		ACACC6751660F70C00CE5BC0 /* LoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginController.m; path = LoginAndRegister/LoginController.m; sourceTree = "<group>"; };
+		ACACC68C1661142A00CE5BC0 /* ProvideForTheAgedIndexController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProvideForTheAgedIndexController.h; path = ProvideForTheAged/ProvideForTheAgedIndexController.h; sourceTree = "<group>"; };
+		ACACC68D1661142A00CE5BC0 /* ProvideForTheAgedIndexController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProvideForTheAgedIndexController.m; path = ProvideForTheAged/ProvideForTheAgedIndexController.m; sourceTree = "<group>"; };
+		ACACC6A016611C1900CE5BC0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACACC6A116611C1A00CE5BC0 /* AudioToolbox.framework in Frameworks */,
 				AC15B0E4165BD5A700E856E4 /* libxml2.dylib in Frameworks */,
 				AC15B0E0165BD41100E856E4 /* libz.dylib in Frameworks */,
 				AC15B0DE165BD31600E856E4 /* CoreData.framework in Frameworks */,
@@ -129,6 +135,7 @@
 				AC15B082165B52BD00E856E4 /* core.xcodeproj */,
 				AC15B0DF165BD41100E856E4 /* libz.dylib */,
 				AC15B0E3165BD5A700E856E4 /* libxml2.dylib */,
+				ACACC6A016611C1900CE5BC0 /* AudioToolbox.framework */,
 				AC15B0DD165BD31600E856E4 /* CoreData.framework */,
 				AC15B0DB165BD30200E856E4 /* QuartzCore.framework */,
 				AC15B0D9165BD2F700E856E4 /* CoreFoundation.framework */,
@@ -145,6 +152,7 @@
 		AC15B06B165B528C00E856E4 /* SmartLife */ = {
 			isa = PBXGroup;
 			children = (
+				ACACC68B166111CC00CE5BC0 /* ProvideForTheAged */,
 				ACACC6731660F6A600CE5BC0 /* LoginAndRegister */,
 				AC15B098165B56C000E856E4 /* AppCore */,
 				AC15B06C165B528C00E856E4 /* Supporting Files */,
@@ -197,6 +205,15 @@
 				ACACC6751660F70C00CE5BC0 /* LoginController.m */,
 			);
 			name = LoginAndRegister;
+			sourceTree = "<group>";
+		};
+		ACACC68B166111CC00CE5BC0 /* ProvideForTheAged */ = {
+			isa = PBXGroup;
+			children = (
+				ACACC68C1661142A00CE5BC0 /* ProvideForTheAgedIndexController.h */,
+				ACACC68D1661142A00CE5BC0 /* ProvideForTheAgedIndexController.m */,
+			);
+			name = ProvideForTheAged;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,6 +306,7 @@
 				AC15B09E165B56D400E856E4 /* GlobalObjectsContainer.m in Sources */,
 				AC15B0A1165BC00200E856E4 /* HomeController.m in Sources */,
 				ACACC6761660F70C00CE5BC0 /* LoginController.m in Sources */,
+				ACACC68E1661142A00CE5BC0 /* ProvideForTheAgedIndexController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

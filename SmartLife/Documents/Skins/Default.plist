@@ -157,174 +157,102 @@
 		</dict>
 		<dict>
 			<key>Name</key>
-			<string>HotelDetailInfoController</string>
+			<string>ProvideForTheAgedIndexController</string>
 			<key>Elements</key>
 			<array>
 				<dict>
 					<key>Name</key>
-					<string>MobileHomePage</string>
+					<string>EmergencyService</string>
 					<key>Frame</key>
-					<string>{{0,0},{182.5,71.5}}</string>
+					<string>{{21,52},{128.5,128.5}}</string>
 					<key>Tag</key>
 					<integer>1</integer>
 					<key>Title</key>
-					<string>手机网站</string>
+					<string>紧急服务</string>
 					<key>Font</key>
 					<integer>16</integer>
 					<key>TextAlignment</key>
-					<string>Left</string>
+					<string>Center</string>
 					<key>Enabled</key>
-					<string>NO</string>
+					<string>YES</string>
 					<key>Hidden</key>
 					<string>NO</string>
 					<key>BackgroundColor</key>
-					<string>{0,0,0}</string>
+					<string>transparent</string>
 					<key>Image</key>
-					<string>Hotel/Hotel_MobileHomePageButton</string>
+					<string>Index/ylfw_tp1.png</string>
 					<key>ElementType</key>
 					<string>UIButton</string>
 				</dict>
 				<dict>
 					<key>Name</key>
-					<string>Share</string>
+					<string>CommunityService</string>
 					<key>Frame</key>
-					<string>{{183,0},{90,71.5}}</string>
+					<string>{{170.5,52},{128.5,128.5}}</string>
 					<key>Tag</key>
 					<integer>2</integer>
 					<key>Title</key>
-					<string>分享</string>
+					<string>社区服务</string>
 					<key>Font</key>
 					<integer>16</integer>
 					<key>TextAlignment</key>
-					<string>Left</string>
+					<string>Center</string>
 					<key>Enabled</key>
 					<string>YES</string>
 					<key>Hidden</key>
 					<string>NO</string>
 					<key>BackgroundColor</key>
-					<string>{0,0,0}</string>
+					<string>transparent</string>
 					<key>Image</key>
-					<string>Hotel/Hotel_ShareButton</string>
+					<string>Index/ylfw_tp2.png</string>
 					<key>ElementType</key>
 					<string>UIButton</string>
 				</dict>
 				<dict>
 					<key>Name</key>
-					<string>Activity</string>
+					<string>LifeService</string>
 					<key>Frame</key>
-					<string>{{0,72.5},{90.5,71.5}}</string>
+					<string>{{21,205},{128.5,128.5}}</string>
 					<key>Tag</key>
 					<integer>3</integer>
 					<key>Title</key>
-					<string>活动</string>
+					<string>生活服务</string>
 					<key>Font</key>
 					<integer>16</integer>
 					<key>TextAlignment</key>
-					<string>Left</string>
-					<key>Enabled</key>
-					<string>NO</string>
-					<key>Hidden</key>
-					<string>NO</string>
-					<key>BackgroundColor</key>
-					<string>{0,0,0}</string>
-					<key>Image</key>
-					<string>Hotel/Hotel_ActivityButton</string>
-					<key>ElementType</key>
-					<string>UIButton</string>
-				</dict>
-				<dict>
-					<key>Name</key>
-					<string>Comment</string>
-					<key>Frame</key>
-					<string>{{91,72.5},{91,71.5}}</string>
-					<key>Tag</key>
-					<integer>4</integer>
-					<key>Title</key>
-					<string>评价</string>
-					<key>Font</key>
-					<integer>16</integer>
-					<key>TextAlignment</key>
-					<string>Left</string>
-					<key>Enabled</key>
-					<string>NO</string>
-					<key>Hidden</key>
-					<string>NO</string>
-					<key>BackgroundColor</key>
-					<string>{0,0,0}</string>
-					<key>Image</key>
-					<string>Hotel/Hotel_CommentButton</string>
-					<key>ElementType</key>
-					<string>UIButton</string>
-				</dict>
-				<dict>
-					<key>Name</key>
-					<string>Quick</string>
-					<key>Frame</key>
-					<string>{{183,72.5},{90,144.5}}</string>
-					<key>Tag</key>
-					<integer>5</integer>
-					<key>Title</key>
-					<string>快速预订</string>
-					<key>Font</key>
-					<integer>16</integer>
-					<key>TextAlignment</key>
-					<string>Left</string>
+					<string>Center</string>
 					<key>Enabled</key>
 					<string>YES</string>
 					<key>Hidden</key>
 					<string>NO</string>
 					<key>BackgroundColor</key>
-					<string>{0,0,0}</string>
+					<string>transparent</string>
 					<key>Image</key>
-					<string>Hotel/Hotel_QuickButton</string>
+					<string>Index/ylfw_tp3.png</string>
 					<key>ElementType</key>
 					<string>UIButton</string>
 				</dict>
 				<dict>
 					<key>Name</key>
-					<string>Sina</string>
+					<string>FamilyService</string>
 					<key>Frame</key>
-					<string>{{0,145},{90.5,71.5}}</string>
+					<string>{{170.5,205},{128.5,128.5}}</string>
 					<key>Tag</key>
-					<integer>6</integer>
+					<integer>4</integer>
 					<key>Title</key>
-					<string>新浪微博</string>
+					<string>亲情服务</string>
 					<key>Font</key>
 					<integer>16</integer>
 					<key>TextAlignment</key>
-					<string>Left</string>
+					<string>Center</string>
 					<key>Enabled</key>
-					<string>NO</string>
+					<string>YES</string>
 					<key>Hidden</key>
 					<string>NO</string>
 					<key>BackgroundColor</key>
-					<string>{0,0,0}</string>
+					<string>transparent</string>
 					<key>Image</key>
-					<string>Hotel/Hotel_SinaWeiBoButton</string>
-					<key>ElementType</key>
-					<string>UIButton</string>
-				</dict>
-				<dict>
-					<key>Name</key>
-					<string>Tencent</string>
-					<key>Frame</key>
-					<string>{{91,145},{91,71.5}}</string>
-					<key>Tag</key>
-					<integer>7</integer>
-					<key>Title</key>
-					<string>腾讯微博</string>
-					<key>Font</key>
-					<integer>16</integer>
-					<key>TextAlignment</key>
-					<string>Left</string>
-					<key>Enabled</key>
-					<string>NO</string>
-					<key>Hidden</key>
-					<string>NO</string>
-					<key>BackgroundColor</key>
-					<string>{0,0,0}</string>
-					<key>Image</key>
-					<string>Hotel/Hotel_TencentWeiBoButton</string>
+					<string>Index/ylfw_tp4.png</string>
 					<key>ElementType</key>
 					<string>UIButton</string>
 				</dict>
