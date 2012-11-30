@@ -35,11 +35,15 @@
         [self.view addSubview:headerView];
     }
     
+    _containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 87.0/2.f, 320, (960-87.0)/2.f)];
+    _containerView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:_containerView];
+    
     self.waitView = [[[MBProgressHUD alloc] initWithView:self.view] autorelease];
     [self.waitView setFrame:CGRectMake(0, 0, 1024, 768)];
     self.waitView.delegate = self;
     
-    
+    self.view.backgroundColor = MF_ColorFromRGB(236, 236, 236);
 }
 
 #pragma mark 子类重写方法

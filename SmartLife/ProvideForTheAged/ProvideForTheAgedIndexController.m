@@ -7,6 +7,7 @@
 //
 
 #import "ProvideForTheAgedIndexController.h"
+#import "CallListController.h"
 
 @interface ProvideForTheAgedIndexController ()
 
@@ -28,7 +29,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.view.backgroundColor = MF_ColorFromRGB(236, 236, 236);
+    
     self.headerView.headerLabel.text = @"养老服务"; 
     UIView *indexMenu = [[UIView alloc] initWithFrame:CGRectMake(0, self.headerView.height, self.view.bounds.size.width, self.view.bounds.size.height - self.headerView.height)];
     UIImageView *bgView = makeImageView(0, 0, indexMenu.width, indexMenu.height);
@@ -60,7 +61,24 @@
     [button retain];
     [button scaleMe2D];
     
-    
+    switch (button.tag) {
+        case 1:{
+            [self navigationTo:[[[CallListController alloc] init] autorelease]];
+            break;
+        }
+        case 2: {
+            
+            break;
+        }
+        case 3: {
+            break;
+        }
+        case 4:{
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 @end

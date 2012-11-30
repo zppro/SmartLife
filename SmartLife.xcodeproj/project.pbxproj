@@ -32,6 +32,8 @@
 		ACACC6761660F70C00CE5BC0 /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACACC6751660F70C00CE5BC0 /* LoginController.m */; };
 		ACACC68E1661142A00CE5BC0 /* ProvideForTheAgedIndexController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACACC68D1661142A00CE5BC0 /* ProvideForTheAgedIndexController.m */; };
 		ACACC6A116611C1A00CE5BC0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACACC6A016611C1900CE5BC0 /* AudioToolbox.framework */; };
+		ACACC6A516649B3F00CE5BC0 /* CallListController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACACC6A416649B3F00CE5BC0 /* CallListController.m */; };
+		ACACC6A81664AFF800CE5BC0 /* RescueController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACACC6A71664AFF700CE5BC0 /* RescueController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +88,10 @@
 		ACACC68C1661142A00CE5BC0 /* ProvideForTheAgedIndexController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProvideForTheAgedIndexController.h; path = ProvideForTheAged/ProvideForTheAgedIndexController.h; sourceTree = "<group>"; };
 		ACACC68D1661142A00CE5BC0 /* ProvideForTheAgedIndexController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProvideForTheAgedIndexController.m; path = ProvideForTheAged/ProvideForTheAgedIndexController.m; sourceTree = "<group>"; };
 		ACACC6A016611C1900CE5BC0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		ACACC6A316649B3F00CE5BC0 /* CallListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CallListController.h; path = ProvideForTheAged/EmergencyService/CallListController.h; sourceTree = "<group>"; };
+		ACACC6A416649B3F00CE5BC0 /* CallListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CallListController.m; path = ProvideForTheAged/EmergencyService/CallListController.m; sourceTree = "<group>"; };
+		ACACC6A61664AFF700CE5BC0 /* RescueController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RescueController.h; path = ProvideForTheAged/EmergencyService/RescueController.h; sourceTree = "<group>"; };
+		ACACC6A71664AFF700CE5BC0 /* RescueController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RescueController.m; path = ProvideForTheAged/EmergencyService/RescueController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,10 +216,22 @@
 		ACACC68B166111CC00CE5BC0 /* ProvideForTheAged */ = {
 			isa = PBXGroup;
 			children = (
+				ACACC6A216649A9500CE5BC0 /* EmergencyService */,
 				ACACC68C1661142A00CE5BC0 /* ProvideForTheAgedIndexController.h */,
 				ACACC68D1661142A00CE5BC0 /* ProvideForTheAgedIndexController.m */,
 			);
 			name = ProvideForTheAged;
+			sourceTree = "<group>";
+		};
+		ACACC6A216649A9500CE5BC0 /* EmergencyService */ = {
+			isa = PBXGroup;
+			children = (
+				ACACC6A316649B3F00CE5BC0 /* CallListController.h */,
+				ACACC6A416649B3F00CE5BC0 /* CallListController.m */,
+				ACACC6A61664AFF700CE5BC0 /* RescueController.h */,
+				ACACC6A71664AFF700CE5BC0 /* RescueController.m */,
+			);
+			name = EmergencyService;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -307,6 +325,8 @@
 				AC15B0A1165BC00200E856E4 /* HomeController.m in Sources */,
 				ACACC6761660F70C00CE5BC0 /* LoginController.m in Sources */,
 				ACACC68E1661142A00CE5BC0 /* ProvideForTheAgedIndexController.m in Sources */,
+				ACACC6A516649B3F00CE5BC0 /* CallListController.m in Sources */,
+				ACACC6A81664AFF800CE5BC0 /* RescueController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -354,6 +374,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -382,6 +403,7 @@
 		AC15B080165B528C00E856E4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SmartLife/SmartLife-Prefix.pch";
 				INFOPLIST_FILE = "SmartLife/SmartLife-Info.plist";
@@ -391,6 +413,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				USER_HEADER_SEARCH_PATHS = "../../com.zppro/core/**";
 				WRAPPER_EXTENSION = app;
 			};
@@ -399,6 +422,7 @@
 		AC15B081165B528C00E856E4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SmartLife/SmartLife-Prefix.pch";
 				INFOPLIST_FILE = "SmartLife/SmartLife-Info.plist";
@@ -408,6 +432,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				USER_HEADER_SEARCH_PATHS = "../../com.zppro/core/**";
 				WRAPPER_EXTENSION = app;
 			};
