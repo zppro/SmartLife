@@ -8,6 +8,7 @@
 
 #import "AppBaseController.h"
 
-@interface RescueController : AppBaseController
-
+@interface RescueController : AppBaseController<UITableViewDelegate, UITableViewDataSource,UIScrollViewDelegate,DDPageControlDelegate>
+@property (nonatomic, retain) NSArray                   *arrProcessActions;
+@property (nonatomic, retain) NSArray                   *arrProcessResponses;
 @end

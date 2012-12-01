@@ -56,9 +56,7 @@
 }
 
 - (void) moduleClick:(id) sender{
-    UIButton *button = (UIButton*) sender;
-    
-    [button retain];
+    UIButton *button = (UIButton*) sender; 
     [button scaleMe2D];
     
     switch (button.tag) {
@@ -79,6 +77,12 @@
         default:
             break;
     }
+}
+
+#pragma mark 子类重写方法
+ 
+- (UIImage*) getFooterBackgroundImage{
+    return nil;
 }
 
 @end

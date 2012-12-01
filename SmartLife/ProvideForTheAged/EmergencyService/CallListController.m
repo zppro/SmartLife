@@ -11,6 +11,8 @@
 
 @interface CallListController ()
 
+@property (nonatomic, retain) UITableView  *myTableView;
+
 @end
 
 @implementation CallListController
@@ -161,6 +163,12 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     [self navigationTo:[[[RescueController alloc] init] autorelease]];
+}
+
+#pragma mark 子类重写方法
+
+- (UIImage*) getFooterBackgroundImage{
+    return nil;
 }
 
 @end

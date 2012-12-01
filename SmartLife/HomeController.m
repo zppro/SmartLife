@@ -64,12 +64,13 @@
 - (UIImage*) getHeaderBackgroundImage{
     return nil;
 }
+- (UIImage*) getFooterBackgroundImage{
+    return nil;
+}
 
 #pragma mark 按钮事件
 - (void) moduleClick:(id) sender{
     UIButton *button = (UIButton*) sender;
-    
-    [button retain];
     [button scaleMe2D];
     
     switch (button.tag) {

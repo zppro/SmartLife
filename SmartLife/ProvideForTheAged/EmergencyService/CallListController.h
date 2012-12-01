@@ -10,7 +10,7 @@
 
 @interface CallListController : AppBaseController<UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, retain) UITableView               *myTableView;
+
 @property (nonatomic, retain) NSArray                   *arrCalls;
 
 @end
