@@ -1,38 +1,33 @@
 //
-//  AddressBookController.m
+//  FamilyMemberController.m
 //  SmartLife
 //
-//  Created by zppro on 12-12-3.
+//  Created by zppro on 12-12-4.
 //  Copyright (c) 2012年 zppro. All rights reserved.
 //
 
-#import "AddressBookController.h"
+#import "FamilyMemberController.h"
 #import "ContactDetailController.h"
 
-@interface AddressBookController ()
-@property (nonatomic, retain) NSArray  *arrAB;
+@interface FamilyMemberController ()
+@property (nonatomic, retain) NSArray  *arrFamilyMembers;
 @property (nonatomic, retain) UITableView  *myTableView;
-@property (nonatomic,retain) UITextField *searchField;
 @end
 
-@implementation AddressBookController
-@synthesize arrAB;
+@implementation FamilyMemberController
+@synthesize arrFamilyMembers;
 @synthesize myTableView;
-@synthesize searchField;
 
 - (void)dealloc {
     self.myTableView = nil;
-    self.arrAB = nil;
-    self.searchField = nil;
+    self.arrFamilyMembers = nil;
     [super dealloc];
 }
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.title = @"通讯录";
     }
     return self;
 }
@@ -41,34 +36,21 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.arrAB = [NSMutableArray arrayWithObjects: 
-                            [NSDictionary dictionaryWithObjectsAndKeys:@"陈昌达",@"Name",nil],
-                            [NSDictionary dictionaryWithObjectsAndKeys:@"董智勇",@"Name",nil],
-                            [NSDictionary dictionaryWithObjectsAndKeys:@"方浩",@"Name",nil],
-                            [NSDictionary dictionaryWithObjectsAndKeys:@"范婷婷",@"Name",nil],
-                            [NSDictionary dictionaryWithObjectsAndKeys:@"丁鹏",@"Name",nil],
-                            [NSDictionary dictionaryWithObjectsAndKeys:@"方小雪",@"Name",nil],
-                            [NSDictionary dictionaryWithObjectsAndKeys:@"陈静",@"Name",nil],
+    self.arrFamilyMembers = [NSMutableArray arrayWithObjects:
+                            [NSDictionary dictionaryWithObjectsAndKeys:@"老爸",@"Name",nil],
+                            [NSDictionary dictionaryWithObjectsAndKeys:@"老妈",@"Name",nil],
+                            [NSDictionary dictionaryWithObjectsAndKeys:@"姑姑",@"Name",nil],
+                            [NSDictionary dictionaryWithObjectsAndKeys:@"姑夫",@"Name",nil],
+                            [NSDictionary dictionaryWithObjectsAndKeys:@"大阿姨",@"Name",nil],
+                            [NSDictionary dictionaryWithObjectsAndKeys:@"大姨父",@"Name",nil],
+                            [NSDictionary dictionaryWithObjectsAndKeys:@"小阿姨",@"Name",nil],
+                            [NSDictionary dictionaryWithObjectsAndKeys:@"小姨父",@"Name",nil],
+                            [NSDictionary dictionaryWithObjectsAndKeys:@"社区医生",@"Name",nil],
                             nil];
-    self.headerView.headerLabel.text = @"通讯录";
     
-    searchField = [[UITextField alloc] initWithFrame:CGRectMake(50.0/2,(93/2.f - 48.0/2.f)/2.f,450.f/2.f, 48.0/2)];
-    searchField.font = [UIFont systemFontOfSize:17.f];
-    searchField.textAlignment = UITextAlignmentCenter;
-    searchField.keyboardType = UIKeyboardTypeDefault;
-    searchField.keyboardAppearance = UIKeyboardAppearanceDefault;
-    searchField.backgroundColor = [UIColor whiteColor];
-    searchField.clearButtonMode = UITextFieldViewModeAlways;
-    [self.containerView addSubview:searchField];
-     
-    UIButton *deleteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [deleteButton setFrame:CGRectMake(550/2.0,(93/2.f - 36.0/2.f)/2.f, 50/2.f, 36/2.f)];
-    [deleteButton setImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/VOIP/delete.png") forState:UIControlStateNormal];
-    [deleteButton addTarget:self action:@selector(doDelete:) forControlEvents:UIControlEventTouchUpInside];
-    [deleteButton setBackgroundColor:[UIColor clearColor]];
-    [self.containerView addSubview:deleteButton];
+    self.headerView.headerLabel.text = @"亲情服务";
     
-    myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 93.f/2.f, self.containerView.width,self.containerView.height- 93.f/2.f)];
+    myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.containerView.width,self.containerView.height)];
     myTableView.delegate = self;
     myTableView.dataSource = self;
     myTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
@@ -81,13 +63,19 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark 子类重写方法
+
+- (UIImage*) getFooterBackgroundImage{
+    return nil;
+}
+
 #pragma mark - UITableView delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [arrAB count];
+    return [arrFamilyMembers count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -97,7 +85,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"acell"];
-    NSDictionary *dataItem = (NSDictionary*)[arrAB objectAtIndex:indexPath.row];
+    NSDictionary *dataItem = (NSDictionary*)[arrFamilyMembers objectAtIndex:indexPath.row];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                        reuseIdentifier:@"acell"] autorelease];
@@ -137,8 +125,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    NSDictionary *dataItem = (NSDictionary*)[arrAB objectAtIndex:indexPath.row];
+    NSDictionary *dataItem = (NSDictionary*)[arrFamilyMembers objectAtIndex:indexPath.row];
     [self navigationTo:[[[ContactDetailController alloc] initWithContactInfo:dataItem] autorelease]];
 }
 
@@ -155,10 +142,5 @@
     
 }
 
-- (void) doDelete:(id) sender{
-    if(searchField.text.length == 0){
-        return;
-    }
-    searchField.text = [searchField.text substringToIndex:searchField.text.length-1];
-}
+
 @end

@@ -34,6 +34,8 @@
 		ACA9590D166CD4C900302D82 /* AddressBookController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA9590C166CD4C900302D82 /* AddressBookController.m */; };
 		ACA95910166CD50900302D82 /* DialingController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA9590F166CD50900302D82 /* DialingController.m */; };
 		ACA95913166CE7B100302D82 /* ContactDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA95912166CE7B100302D82 /* ContactDetailController.m */; };
+		ACA95917166D883F00302D82 /* FamilyMemberController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA95916166D883F00302D82 /* FamilyMemberController.m */; };
+		ACA9591B166D8A8200302D82 /* CommunityServiceCallingListController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA9591A166D8A8200302D82 /* CommunityServiceCallingListController.m */; };
 		ACACC6761660F70C00CE5BC0 /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACACC6751660F70C00CE5BC0 /* LoginController.m */; };
 		ACACC68E1661142A00CE5BC0 /* ProvideForTheAgedIndexController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACACC68D1661142A00CE5BC0 /* ProvideForTheAgedIndexController.m */; };
 		ACACC6A116611C1A00CE5BC0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACACC6A016611C1900CE5BC0 /* AudioToolbox.framework */; };
@@ -98,6 +100,10 @@
 		ACA9590F166CD50900302D82 /* DialingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DialingController.m; path = ProvideForTheAged/VOIP/DialingController.m; sourceTree = "<group>"; };
 		ACA95911166CE7B100302D82 /* ContactDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContactDetailController.h; path = ProvideForTheAged/VOIP/ContactDetailController.h; sourceTree = "<group>"; };
 		ACA95912166CE7B100302D82 /* ContactDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ContactDetailController.m; path = ProvideForTheAged/VOIP/ContactDetailController.m; sourceTree = "<group>"; };
+		ACA95915166D883F00302D82 /* FamilyMemberController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FamilyMemberController.h; path = ProvideForTheAged/KinshipService/FamilyMemberController.h; sourceTree = "<group>"; };
+		ACA95916166D883F00302D82 /* FamilyMemberController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FamilyMemberController.m; path = ProvideForTheAged/KinshipService/FamilyMemberController.m; sourceTree = "<group>"; };
+		ACA95919166D8A8200302D82 /* CommunityServiceCallingListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommunityServiceCallingListController.h; path = ProvideForTheAged/CommunityService/CommunityServiceCallingListController.h; sourceTree = "<group>"; };
+		ACA9591A166D8A8200302D82 /* CommunityServiceCallingListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommunityServiceCallingListController.m; path = ProvideForTheAged/CommunityService/CommunityServiceCallingListController.m; sourceTree = "<group>"; };
 		ACACC6741660F70C00CE5BC0 /* LoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginController.h; path = LoginAndRegister/LoginController.h; sourceTree = "<group>"; };
 		ACACC6751660F70C00CE5BC0 /* LoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginController.m; path = LoginAndRegister/LoginController.m; sourceTree = "<group>"; };
 		ACACC68C1661142A00CE5BC0 /* ProvideForTheAgedIndexController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProvideForTheAgedIndexController.h; path = ProvideForTheAged/ProvideForTheAgedIndexController.h; sourceTree = "<group>"; };
@@ -236,6 +242,24 @@
 			name = VOIP;
 			sourceTree = "<group>";
 		};
+		ACA95914166D87CD00302D82 /* KinshipService */ = {
+			isa = PBXGroup;
+			children = (
+				ACA95915166D883F00302D82 /* FamilyMemberController.h */,
+				ACA95916166D883F00302D82 /* FamilyMemberController.m */,
+			);
+			name = KinshipService;
+			sourceTree = "<group>";
+		};
+		ACA95918166D8A1800302D82 /* CommunityService */ = {
+			isa = PBXGroup;
+			children = (
+				ACA95919166D8A8200302D82 /* CommunityServiceCallingListController.h */,
+				ACA9591A166D8A8200302D82 /* CommunityServiceCallingListController.m */,
+			);
+			name = CommunityService;
+			sourceTree = "<group>";
+		};
 		ACACC6731660F6A600CE5BC0 /* LoginAndRegister */ = {
 			isa = PBXGroup;
 			children = (
@@ -248,6 +272,8 @@
 		ACACC68B166111CC00CE5BC0 /* ProvideForTheAged */ = {
 			isa = PBXGroup;
 			children = (
+				ACA95918166D8A1800302D82 /* CommunityService */,
+				ACA95914166D87CD00302D82 /* KinshipService */,
 				ACA95904166CD15F00302D82 /* VOIP */,
 				ACACC6A216649A9500CE5BC0 /* EmergencyService */,
 				ACACC68C1661142A00CE5BC0 /* ProvideForTheAgedIndexController.h */,
@@ -365,6 +391,8 @@
 				ACA9590D166CD4C900302D82 /* AddressBookController.m in Sources */,
 				ACA95910166CD50900302D82 /* DialingController.m in Sources */,
 				ACA95913166CE7B100302D82 /* ContactDetailController.m in Sources */,
+				ACA95917166D883F00302D82 /* FamilyMemberController.m in Sources */,
+				ACA9591B166D8A8200302D82 /* CommunityServiceCallingListController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

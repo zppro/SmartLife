@@ -43,21 +43,21 @@
     [self.containerView addSubview:profileImage];
     
     UIButton *landPhoneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [landPhoneButton setFrame:CGRectMake((320.0 - 107.f/2.f)/2.0,250/2.f, 107/2.f, 38/2.f)];
+    [landPhoneButton setFrame:CGRectMake((320.0 - 285/2.f)/2.0,250/2.f, 285/2.f, 63/2.f)];
     [landPhoneButton setImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/VOIP/LandPhone.png") forState:UIControlStateNormal];
     [landPhoneButton addTarget:self action:@selector(doLandPhone:) forControlEvents:UIControlEventTouchUpInside];
     [landPhoneButton setBackgroundColor:[UIColor clearColor]];
     [self.containerView addSubview:landPhoneButton];
     
     UIButton *voipButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [voipButton setFrame:CGRectMake((320.0 - 107.f/2.f)/2.0,318/2.f, 107/2.f, 38/2.f)];
+    [voipButton setFrame:CGRectMake((320.0 - 285/2.f)/2.0,350/2.f, 285/2.f, 63/2.f)];
     [voipButton setImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/VOIP/VOIP.png") forState:UIControlStateNormal];
     [voipButton addTarget:self action:@selector(doVOIP:) forControlEvents:UIControlEventTouchUpInside];
     [voipButton setBackgroundColor:[UIColor clearColor]];
     [self.containerView addSubview:voipButton];
     
     UIButton *networkIntercomButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [networkIntercomButton setFrame:CGRectMake((320.0 - 107.f/2.f)/2.0,386/2.f, 107/2.f, 38/2.f)];
+    [networkIntercomButton setFrame:CGRectMake((320.0 - 285/2.f)/2.0,450/2.f, 285/2.f, 63/2.f)];
     [networkIntercomButton setImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/VOIP/NetworkIntercom.png") forState:UIControlStateNormal];
     [networkIntercomButton addTarget:self action:@selector(doNetworkIntercom:) forControlEvents:UIControlEventTouchUpInside];
     [networkIntercomButton setBackgroundColor:[UIColor clearColor]];

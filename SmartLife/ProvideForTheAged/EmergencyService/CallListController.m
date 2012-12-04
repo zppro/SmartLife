@@ -10,7 +10,7 @@
 #import "RescueController.h"
 
 @interface CallListController ()
-
+@property (nonatomic, retain) NSArray      *arrCalls;
 @property (nonatomic, retain) UITableView  *myTableView;
 
 @end
