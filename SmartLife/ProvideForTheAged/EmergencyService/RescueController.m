@@ -74,7 +74,7 @@
     [cameraContainerView release];
     
     UIImageView *cameraView = makeImageView(0, 0, cameraContainerView.width, cameraContainerView.height);
-    cameraView.image = MF_PngOfDefaultSkin(@"ProvideForTheAged/01.png");
+    cameraView.image = MF_PngOfDefaultSkin(@"ProvideForTheAged/EmergencyService/01.png");
     [cameraContainerView addSubview:cameraView];
     
     titleProcessLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, cameraContainerView.top+cameraContainerView.height+10.f, 200.f, 30.f)];
@@ -120,14 +120,14 @@
     
     UIButton *responseButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [responseButton setFrame:CGRectMake((self.footerView.width/2.f-308/2.f)/2.0,(self.footerView.height - 61.f/2.f)/2.f, 308/2.f, 61/2.f)];
-    [responseButton setImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/05.png") forState:UIControlStateNormal];
+    [responseButton setImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/EmergencyService/05.png") forState:UIControlStateNormal];
     [responseButton addTarget:self action:@selector(doResponse:) forControlEvents:UIControlEventTouchUpInside];
     [responseButton setBackgroundColor:[UIColor clearColor]];
     [self.footerView addSubview:responseButton];
     
     UIButton *callButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [callButton setFrame:CGRectMake(self.footerView.width/2.f+(self.footerView.width/2.f-308/2.f)/2.0,(self.footerView.height - 61.f/2.f)/2.f, 308/2.f, 61/2.f)];
-    [callButton setImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/06.png") forState:UIControlStateNormal];
+    [callButton setImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/EmergencyService/06.png") forState:UIControlStateNormal];
     [callButton addTarget:self action:@selector(doCall:) forControlEvents:UIControlEventTouchUpInside];
     [callButton setBackgroundColor:[UIColor clearColor]];
     [self.footerView addSubview:callButton];
@@ -251,7 +251,7 @@ static NSString * cellKey2 = @"bcell";
 }
 
 - (void)doCall:(id)sender {
-    UIImage *bg = MF_PngOfDefaultSkin(@"ProvideForTheAged/99.png");
+    UIImage *bg = MF_PngOfDefaultSkin(@"ProvideForTheAged/EmergencyService/99.png");
     ZPUIActionSheet *callSheet = [ZPUIActionSheet zSheetWithHeight:bg.size.height/2.f withSheetTitle:@""];
     UIImageView *bgView = makeImageViewByFrame(callSheet.contentView.bounds);
     bgView.image = bg;

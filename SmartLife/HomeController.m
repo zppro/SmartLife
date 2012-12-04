@@ -9,7 +9,10 @@
 #import "HomeController.h"
 #import "LoginController.h"
 #import "ProvideForTheAgedIndexController.h"
-
+#import "SmartPhoneController.h"
+#import "RecentCallController.h"
+#import "AddressBookController.h"
+#import "DialingController.h"
 
 @interface HomeController ()
 
@@ -75,16 +78,35 @@
     
     switch (button.tag) {
         case 1:{
+            
+            
              break;
         }
         case 2: { 
             [self navigationTo:[[[ProvideForTheAgedIndexController alloc] init] autorelease]];
             break;
         }
-        case 3: {
+        case 3:{
             break;
         }
-        case 4:{
+        case 4:
+        case 5:{
+            UITabBarController *voipController = [[UITabBarController alloc] init];
+            SmartPhoneController *smartPhoneVC = [[SmartPhoneController alloc] init];
+            RecentCallController *recentCallVC = [[RecentCallController alloc] init];
+            AddressBookController *addressBookVC = [[AddressBookController alloc] init];
+            DialingController *dialingController = [[DialingController alloc] init];
+            voipController.viewControllers=[NSArray arrayWithObjects:smartPhoneVC,recentCallVC,addressBookVC,dialingController,nil];
+            
+            voipController.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"D2P_Logo2.png"]];
+            voipController.navigationItem.titleView.backgroundColor = [UIColor clearColor];
+            UIBarButtonItem *tempRightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"New"
+                                                                                   style:UIBarButtonItemStylePlain
+                                                                                  target:self
+                                                                                  action:@selector(makeJob)]; 
+            [voipController.navigationItem setRightBarButtonItem:tempRightBarButton];
+            [self navigationTo:voipController];
+            [voipController release];
             break;
         }
         default:
