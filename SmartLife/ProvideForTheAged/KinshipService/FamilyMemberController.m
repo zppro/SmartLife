@@ -37,15 +37,15 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     self.arrFamilyMembers = [NSMutableArray arrayWithObjects:
-                            [NSDictionary dictionaryWithObjectsAndKeys:@"老爸",@"Name",nil],
-                            [NSDictionary dictionaryWithObjectsAndKeys:@"老妈",@"Name",nil],
-                            [NSDictionary dictionaryWithObjectsAndKeys:@"姑姑",@"Name",nil],
-                            [NSDictionary dictionaryWithObjectsAndKeys:@"姑夫",@"Name",nil],
-                            [NSDictionary dictionaryWithObjectsAndKeys:@"大阿姨",@"Name",nil],
-                            [NSDictionary dictionaryWithObjectsAndKeys:@"大姨父",@"Name",nil],
-                            [NSDictionary dictionaryWithObjectsAndKeys:@"小阿姨",@"Name",nil],
-                            [NSDictionary dictionaryWithObjectsAndKeys:@"小姨父",@"Name",nil],
-                            [NSDictionary dictionaryWithObjectsAndKeys:@"社区医生",@"Name",nil],
+                            [NSDictionary dictionaryWithObjectsAndKeys:@"老爸",@"Name",@"1",@"LandPhone",@"1",@"VOIP",@"1",@"NetworkIntercom",nil],
+                            [NSDictionary dictionaryWithObjectsAndKeys:@"老妈",@"Name",@"1",@"LandPhone",@"1",@"VOIP",@"1",@"NetworkIntercom",nil],
+                            [NSDictionary dictionaryWithObjectsAndKeys:@"姑姑",@"Name",@"1",@"LandPhone",@"1",@"VOIP",@"1",@"NetworkIntercom",nil],
+                            [NSDictionary dictionaryWithObjectsAndKeys:@"姑夫",@"Name",@"1",@"LandPhone",@"",@"VOIP",@"",@"NetworkIntercom",nil],
+                            [NSDictionary dictionaryWithObjectsAndKeys:@"大阿姨",@"Name",@"1",@"LandPhone",@"1",@"VOIP",@"1",@"NetworkIntercom",nil],
+                            [NSDictionary dictionaryWithObjectsAndKeys:@"大姨父",@"Name",@"1",@"LandPhone",@"1",@"VOIP",@"1",@"NetworkIntercom",nil],
+                            [NSDictionary dictionaryWithObjectsAndKeys:@"小阿姨",@"Name",@"",@"LandPhone",@"1",@"VOIP",@"1",@"NetworkIntercom",nil],
+                            [NSDictionary dictionaryWithObjectsAndKeys:@"小姨父",@"Name",@"1",@"LandPhone",@"1",@"VOIP",@"1",@"NetworkIntercom",nil],
+                            [NSDictionary dictionaryWithObjectsAndKeys:@"社区医生",@"Name",@"1",@"LandPhone",@"1",@"VOIP",@"1",@"NetworkIntercom",nil],
                             nil];
     
     self.headerView.headerLabel.text = @"亲情服务";
@@ -103,6 +103,7 @@
         [landPhoneButton setImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/VOIP/LandPhone.png") forState:UIControlStateNormal];
         [landPhoneButton addTarget:self action:@selector(doLandPhone:) forControlEvents:UIControlEventTouchUpInside];
         [landPhoneButton setBackgroundColor:[UIColor clearColor]];
+        landPhoneButton.tag = 1002;
         [cell.contentView addSubview:landPhoneButton];
         
         UIButton *voipButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -110,6 +111,7 @@
         [voipButton setImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/VOIP/VOIP.png") forState:UIControlStateNormal];
         [voipButton addTarget:self action:@selector(doVOIP:) forControlEvents:UIControlEventTouchUpInside];
         [voipButton setBackgroundColor:[UIColor clearColor]];
+        voipButton.tag = 1003;
         [cell.contentView addSubview:voipButton];
         
         UIButton *networkIntercomButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -117,9 +119,13 @@
         [networkIntercomButton setImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/VOIP/NetworkIntercom.png") forState:UIControlStateNormal];
         [networkIntercomButton addTarget:self action:@selector(doNetworkIntercom:) forControlEvents:UIControlEventTouchUpInside];
         [networkIntercomButton setBackgroundColor:[UIColor clearColor]];
+        networkIntercomButton.tag = 1004;
         [cell.contentView addSubview:networkIntercomButton];
     }
     ((UILabel*)[cell.contentView viewWithTag:1001]).text = [dataItem objectForKey:@"Name"];
+    ((UIButton*)[cell.contentView viewWithTag:1002]).hidden = [[dataItem objectForKey:@"LandPhone"] isEqualToString:@""];
+    ((UIButton*)[cell.contentView viewWithTag:1003]).hidden = [[dataItem objectForKey:@"VOIP"] isEqualToString:@""];
+    ((UIButton*)[cell.contentView viewWithTag:1004]).hidden = [[dataItem objectForKey:@"NetworkIntercom"] isEqualToString:@""];
     return cell;
 }
 

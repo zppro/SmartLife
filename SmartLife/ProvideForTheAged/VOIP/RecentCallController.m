@@ -28,8 +28,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
-        self.title = @"最近通话";
+        // Custom initialization 
     }
     return self;
 }

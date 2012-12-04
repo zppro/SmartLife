@@ -29,7 +29,6 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        self.title = @"智慧电话";
     }
     return self;
 }
@@ -57,14 +56,8 @@
     myTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self.containerView addSubview:myTableView];
     
-	// Do any additional setup after loading the view.
-    /*
-    UITabBarItem *item = [[UITabBarItem alloc] initWithTitle:@"Second" image:nil tag:2];
-    [item setFinishedSelectedImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/VOIP/01S.png")
-       withFinishedUnselectedImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/VOIP/01.png")];
-    self.tabBarItem = item;
-    [item release];
-     */
+	// Do any additional setup after loading the view. 
+     
     
 }
 

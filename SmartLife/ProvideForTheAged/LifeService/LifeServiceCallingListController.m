@@ -1,17 +1,16 @@
 //
-//  CommunityServiceCallingListController.m
+//  LifeServiceCallingListController.m
 //  SmartLife
 //
 //  Created by zppro on 12-12-4.
 //  Copyright (c) 2012年 zppro. All rights reserved.
 //
 
-#import "CommunityServiceCallingListController.h"
-#import "CommunityServiceAcceptOrderController.h"
-#import "CommunityServiceAcceptOrderSuccessController.h"
-#import "CommunityServiceAcceptOrderFailController.h"
-
-@interface CommunityServiceCallingListController (){
+#import "LifeServiceCallingListController.h"
+#import "LifeServiceAcceptOrderController.h"
+#import "LifeServiceAcceptOrderSuccessController.h"
+#import "LifeServiceAcceptOrderFailController.h"
+@interface LifeServiceCallingListController (){
     UIButton *currentSelectedButton;
     UITableView *currentTableView;
     BOOL isInReceivedView;
@@ -21,16 +20,17 @@
 @property (nonatomic, retain) NSArray        *arrNotReceived;
 @property (nonatomic, retain) UITableView    *receivedTableView;
 @property (nonatomic, retain) UITableView    *notReceivedTableView;
+
 @end
 
-@implementation CommunityServiceCallingListController 
+@implementation LifeServiceCallingListController
 @synthesize receivedTableView;
 @synthesize notReceivedTableView;
 @synthesize arrReceived;
 @synthesize arrNotReceived;
-- (void)dealloc { 
+- (void)dealloc {
     self.receivedTableView = nil;
-    self.notReceivedTableView = nil; 
+    self.notReceivedTableView = nil;
     self.arrReceived = nil;
     self.arrNotReceived = nil;
     [super dealloc];
@@ -50,27 +50,26 @@
 	// Do any additional setup after loading the view.
     
     self.arrReceived = [NSMutableArray arrayWithObjects:
-                              [NSDictionary dictionaryWithObjectsAndKeys:@"2012-09-01 10:30:23",@"CallTime", @"李琴",@"Name",@"我要接单",@"Status",nil],
-                              [NSDictionary dictionaryWithObjectsAndKeys:@"2012-09-01 08:30:23",@"CallTime", @"李四",@"Name",@"接单成功",@"Status",nil],
-                              [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-31 08:30:23",@"CallTime", @"张三",@"Name",@"接单成功",@"Status",nil],
-                              [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-30 18:30:23",@"CallTime", @"李三",@"Name",@"接单失败",@"Status",nil],
-                              [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-29 08:30:23",@"CallTime", @"李琴",@"Name",@"接单成功",@"Status",nil],
-                              [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-28 08:30:23",@"CallTime", @"张四",@"Name",@"接单成功",@"Status",nil],
-                              [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-27 08:30:23",@"CallTime", @"王二",@"Name",@"接单失败",@"Status",nil],
-                              nil];
+                        [NSDictionary dictionaryWithObjectsAndKeys:@"2012-09-01 10:30:23",@"CallTime", @"李琴",@"Name",@"我要接单",@"Status",nil],
+                        [NSDictionary dictionaryWithObjectsAndKeys:@"2012-09-01 08:30:23",@"CallTime", @"李四",@"Name",@"接单成功",@"Status",nil],
+                        [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-31 08:30:23",@"CallTime", @"张三",@"Name",@"接单成功",@"Status",nil],
+                        [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-30 18:30:23",@"CallTime", @"李三",@"Name",@"接单失败",@"Status",nil],
+                        [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-29 08:30:23",@"CallTime", @"李琴",@"Name",@"接单成功",@"Status",nil],
+                        [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-28 08:30:23",@"CallTime", @"张四",@"Name",@"接单成功",@"Status",nil],
+                        [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-27 08:30:23",@"CallTime", @"王二",@"Name",@"接单失败",@"Status",nil],
+                        nil];
     
     self.arrNotReceived = [NSMutableArray arrayWithObjects:
-                                [NSDictionary dictionaryWithObjectsAndKeys:@"2012-09-01 10:30:23",@"CallTime", @"李琴",@"Name",@"未接单",@"Status",nil],
-                                [NSDictionary dictionaryWithObjectsAndKeys:@"2012-09-01 08:30:23",@"CallTime", @"李四",@"Name",@"未接单",@"Status",nil],
-                                [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-31 08:30:23",@"CallTime", @"张三",@"Name",@"未接单",@"Status",nil],
-                                [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-30 18:30:23",@"CallTime", @"李三",@"Name",@"未接单",@"Status",nil],
-                                [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-29 08:30:23",@"CallTime", @"李琴",@"Name",@"未接单",@"Status",nil],
-                                [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-28 08:30:23",@"CallTime", @"张四",@"Name",@"未接单",@"Status",nil],
-                                [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-27 08:30:23",@"CallTime", @"王二",@"Name",@"未接单",@"Status",nil],
-                                nil];
+                           [NSDictionary dictionaryWithObjectsAndKeys:@"2012-09-01 10:30:23",@"CallTime", @"李琴",@"Name",@"未接单",@"Status",nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:@"2012-09-01 08:30:23",@"CallTime", @"李四",@"Name",@"未接单",@"Status",nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-31 08:30:23",@"CallTime", @"张三",@"Name",@"未接单",@"Status",nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-30 18:30:23",@"CallTime", @"李三",@"Name",@"未接单",@"Status",nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-29 08:30:23",@"CallTime", @"李琴",@"Name",@"未接单",@"Status",nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-28 08:30:23",@"CallTime", @"张四",@"Name",@"未接单",@"Status",nil],
+                           [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-27 08:30:23",@"CallTime", @"王二",@"Name",@"未接单",@"Status",nil],
+                           nil];
     
-	// Do any additional setup after loading the view.
-    self.headerView.headerLabel.text = @"社区服务－呼叫列表";
+    self.headerView.headerLabel.text = @"生活服务－呼叫列表";
     
     UIButton *receivedButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [receivedButton setFrame:CGRectMake(0,0, 320/2.f, 77/2.f)];
@@ -93,7 +92,7 @@
     currentSelectedButton = receivedButton;
     currentSelectedButton.selected  = YES;
     
-     
+    
     receivedTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 77/2.f, self.containerView.width,self.containerView.height-77.f/2.f)];
     receivedTableView.delegate = self;
     receivedTableView.dataSource = self;
@@ -117,6 +116,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 #pragma mark 子类重写方法
 - (UIImage*) getFooterBackgroundImage{
@@ -220,7 +220,7 @@ static NSString * cellKey2 = @"bcell";
         valueStatus.textAlignment = UITextAlignmentCenter;
         [cell.contentView addSubview:valueStatus];
         [valueStatus release];
-         
+        
         UIButton *acceptOrder = [UIButton buttonWithType:UIButtonTypeCustom];
         acceptOrder.tag = 1004;
         acceptOrder.titleLabel.font = [UIFont systemFontOfSize:12.0f];
@@ -230,11 +230,11 @@ static NSString * cellKey2 = @"bcell";
         [acceptOrder addTarget:self action:@selector(doAcceptOrder:) forControlEvents:UIControlEventTouchUpInside];
         [cell.contentView addSubview:acceptOrder];
         acceptOrder.hidden = YES;
-    } 
+    }
     
     ((UILabel*)[cell.contentView viewWithTag:1001]).text = [dataItem objectForKey:@"CallTime"];
     ((UILabel*)[cell.contentView viewWithTag:1002]).text = [dataItem objectForKey:@"Name"];
-    ((UILabel*)[cell.contentView viewWithTag:1003]).text = [dataItem objectForKey:@"Status"]; 
+    ((UILabel*)[cell.contentView viewWithTag:1003]).text = [dataItem objectForKey:@"Status"];
     ((UIButton*)[cell.contentView viewWithTag:1004]).hidden = ![[dataItem objectForKey:@"Status"] isEqualToString:@"我要接单"];
     
     return cell;
@@ -249,21 +249,21 @@ static NSString * cellKey2 = @"bcell";
         return;
     }
     else if([statusString isEqualToString:@"接单成功"]){
-        NSDictionary *orderInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"李琴",@"Name",@"杭州市西湖区文三西路333号丹桂花园5－3－303",@"Address",@"女",@"Sex",@"调解邻里矛盾",@"ServeContent",@"上门服务",@"ServeMode",nil];
-        CommunityServiceAcceptOrderSuccessController *communityServiceAcceptOrderSuccessVC = [[CommunityServiceAcceptOrderSuccessController alloc] initWithOrderInfo:orderInfo];
-        [self presentModalViewController:communityServiceAcceptOrderSuccessVC animated: YES];
+        NSDictionary *orderInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"李琴",@"Name",@"杭州市西湖区文三西路333号丹桂花园5－3－303",@"Address",@"女",@"Sex",@"打扫卫生",@"ServeContent",@"上门服务",@"ServeMode",nil];
+        LifeServiceAcceptOrderSuccessController *lifeServiceAcceptOrderSuccessVC = [[LifeServiceAcceptOrderSuccessController alloc] initWithOrderInfo:orderInfo];
+        [self presentModalViewController:lifeServiceAcceptOrderSuccessVC animated: YES];
     }
     else if([statusString isEqualToString:@"接单失败"]){
-        CommunityServiceAcceptOrderFailController *communityServiceAcceptOrderFailVC = [[CommunityServiceAcceptOrderFailController alloc] init];
-        [self presentModalViewController:communityServiceAcceptOrderFailVC animated: YES]; 
+        LifeServiceAcceptOrderFailController *lifeServiceAcceptOrderFailVC = [[LifeServiceAcceptOrderFailController alloc] init];
+        [self presentModalViewController:lifeServiceAcceptOrderFailVC animated: YES]; 
     }
 }
 
 #pragma mark -Button Click
 - (void)doAcceptOrder:(id)sender{
     NSDictionary *orderInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"李琴",@"Name",@"杭州市西湖区文三西路333号丹桂花园5－3－303",@"Address",nil];
-    CommunityServiceAcceptOrderController *communityServiceAcceptOrderVC = [[CommunityServiceAcceptOrderController alloc] initWithOrderInfo:orderInfo];
-    [self presentModalViewController:communityServiceAcceptOrderVC animated: YES];
+    LifeServiceAcceptOrderController *lifeServiceAcceptOrderVC = [[LifeServiceAcceptOrderController alloc] initWithOrderInfo:orderInfo];
+    [self presentModalViewController:lifeServiceAcceptOrderVC animated: YES];
 }
 - (void)doToggle:(id)sender {
     if(currentSelectedButton == sender){
@@ -273,7 +273,7 @@ static NSString * cellKey2 = @"bcell";
     currentSelectedButton = sender;
     currentSelectedButton.selected = !currentSelectedButton.selected;
     isInReceivedView = !isInReceivedView;
-
+    
     if (isInReceivedView) {
         currentTableView = receivedTableView;
     }
@@ -281,5 +281,6 @@ static NSString * cellKey2 = @"bcell";
         currentTableView = notReceivedTableView;
     }
     [currentTableView frontMe];
-} 
+}
+
 @end

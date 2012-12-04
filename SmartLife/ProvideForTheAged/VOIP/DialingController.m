@@ -22,8 +22,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
-        self.title = @"拨号键盘";
+        // Custom initialization 
     }
     return self;
 }

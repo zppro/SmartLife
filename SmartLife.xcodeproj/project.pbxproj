@@ -36,6 +36,15 @@
 		ACA95913166CE7B100302D82 /* ContactDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA95912166CE7B100302D82 /* ContactDetailController.m */; };
 		ACA95917166D883F00302D82 /* FamilyMemberController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA95916166D883F00302D82 /* FamilyMemberController.m */; };
 		ACA9591B166D8A8200302D82 /* CommunityServiceCallingListController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA9591A166D8A8200302D82 /* CommunityServiceCallingListController.m */; };
+		ACA95921166DC3C900302D82 /* CommunityServiceAcceptOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA95920166DC3C900302D82 /* CommunityServiceAcceptOrderController.m */; };
+		ACA95924166DCE0500302D82 /* CommunityServiceAcceptOrderSuccessController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA95923166DCE0500302D82 /* CommunityServiceAcceptOrderSuccessController.m */; };
+		ACA95927166DCE1E00302D82 /* CommunityServiceAcceptOrderFailController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA95926166DCE1E00302D82 /* CommunityServiceAcceptOrderFailController.m */; };
+		ACA95936166DF5C100302D82 /* CommunityServiceAcceptOrderProcessController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA95935166DF5C000302D82 /* CommunityServiceAcceptOrderProcessController.m */; };
+		ACA9593A166E280B00302D82 /* LifeServiceCallingListController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA95939166E280B00302D82 /* LifeServiceCallingListController.m */; };
+		ACA9593D166E291F00302D82 /* LifeServiceAcceptOrderController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA9593C166E291F00302D82 /* LifeServiceAcceptOrderController.m */; };
+		ACA95940166E29A100302D82 /* LifeServiceAcceptOrderSuccessController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA9593F166E29A100302D82 /* LifeServiceAcceptOrderSuccessController.m */; };
+		ACA95943166E29BC00302D82 /* LifeServiceAcceptOrderFailController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA95942166E29BC00302D82 /* LifeServiceAcceptOrderFailController.m */; };
+		ACA95946166E29EC00302D82 /* LifeServiceAcceptOrderProcessController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA95945166E29EB00302D82 /* LifeServiceAcceptOrderProcessController.m */; };
 		ACACC6761660F70C00CE5BC0 /* LoginController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACACC6751660F70C00CE5BC0 /* LoginController.m */; };
 		ACACC68E1661142A00CE5BC0 /* ProvideForTheAgedIndexController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACACC68D1661142A00CE5BC0 /* ProvideForTheAgedIndexController.m */; };
 		ACACC6A116611C1A00CE5BC0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACACC6A016611C1900CE5BC0 /* AudioToolbox.framework */; };
@@ -104,6 +113,24 @@
 		ACA95916166D883F00302D82 /* FamilyMemberController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FamilyMemberController.m; path = ProvideForTheAged/KinshipService/FamilyMemberController.m; sourceTree = "<group>"; };
 		ACA95919166D8A8200302D82 /* CommunityServiceCallingListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommunityServiceCallingListController.h; path = ProvideForTheAged/CommunityService/CommunityServiceCallingListController.h; sourceTree = "<group>"; };
 		ACA9591A166D8A8200302D82 /* CommunityServiceCallingListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommunityServiceCallingListController.m; path = ProvideForTheAged/CommunityService/CommunityServiceCallingListController.m; sourceTree = "<group>"; };
+		ACA9591F166DC3C900302D82 /* CommunityServiceAcceptOrderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommunityServiceAcceptOrderController.h; path = ProvideForTheAged/CommunityService/CommunityServiceAcceptOrderController.h; sourceTree = "<group>"; };
+		ACA95920166DC3C900302D82 /* CommunityServiceAcceptOrderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommunityServiceAcceptOrderController.m; path = ProvideForTheAged/CommunityService/CommunityServiceAcceptOrderController.m; sourceTree = "<group>"; };
+		ACA95922166DCE0500302D82 /* CommunityServiceAcceptOrderSuccessController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommunityServiceAcceptOrderSuccessController.h; path = ProvideForTheAged/CommunityService/CommunityServiceAcceptOrderSuccessController.h; sourceTree = "<group>"; };
+		ACA95923166DCE0500302D82 /* CommunityServiceAcceptOrderSuccessController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommunityServiceAcceptOrderSuccessController.m; path = ProvideForTheAged/CommunityService/CommunityServiceAcceptOrderSuccessController.m; sourceTree = "<group>"; };
+		ACA95925166DCE1E00302D82 /* CommunityServiceAcceptOrderFailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommunityServiceAcceptOrderFailController.h; path = ProvideForTheAged/CommunityService/CommunityServiceAcceptOrderFailController.h; sourceTree = "<group>"; };
+		ACA95926166DCE1E00302D82 /* CommunityServiceAcceptOrderFailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommunityServiceAcceptOrderFailController.m; path = ProvideForTheAged/CommunityService/CommunityServiceAcceptOrderFailController.m; sourceTree = "<group>"; };
+		ACA95934166DF5C000302D82 /* CommunityServiceAcceptOrderProcessController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CommunityServiceAcceptOrderProcessController.h; path = ProvideForTheAged/CommunityService/CommunityServiceAcceptOrderProcessController.h; sourceTree = "<group>"; };
+		ACA95935166DF5C000302D82 /* CommunityServiceAcceptOrderProcessController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CommunityServiceAcceptOrderProcessController.m; path = ProvideForTheAged/CommunityService/CommunityServiceAcceptOrderProcessController.m; sourceTree = "<group>"; };
+		ACA95938166E280B00302D82 /* LifeServiceCallingListController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LifeServiceCallingListController.h; path = ProvideForTheAged/LifeService/LifeServiceCallingListController.h; sourceTree = "<group>"; };
+		ACA95939166E280B00302D82 /* LifeServiceCallingListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LifeServiceCallingListController.m; path = ProvideForTheAged/LifeService/LifeServiceCallingListController.m; sourceTree = "<group>"; };
+		ACA9593B166E291F00302D82 /* LifeServiceAcceptOrderController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LifeServiceAcceptOrderController.h; path = ProvideForTheAged/LifeService/LifeServiceAcceptOrderController.h; sourceTree = "<group>"; };
+		ACA9593C166E291F00302D82 /* LifeServiceAcceptOrderController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LifeServiceAcceptOrderController.m; path = ProvideForTheAged/LifeService/LifeServiceAcceptOrderController.m; sourceTree = "<group>"; };
+		ACA9593E166E29A100302D82 /* LifeServiceAcceptOrderSuccessController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LifeServiceAcceptOrderSuccessController.h; path = ProvideForTheAged/LifeService/LifeServiceAcceptOrderSuccessController.h; sourceTree = "<group>"; };
+		ACA9593F166E29A100302D82 /* LifeServiceAcceptOrderSuccessController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LifeServiceAcceptOrderSuccessController.m; path = ProvideForTheAged/LifeService/LifeServiceAcceptOrderSuccessController.m; sourceTree = "<group>"; };
+		ACA95941166E29BC00302D82 /* LifeServiceAcceptOrderFailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LifeServiceAcceptOrderFailController.h; path = ProvideForTheAged/LifeService/LifeServiceAcceptOrderFailController.h; sourceTree = "<group>"; };
+		ACA95942166E29BC00302D82 /* LifeServiceAcceptOrderFailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LifeServiceAcceptOrderFailController.m; path = ProvideForTheAged/LifeService/LifeServiceAcceptOrderFailController.m; sourceTree = "<group>"; };
+		ACA95944166E29EB00302D82 /* LifeServiceAcceptOrderProcessController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LifeServiceAcceptOrderProcessController.h; path = ProvideForTheAged/LifeService/LifeServiceAcceptOrderProcessController.h; sourceTree = "<group>"; };
+		ACA95945166E29EB00302D82 /* LifeServiceAcceptOrderProcessController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LifeServiceAcceptOrderProcessController.m; path = ProvideForTheAged/LifeService/LifeServiceAcceptOrderProcessController.m; sourceTree = "<group>"; };
 		ACACC6741660F70C00CE5BC0 /* LoginController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginController.h; path = LoginAndRegister/LoginController.h; sourceTree = "<group>"; };
 		ACACC6751660F70C00CE5BC0 /* LoginController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginController.m; path = LoginAndRegister/LoginController.m; sourceTree = "<group>"; };
 		ACACC68C1661142A00CE5BC0 /* ProvideForTheAgedIndexController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProvideForTheAgedIndexController.h; path = ProvideForTheAged/ProvideForTheAgedIndexController.h; sourceTree = "<group>"; };
@@ -256,8 +283,33 @@
 			children = (
 				ACA95919166D8A8200302D82 /* CommunityServiceCallingListController.h */,
 				ACA9591A166D8A8200302D82 /* CommunityServiceCallingListController.m */,
+				ACA9591F166DC3C900302D82 /* CommunityServiceAcceptOrderController.h */,
+				ACA95920166DC3C900302D82 /* CommunityServiceAcceptOrderController.m */,
+				ACA95922166DCE0500302D82 /* CommunityServiceAcceptOrderSuccessController.h */,
+				ACA95923166DCE0500302D82 /* CommunityServiceAcceptOrderSuccessController.m */,
+				ACA95925166DCE1E00302D82 /* CommunityServiceAcceptOrderFailController.h */,
+				ACA95926166DCE1E00302D82 /* CommunityServiceAcceptOrderFailController.m */,
+				ACA95934166DF5C000302D82 /* CommunityServiceAcceptOrderProcessController.h */,
+				ACA95935166DF5C000302D82 /* CommunityServiceAcceptOrderProcessController.m */,
 			);
 			name = CommunityService;
+			sourceTree = "<group>";
+		};
+		ACA95937166E27A300302D82 /* LifeService */ = {
+			isa = PBXGroup;
+			children = (
+				ACA95938166E280B00302D82 /* LifeServiceCallingListController.h */,
+				ACA95939166E280B00302D82 /* LifeServiceCallingListController.m */,
+				ACA9593B166E291F00302D82 /* LifeServiceAcceptOrderController.h */,
+				ACA9593C166E291F00302D82 /* LifeServiceAcceptOrderController.m */,
+				ACA9593E166E29A100302D82 /* LifeServiceAcceptOrderSuccessController.h */,
+				ACA9593F166E29A100302D82 /* LifeServiceAcceptOrderSuccessController.m */,
+				ACA95941166E29BC00302D82 /* LifeServiceAcceptOrderFailController.h */,
+				ACA95942166E29BC00302D82 /* LifeServiceAcceptOrderFailController.m */,
+				ACA95944166E29EB00302D82 /* LifeServiceAcceptOrderProcessController.h */,
+				ACA95945166E29EB00302D82 /* LifeServiceAcceptOrderProcessController.m */,
+			);
+			name = LifeService;
 			sourceTree = "<group>";
 		};
 		ACACC6731660F6A600CE5BC0 /* LoginAndRegister */ = {
@@ -272,6 +324,7 @@
 		ACACC68B166111CC00CE5BC0 /* ProvideForTheAged */ = {
 			isa = PBXGroup;
 			children = (
+				ACA95937166E27A300302D82 /* LifeService */,
 				ACA95918166D8A1800302D82 /* CommunityService */,
 				ACA95914166D87CD00302D82 /* KinshipService */,
 				ACA95904166CD15F00302D82 /* VOIP */,
@@ -393,6 +446,15 @@
 				ACA95913166CE7B100302D82 /* ContactDetailController.m in Sources */,
 				ACA95917166D883F00302D82 /* FamilyMemberController.m in Sources */,
 				ACA9591B166D8A8200302D82 /* CommunityServiceCallingListController.m in Sources */,
+				ACA95921166DC3C900302D82 /* CommunityServiceAcceptOrderController.m in Sources */,
+				ACA95924166DCE0500302D82 /* CommunityServiceAcceptOrderSuccessController.m in Sources */,
+				ACA95927166DCE1E00302D82 /* CommunityServiceAcceptOrderFailController.m in Sources */,
+				ACA95936166DF5C100302D82 /* CommunityServiceAcceptOrderProcessController.m in Sources */,
+				ACA9593A166E280B00302D82 /* LifeServiceCallingListController.m in Sources */,
+				ACA9593D166E291F00302D82 /* LifeServiceAcceptOrderController.m in Sources */,
+				ACA95940166E29A100302D82 /* LifeServiceAcceptOrderSuccessController.m in Sources */,
+				ACA95943166E29BC00302D82 /* LifeServiceAcceptOrderFailController.m in Sources */,
+				ACA95946166E29EC00302D82 /* LifeServiceAcceptOrderProcessController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

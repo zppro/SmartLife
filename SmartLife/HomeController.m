@@ -93,18 +93,30 @@
         case 5:{
             UITabBarController *voipController = [[UITabBarController alloc] init];
             SmartPhoneController *smartPhoneVC = [[SmartPhoneController alloc] init];
-            RecentCallController *recentCallVC = [[RecentCallController alloc] init];
-            AddressBookController *addressBookVC = [[AddressBookController alloc] init];
-            DialingController *dialingController = [[DialingController alloc] init];
-            voipController.viewControllers=[NSArray arrayWithObjects:smartPhoneVC,recentCallVC,addressBookVC,dialingController,nil];
+            UITabBarItem *itemOfSmartPhone = [[UITabBarItem alloc] initWithTitle:@"智慧电话" image:nil tag:1];
+            [itemOfSmartPhone setFinishedSelectedImage:[MF_PngOfDefaultSkin(@"ProvideForTheAged/VOIP/01S.png") scaleToSize:CGSizeMake(24, 24)] withFinishedUnselectedImage:[MF_PngOfDefaultSkin(@"ProvideForTheAged/VOIP/01.png") scaleToSize:CGSizeMake(24, 24)]];
+            smartPhoneVC.tabBarItem = itemOfSmartPhone;
+            [itemOfSmartPhone release];
             
-            voipController.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"D2P_Logo2.png"]];
-            voipController.navigationItem.titleView.backgroundColor = [UIColor clearColor];
-            UIBarButtonItem *tempRightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"New"
-                                                                                   style:UIBarButtonItemStylePlain
-                                                                                  target:self
-                                                                                  action:@selector(makeJob)]; 
-            [voipController.navigationItem setRightBarButtonItem:tempRightBarButton];
+            RecentCallController *recentCallVC = [[RecentCallController alloc] init];
+            UITabBarItem *itemOfRecentCall = [[UITabBarItem alloc] initWithTitle:@"最近通话" image:nil tag:2];
+            [itemOfRecentCall setFinishedSelectedImage:[MF_PngOfDefaultSkin(@"ProvideForTheAged/VOIP/02S.png") scaleToSize:CGSizeMake(24, 24)] withFinishedUnselectedImage:[MF_PngOfDefaultSkin(@"ProvideForTheAged/VOIP/02.png") scaleToSize:CGSizeMake(24, 24)]];
+            recentCallVC.tabBarItem = itemOfRecentCall;
+            [itemOfRecentCall release];
+            
+            AddressBookController *addressBookVC = [[AddressBookController alloc] init];
+            UITabBarItem *itemOfAddressBook = [[UITabBarItem alloc] initWithTitle:@"通讯录" image:nil tag:3];
+            [itemOfAddressBook setFinishedSelectedImage:[MF_PngOfDefaultSkin(@"ProvideForTheAged/VOIP/03S.png") scaleToSize:CGSizeMake(24, 24)] withFinishedUnselectedImage:[MF_PngOfDefaultSkin(@"ProvideForTheAged/VOIP/03.png") scaleToSize:CGSizeMake(24, 24)]];
+            addressBookVC.tabBarItem = itemOfAddressBook;
+            [itemOfAddressBook release];
+            
+            DialingController *dialingController = [[DialingController alloc] init];
+            UITabBarItem *itemOfDialing = [[UITabBarItem alloc] initWithTitle:@"拨号键盘" image:nil tag:4];
+            [itemOfDialing setFinishedSelectedImage:[MF_PngOfDefaultSkin(@"ProvideForTheAged/VOIP/04S.png") scaleToSize:CGSizeMake(24, 24)] withFinishedUnselectedImage:[MF_PngOfDefaultSkin(@"ProvideForTheAged/VOIP/04.png") scaleToSize:CGSizeMake(24, 24)]];
+            dialingController.tabBarItem = itemOfDialing;
+            [itemOfDialing release];
+            
+            voipController.viewControllers=[NSArray arrayWithObjects:smartPhoneVC,recentCallVC,addressBookVC,dialingController,nil]; 
             [self navigationTo:voipController];
             [voipController release];
             break;

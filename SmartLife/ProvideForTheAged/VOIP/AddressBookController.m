@@ -31,8 +31,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
-        self.title = @"通讯录";
+        // Custom initialization 
     }
     return self;
 }

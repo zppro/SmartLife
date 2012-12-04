@@ -9,6 +9,7 @@
 #import "ProvideForTheAgedIndexController.h"
 #import "CallListController.h"
 #import "CommunityServiceCallingListController.h"
+#import "LifeServiceCallingListController.h"
 #import "FamilyMemberController.h"
 
 @interface ProvideForTheAgedIndexController ()
@@ -70,7 +71,8 @@
             [self navigationTo:[[[CommunityServiceCallingListController alloc] init] autorelease]];
             break;
         }
-        case 3: {
+        case 3: { 
+            [self navigationTo:[[[LifeServiceCallingListController alloc] init] autorelease]];
             break;
         }
         case 4:{
