@@ -29,6 +29,7 @@
 		AC15B0DE165BD31600E856E4 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC15B0DD165BD31600E856E4 /* CoreData.framework */; };
 		AC15B0E0165BD41100E856E4 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AC15B0DF165BD41100E856E4 /* libz.dylib */; };
 		AC15B0E4165BD5A700E856E4 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AC15B0E3165BD5A700E856E4 /* libxml2.dylib */; };
+		AC4AB5D8167D7E51006D88B7 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC4AB5D7167D7E51006D88B7 /* CFNetwork.framework */; };
 		ACA95907166CD1DD00302D82 /* SmartPhoneController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA95906166CD1DD00302D82 /* SmartPhoneController.m */; };
 		ACA9590A166CD40D00302D82 /* RecentCallController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA95909166CD40D00302D82 /* RecentCallController.m */; };
 		ACA9590D166CD4C900302D82 /* AddressBookController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA9590C166CD4C900302D82 /* AddressBookController.m */; };
@@ -50,6 +51,8 @@
 		ACACC6A116611C1A00CE5BC0 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACACC6A016611C1900CE5BC0 /* AudioToolbox.framework */; };
 		ACACC6A516649B3F00CE5BC0 /* CallListController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACACC6A416649B3F00CE5BC0 /* CallListController.m */; };
 		ACACC6A81664AFF800CE5BC0 /* RescueController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACACC6A71664AFF700CE5BC0 /* RescueController.m */; };
+		ACB1629C168043B20029E395 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = ACB1629A168043B20029E395 /* 37x-Checkmark.png */; };
+		ACB1629D168043B20029E395 /* 37x-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ACB1629B168043B20029E395 /* 37x-Checkmark@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -99,6 +102,7 @@
 		AC15B0DD165BD31600E856E4 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		AC15B0DF165BD41100E856E4 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		AC15B0E3165BD5A700E856E4 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
+		AC4AB5D7167D7E51006D88B7 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		ACA95905166CD1DD00302D82 /* SmartPhoneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SmartPhoneController.h; path = ProvideForTheAged/VOIP/SmartPhoneController.h; sourceTree = "<group>"; };
 		ACA95906166CD1DD00302D82 /* SmartPhoneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SmartPhoneController.m; path = ProvideForTheAged/VOIP/SmartPhoneController.m; sourceTree = "<group>"; };
 		ACA95908166CD40D00302D82 /* RecentCallController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecentCallController.h; path = ProvideForTheAged/VOIP/RecentCallController.h; sourceTree = "<group>"; };
@@ -140,6 +144,9 @@
 		ACACC6A416649B3F00CE5BC0 /* CallListController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CallListController.m; path = ProvideForTheAged/EmergencyService/CallListController.m; sourceTree = "<group>"; };
 		ACACC6A61664AFF700CE5BC0 /* RescueController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RescueController.h; path = ProvideForTheAged/EmergencyService/RescueController.h; sourceTree = "<group>"; };
 		ACACC6A71664AFF700CE5BC0 /* RescueController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RescueController.m; path = ProvideForTheAged/EmergencyService/RescueController.m; sourceTree = "<group>"; };
+		ACB1629A168043B20029E395 /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "37x-Checkmark.png"; path = "Images/MBProgressHUD/37x-Checkmark.png"; sourceTree = "<group>"; };
+		ACB1629B168043B20029E395 /* 37x-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "37x-Checkmark@2x.png"; path = "Images/MBProgressHUD/37x-Checkmark@2x.png"; sourceTree = "<group>"; };
+		ACB162A7168046020029E395 /* AppMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppMacro.h; path = AppCore/AppMacro.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +154,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC4AB5D8167D7E51006D88B7 /* CFNetwork.framework in Frameworks */,
 				ACACC6A116611C1A00CE5BC0 /* AudioToolbox.framework in Frameworks */,
 				AC15B0E4165BD5A700E856E4 /* libxml2.dylib in Frameworks */,
 				AC15B0E0165BD41100E856E4 /* libz.dylib in Frameworks */,
@@ -189,6 +197,7 @@
 				AC15B082165B52BD00E856E4 /* core.xcodeproj */,
 				AC15B0DF165BD41100E856E4 /* libz.dylib */,
 				AC15B0E3165BD5A700E856E4 /* libxml2.dylib */,
+				AC4AB5D7167D7E51006D88B7 /* CFNetwork.framework */,
 				ACACC6A016611C1900CE5BC0 /* AudioToolbox.framework */,
 				AC15B0DD165BD31600E856E4 /* CoreData.framework */,
 				AC15B0DB165BD30200E856E4 /* QuartzCore.framework */,
@@ -221,6 +230,7 @@
 		AC15B06C165B528C00E856E4 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				ACB1629816803D740029E395 /* Images */,
 				AC15B0AD165BC22F00E856E4 /* Documents */,
 				AC15B06D165B528C00E856E4 /* SmartLife-Info.plist */,
 				AC15B06E165B528C00E856E4 /* InfoPlist.strings */,
@@ -248,6 +258,7 @@
 				AC15B09A165B56D400E856E4 /* AppBaseController.m */,
 				AC15B09B165B56D400E856E4 /* GlobalObjectsContainer.h */,
 				AC15B09C165B56D400E856E4 /* GlobalObjectsContainer.m */,
+				ACB162A7168046020029E395 /* AppMacro.h */,
 			);
 			name = AppCore;
 			sourceTree = "<group>";
@@ -346,6 +357,23 @@
 			name = EmergencyService;
 			sourceTree = "<group>";
 		};
+		ACB1629816803D740029E395 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				ACB162991680437A0029E395 /* MBProgressHUD */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
+		ACB162991680437A0029E395 /* MBProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				ACB1629A168043B20029E395 /* 37x-Checkmark.png */,
+				ACB1629B168043B20029E395 /* 37x-Checkmark@2x.png */,
+			);
+			name = MBProgressHUD;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -420,6 +448,8 @@
 				AC15B07A165B528C00E856E4 /* Default@2x.png in Resources */,
 				AC15B07C165B528C00E856E4 /* Default-568h@2x.png in Resources */,
 				AC15B0AE165BC22F00E856E4 /* Documents in Resources */,
+				ACB1629C168043B20029E395 /* 37x-Checkmark.png in Resources */,
+				ACB1629D168043B20029E395 /* 37x-Checkmark@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

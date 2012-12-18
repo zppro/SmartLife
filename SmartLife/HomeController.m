@@ -34,6 +34,16 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    //各种初始化
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityChanged:)
+                                                 name:kReachabilityChangedNotification
+                                               object:nil];
+    
+    goc.reach = [Reachability reachabilityForInternetConnection];
+    [goc.reach startNotifier];
+    
+    
     self.view.backgroundColor = [UIColor clearColor];
     
     UIView *mainMenu = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
@@ -125,5 +135,72 @@
             break;
     }
 
+}
+
+
+
+#pragma mark -
+#pragma mark 检测网络
+
+- (void) reachabilityChanged: (NSNotification* )note {
+    DebugLog(@"reachabilityChanged!");
+    goc.reach = [note object];
+    if([self updateInterfaceWithReachability]){
+        
+    }
+}
+
+- (BOOL) updateInterfaceWithReachability{
+    BOOL ret = YES;
+    NSString *title = nil;
+    
+    NetworkStatus status = [goc.reach currentReachabilityStatus];
+    // 3G网络
+    if (status == ReachableViaWWAN) {
+        DebugLog(@"#####3G");
+        title = @"正在使用3G";
+    }
+    // WIFI
+    else if (status == ReachableViaWiFi) {
+        DebugLog(@"#####Wifi");
+        title = @"正在使用Wifi";
+    }
+    //没有连接到网络就弹出提示框
+    else{
+        DebugLog(@"#####NOInternet");
+        title = @"没有网络信号";
+        ret = NO;
+    }
+    
+    //[self showWaitViewWithTitle:title andCloseDelay:2.f];
+    
+    HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+	[self.navigationController.view addSubview:HUD];
+	
+	// The sample image is based on the work by http://www.pixelpressicons.com, http://creativecommons.org/licenses/by/2.5/ca/
+	// Make the customViews 37 by 37 pixels for best results (those are the bounds of the build-in progress indicators)
+	//HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
+	
+	// Set custom view mode
+	HUD.mode = MBProgressHUDModeCustomView;
+	
+	HUD.delegate = self;
+	HUD.labelText = title;
+	
+	[HUD show:YES];
+	[HUD hide:YES afterDelay:3];
+    
+    return ret;
+}
+
+
+#pragma mark -
+#pragma mark MBProgressHUDDelegate methods
+
+- (void)hudWasHidden:(MBProgressHUD *)hud {
+	// Remove HUD from screen when the HUD was hidded
+	[HUD removeFromSuperview];
+	[HUD release];
+	HUD = nil;
 }
 @end

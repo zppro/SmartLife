@@ -9,10 +9,10 @@
 #import "ZPAppDelegate.h"
 #import "HomeController.h" 
  
-@implementation ZPAppDelegate
+@implementation ZPAppDelegate 
 
 - (void)dealloc
-{
+{ 
     [_window release];
     [super dealloc];
 }
@@ -21,7 +21,7 @@
 {
     
     [theSkinManager loadWithContentsOfFile:@"SkinIndex"];
-    
+     
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
@@ -63,5 +63,7 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+ 
 
 @end

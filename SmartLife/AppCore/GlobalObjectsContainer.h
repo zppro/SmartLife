@@ -14,5 +14,6 @@
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(GlobalObjectsContainer);
 
 @property (nonatomic, retain) NSString* skinName;
+@property (nonatomic,retain) Reachability *reach;
 
 @end

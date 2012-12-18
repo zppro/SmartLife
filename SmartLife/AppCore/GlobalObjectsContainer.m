@@ -11,5 +11,5 @@
 @implementation GlobalObjectsContainer
 SYNTHESIZE_LESSER_SINGLETON_FOR_CLASS(GlobalObjectsContainer);
 @synthesize skinName;
-
+@synthesize reach;
 @end

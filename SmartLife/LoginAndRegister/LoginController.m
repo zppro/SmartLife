@@ -7,9 +7,12 @@
 //
 
 #import "LoginController.h"
+#import "AppMacro.h"
+
 
 @interface LoginController(){
     BOOL isEditing;
+    MBProgressHUD *HUD;
 }
 @property (nonatomic,retain) UITextField *userNameField;
 @property (nonatomic,retain) UITextField *passwordField;
@@ -100,6 +103,9 @@
     [forgetPasswordButton addTarget:self action:@selector(forgetPasswordButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:forgetPasswordButton];
     
+    userNameField.text = @"系统管理员高明智";
+    passwordField.text = @"1234";
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -117,6 +123,32 @@
         isEditing = NO;
     }
     
+    if([userNameField.text isEqualToString:@""]){
+        showHUDInfo(self,self.view,@"用户姓名不能为空");
+        return;
+    }
+    
+    if([passwordField.text isEqualToString:@""]){
+        showHUDInfo(self,self.view,@"密码不能为空");
+        return;
+    }
+    
+    
+    NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys:userNameField.text,@"LoginId",[passwordField.text stringFromMD5],@"PassWord",nil];
+    
+    LeblueRequest* req =[LeblueRequest requestWithHead:1 WithPostData:Data];
+     
+    
+    [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
+        DebugLog(@"message:%@",((LeblueResponse*)result).message);
+        DebugLog(@"records:%@",((LeblueResponse*)result).records);
+        // 
+    } failedBlock:^(NSError *error) {
+        // 
+        DebugLog(@"%@",error);
+    } completionBlock:^{
+        //
+    }];
     
     /*
     UIButton *button = (UIButton*)sender;
@@ -198,5 +230,17 @@
         [self performSelector:@selector(loginButtonClick:) withObject:aTextFiled];
     }
 }
+
+#pragma mark -
+#pragma mark MBProgressHUDDelegate methods
+
+- (void)hudWasHidden:(MBProgressHUD *)hud {
+	// Remove HUD from screen when the HUD was hidded
+	[HUD removeFromSuperview];
+	[HUD release];
+	HUD = nil;
+}
+
+
 
 @end

@@ -8,6 +8,8 @@
 
 #import "AppBaseController.h"
 
-@interface HomeController : AppBaseController
+@interface HomeController : AppBaseController{
+    MBProgressHUD *HUD;
+}
 
 @end
