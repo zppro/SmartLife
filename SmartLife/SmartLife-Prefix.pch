@@ -13,5 +13,6 @@
     #import <Foundation/Foundation.h>
     #import "core.h"
     #import "GlobalObjectsContainer.h"
-    
+    #import "AppMacro.h"
+    #import "AppSession.h"
 #endif

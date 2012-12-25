@@ -98,6 +98,9 @@
 
 #pragma mark -Button click
 - (void)doAccept:(id)sender{
+    
+    
+    
     [self dismissModalViewControllerAnimated:YES];
 }
 

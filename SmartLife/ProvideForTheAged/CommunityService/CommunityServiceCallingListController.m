@@ -110,12 +110,69 @@
     [currentTableView frontMe];
     
     isInReceivedView = YES;
+    
+    [self fetchData];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+
+- (void)fetchData{
+    [self showWaitViewWithTitle:@"读取社区服务"];
+    
+    NSDictionary *postData = [NSDictionary dictionaryWithObjectsAndKeys:appSession.userId,@"UserId",nil];
+    
+    LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(CommunityService) WithPostData:postData];
+    
+    
+    [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
+        DebugLog(@"message:%@",((LeblueResponse*)result).message);
+        DebugLog(@"records:%@",((LeblueResponse*)result).records);
+        self.arrReceived = [[[((LeblueResponse*)result).records query] where:@"AcceptStatus" greaterThan:NI(0)] results];
+        self.arrNotReceived = [[[((LeblueResponse*)result).records query] where:@"AcceptStatus" equals:NI(0)] results];
+         
+        
+    } failedBlock:^(NSError *error) {
+        //
+        DebugLog(@"%@",error);
+    } completionBlock:^{
+        //
+        [self closeWaitView];
+        [receivedTableView reloadData];
+        [notReceivedTableView reloadData];
+        
+    }];
+    
+}
+
+- (NSString*) getDescriptionFromAcceptStatus:(id) acceptStatus andDoStatus:(id) doStatus{
+    if([acceptStatus intValue]==0){
+        return @"我要接单";
+    }
+    else if([acceptStatus intValue]==2){
+        return @"接单成功";
+    }
+    else{
+        switch ([doStatus intValue]) {
+            case 0:
+                return @"未处理";
+                break;
+            case 1:
+                return @"处理中";
+                break;
+            case 2:
+                return @"接单失败";
+                break;
+            default:
+                break;
+        }
+    }
+    
+    return @"";
 }
 
 #pragma mark 子类重写方法
@@ -220,7 +277,7 @@ static NSString * cellKey2 = @"bcell";
         valueStatus.textAlignment = UITextAlignmentCenter;
         [cell.contentView addSubview:valueStatus];
         [valueStatus release];
-         
+
         UIButton *acceptOrder = [UIButton buttonWithType:UIButtonTypeCustom];
         acceptOrder.tag = 1004;
         acceptOrder.titleLabel.font = [UIFont systemFontOfSize:12.0f];
@@ -232,11 +289,10 @@ static NSString * cellKey2 = @"bcell";
         acceptOrder.hidden = YES;
     } 
     
-    ((UILabel*)[cell.contentView viewWithTag:1001]).text = [dataItem objectForKey:@"CallTime"];
+    ((UILabel*)[cell.contentView viewWithTag:1001]).text = GetDateString(ParseDateFromStringFormat([dataItem objectForKey:@"CheckInTime"],@"yyyy-MM-dd'T'HH:mm:ss.SSS"),@"yyyy-MM-dd HH:mm:ss");
     ((UILabel*)[cell.contentView viewWithTag:1002]).text = [dataItem objectForKey:@"Name"];
-    ((UILabel*)[cell.contentView viewWithTag:1003]).text = [dataItem objectForKey:@"Status"]; 
-    ((UIButton*)[cell.contentView viewWithTag:1004]).hidden = ![[dataItem objectForKey:@"Status"] isEqualToString:@"我要接单"];
-    
+    ((UILabel*)[cell.contentView viewWithTag:1003]).text = [self getDescriptionFromAcceptStatus:[dataItem objectForKey:@"AcceptStatus"] andDoStatus:[dataItem objectForKey:@"DoStatus"]];
+    ((UIButton*)[cell.contentView viewWithTag:1004]).hidden = ![[self getDescriptionFromAcceptStatus:[dataItem objectForKey:@"AcceptStatus"] andDoStatus:[dataItem objectForKey:@"DoStatus"]] isEqualToString:@"我要接单"];
     return cell;
 }
 
@@ -244,12 +300,12 @@ static NSString * cellKey2 = @"bcell";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSArray *arrData = tableView == receivedTableView?arrReceived:arrNotReceived;
     NSDictionary *dataItem = (NSDictionary*)[arrData objectAtIndex:indexPath.row];
-    NSString *statusString = [dataItem objectForKey:@"Status"];
-    if([statusString isEqualToString:@"我要接单"]){
+    NSString *statusString = [self getDescriptionFromAcceptStatus:[dataItem objectForKey:@"AcceptStatus"] andDoStatus:[dataItem objectForKey:@"DoStatus"]];
+    if([statusString isEqualToString:@"我要接单"]){ 
         return;
     }
     else if([statusString isEqualToString:@"接单成功"]){
-        NSDictionary *orderInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"李琴",@"Name",@"杭州市西湖区文三西路333号丹桂花园5－3－303",@"Address",@"女",@"Sex",@"调解邻里矛盾",@"ServeContent",@"上门服务",@"ServeMode",nil];
+        NSDictionary *orderInfo = [NSDictionary dictionaryWithObjectsAndKeys:[dataItem objectForKey:@"Name"],@"Name",[dataItem objectForKey:@"Address"],@"Address",[dataItem objectForKey:@"Gender"],@"Sex",[dataItem objectForKey:@"Content"],@"ServeContent",@"上门服务",@"ServeMode",nil];
         CommunityServiceAcceptOrderSuccessController *communityServiceAcceptOrderSuccessVC = [[CommunityServiceAcceptOrderSuccessController alloc] initWithOrderInfo:orderInfo];
         [self presentModalViewController:communityServiceAcceptOrderSuccessVC animated: YES];
     }
@@ -261,7 +317,15 @@ static NSString * cellKey2 = @"bcell";
 
 #pragma mark -Button Click
 - (void)doAcceptOrder:(id)sender{
-    NSDictionary *orderInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"李琴",@"Name",@"杭州市西湖区文三西路333号丹桂花园5－3－303",@"Address",nil];
+    //DebugLog(@"doAcceptOrder 接单");
+    //结单必定在未结单列表里
+    UITableViewCell* cell = (UITableViewCell*)[[(UIButton*)sender superview] superview];
+    int row = [notReceivedTableView indexPathForCell:cell].row;
+    NSArray *arrData = arrNotReceived;
+    NSDictionary *dataItem = (NSDictionary*)[arrData objectAtIndex:row];
+    
+    NSDictionary *orderInfo = [NSDictionary dictionaryWithObjectsAndKeys:[dataItem objectForKey:@"Name"],@"Name",[dataItem objectForKey:@"Address"],@"Address",[dataItem objectForKey:@"Gender"],@"Sex",[dataItem objectForKey:@"Content"],@"ServeContent",@"上门服务",@"ServeMode",nil];
+    
     CommunityServiceAcceptOrderController *communityServiceAcceptOrderVC = [[CommunityServiceAcceptOrderController alloc] initWithOrderInfo:orderInfo];
     [self presentModalViewController:communityServiceAcceptOrderVC animated: YES];
 }

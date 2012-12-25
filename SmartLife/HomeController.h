@@ -8,7 +8,7 @@
 
 #import "AppBaseController.h"
 
-@interface HomeController : AppBaseController{
+@interface HomeController : AppBaseController<CLLocationManagerDelegate>{
     MBProgressHUD *HUD;
 }
 

@@ -11,4 +11,7 @@
 @interface RescueController : AppBaseController<UITableViewDelegate, UITableViewDataSource,UIScrollViewDelegate,DDPageControlDelegate>
 @property (nonatomic, retain) NSArray                   *arrProcessActions;
 @property (nonatomic, retain) NSArray                   *arrProcessResponses;
+
+-(id)initWithOldManInfo:(NSDictionary*)aOldManInfo;
+
 @end

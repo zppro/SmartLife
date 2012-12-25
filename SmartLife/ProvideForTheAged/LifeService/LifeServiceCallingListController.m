@@ -48,7 +48,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    
+    /*
     self.arrReceived = [NSMutableArray arrayWithObjects:
                         [NSDictionary dictionaryWithObjectsAndKeys:@"2012-09-01 10:30:23",@"CallTime", @"李琴",@"Name",@"我要接单",@"Status",nil],
                         [NSDictionary dictionaryWithObjectsAndKeys:@"2012-09-01 08:30:23",@"CallTime", @"李四",@"Name",@"接单成功",@"Status",nil],
@@ -68,6 +68,7 @@
                            [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-28 08:30:23",@"CallTime", @"张四",@"Name",@"未接单",@"Status",nil],
                            [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-27 08:30:23",@"CallTime", @"王二",@"Name",@"未接单",@"Status",nil],
                            nil];
+    */
     
     self.headerView.headerLabel.text = @"生活服务－呼叫列表";
     
@@ -109,6 +110,8 @@
     [currentTableView frontMe];
     
     isInReceivedView = YES;
+    
+    [self fetchData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -117,6 +120,61 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+- (void)fetchData{
+    [self showWaitViewWithTitle:@"读取生活服务"];
+    
+    NSDictionary *postData = [NSDictionary dictionaryWithObjectsAndKeys:appSession.userId,@"UserId",nil];
+    
+    LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(LifeService) WithPostData:postData];
+    
+    
+    [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
+        DebugLog(@"message:%@",((LeblueResponse*)result).message);
+        DebugLog(@"records:%@",((LeblueResponse*)result).records); 
+        self.arrNotReceived = [[[((LeblueResponse*)result).records query] where:@"AcceptStatus" equals:NI(0)] results];
+        self.arrReceived = [[[((LeblueResponse*)result).records query] where:@"AcceptStatus" greaterThan:NI(0)] results];
+        
+        DebugLog(@"arrNotReceived:%@",self.arrNotReceived);
+        
+    } failedBlock:^(NSError *error) {
+        //
+        DebugLog(@"%@",error);
+    } completionBlock:^{
+        //
+        [self closeWaitView];
+        [receivedTableView reloadData];
+        [notReceivedTableView reloadData];
+        
+    }];
+    
+}
+
+- (NSString*) getDescriptionFromAcceptStatus:(id) acceptStatus andDoStatus:(id) doStatus{
+    if([acceptStatus intValue]==0){
+        return @"我要接单";
+    }
+    else if([acceptStatus intValue]==2){
+        return @"接单成功";
+    }
+    else{
+        switch ([doStatus intValue]) {
+            case 0:
+                return @"未处理";
+                break;
+            case 1:
+                return @"处理中";
+                break;
+            case 2:
+                return @"接单失败";
+                break;
+            default:
+                break;
+        }
+    }
+    
+    return @"";
+}
 
 #pragma mark 子类重写方法
 - (UIImage*) getFooterBackgroundImage{
@@ -232,10 +290,10 @@ static NSString * cellKey2 = @"bcell";
         acceptOrder.hidden = YES;
     }
     
-    ((UILabel*)[cell.contentView viewWithTag:1001]).text = [dataItem objectForKey:@"CallTime"];
+    ((UILabel*)[cell.contentView viewWithTag:1001]).text = GetDateString(ParseDateFromStringFormat([dataItem objectForKey:@"CheckInTime"],@"yyyy-MM-dd'T'HH:mm:ss.SSS"),@"yyyy-MM-dd HH:mm:ss");
     ((UILabel*)[cell.contentView viewWithTag:1002]).text = [dataItem objectForKey:@"Name"];
-    ((UILabel*)[cell.contentView viewWithTag:1003]).text = [dataItem objectForKey:@"Status"];
-    ((UIButton*)[cell.contentView viewWithTag:1004]).hidden = ![[dataItem objectForKey:@"Status"] isEqualToString:@"我要接单"];
+    ((UILabel*)[cell.contentView viewWithTag:1003]).text = [self getDescriptionFromAcceptStatus:[dataItem objectForKey:@"AcceptStatus"] andDoStatus:[dataItem objectForKey:@"DoStatus"]];
+    ((UIButton*)[cell.contentView viewWithTag:1004]).hidden = ![[self getDescriptionFromAcceptStatus:[dataItem objectForKey:@"AcceptStatus"] andDoStatus:[dataItem objectForKey:@"DoStatus"]] isEqualToString:@"我要接单"];
     
     return cell;
 }
@@ -244,12 +302,12 @@ static NSString * cellKey2 = @"bcell";
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSArray *arrData = tableView == receivedTableView?arrReceived:arrNotReceived;
     NSDictionary *dataItem = (NSDictionary*)[arrData objectAtIndex:indexPath.row];
-    NSString *statusString = [dataItem objectForKey:@"Status"];
+    NSString *statusString = [self getDescriptionFromAcceptStatus:[dataItem objectForKey:@"AcceptStatus"] andDoStatus:[dataItem objectForKey:@"DoStatus"]];
     if([statusString isEqualToString:@"我要接单"]){
         return;
     }
     else if([statusString isEqualToString:@"接单成功"]){
-        NSDictionary *orderInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"李琴",@"Name",@"杭州市西湖区文三西路333号丹桂花园5－3－303",@"Address",@"女",@"Sex",@"打扫卫生",@"ServeContent",@"上门服务",@"ServeMode",nil];
+        NSDictionary *orderInfo = [NSDictionary dictionaryWithObjectsAndKeys:[dataItem objectForKey:@"Name"],@"Name",[dataItem objectForKey:@"Address"],@"Address",[dataItem objectForKey:@"Gender"],@"Sex",[dataItem objectForKey:@"Content"],@"ServeContent",@"上门服务",@"ServeMode",nil];
         LifeServiceAcceptOrderSuccessController *lifeServiceAcceptOrderSuccessVC = [[LifeServiceAcceptOrderSuccessController alloc] initWithOrderInfo:orderInfo];
         [self presentModalViewController:lifeServiceAcceptOrderSuccessVC animated: YES];
     }
@@ -261,7 +319,15 @@ static NSString * cellKey2 = @"bcell";
 
 #pragma mark -Button Click
 - (void)doAcceptOrder:(id)sender{
-    NSDictionary *orderInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"李琴",@"Name",@"杭州市西湖区文三西路333号丹桂花园5－3－303",@"Address",nil];
+    //DebugLog(@"doAcceptOrder 接单");
+    //结单必定在未结单列表里
+    UITableViewCell* cell = (UITableViewCell*)[[(UIButton*)sender superview] superview];
+    int row = [notReceivedTableView indexPathForCell:cell].row;
+    NSArray *arrData = arrNotReceived;
+    NSDictionary *dataItem = (NSDictionary*)[arrData objectAtIndex:row];
+    
+    NSDictionary *orderInfo = [NSDictionary dictionaryWithObjectsAndKeys:[dataItem objectForKey:@"Name"],@"Name",[dataItem objectForKey:@"Address"],@"Address",[dataItem objectForKey:@"Gender"],@"Sex",[dataItem objectForKey:@"Content"],@"ServeContent",@"上门服务",@"ServeMode",nil];
+    
     LifeServiceAcceptOrderController *lifeServiceAcceptOrderVC = [[LifeServiceAcceptOrderController alloc] initWithOrderInfo:orderInfo];
     [self presentModalViewController:lifeServiceAcceptOrderVC animated: YES];
 }

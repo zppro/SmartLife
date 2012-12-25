@@ -10,5 +10,6 @@
 #define SmartLife_AppMacro_h
 
 #define baseURL @"http://www.lifeblue.com.cn/WebService/Default.ashx"
+#define nwCode(x) [appSession getNWCode:x]
 
 #endif

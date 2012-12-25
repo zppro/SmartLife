@@ -34,14 +34,30 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    soc.locationManager = [[[CLLocationManager alloc] init] autorelease];//创建位置管理器
+    soc.locationManager.delegate = self;
+    soc.locationManager.desiredAccuracy=kCLLocationAccuracyBest;//指定需要的精度级别
+    soc.locationManager.distanceFilter=100.0f;//设置距离筛选器，即更新频率
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [soc.locationManager startUpdatingLocation];//启动位置管理器
+    });
+    
+    
+    
+    if([self updateInterfaceWithReachability]){
+        //开启了网络服务
+        // 获得当前位置 
+        
+    }
     //各种初始化
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
                                                  name:kReachabilityChangedNotification
                                                object:nil];
     
-    goc.reach = [Reachability reachabilityForInternetConnection];
-    [goc.reach startNotifier];
+    soc.reach = [Reachability reachabilityForInternetConnection];
+    [soc.reach startNotifier];
     
     
     self.view.backgroundColor = [UIColor clearColor];
@@ -144,7 +160,7 @@
 
 - (void) reachabilityChanged: (NSNotification* )note {
     DebugLog(@"reachabilityChanged!");
-    goc.reach = [note object];
+    soc.reach = [note object];
     if([self updateInterfaceWithReachability]){
         
     }
@@ -154,7 +170,7 @@
     BOOL ret = YES;
     NSString *title = nil;
     
-    NetworkStatus status = [goc.reach currentReachabilityStatus];
+    NetworkStatus status = [soc.reach currentReachabilityStatus];
     // 3G网络
     if (status == ReachableViaWWAN) {
         DebugLog(@"#####3G");
@@ -193,6 +209,36 @@
     return ret;
 }
 
+
+#pragma mark -
+#pragma mark 位置管理器
+
+-(void) locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation*) oldLocation
+{
+    //取得经纬度
+    
+    DebugLog(@"没有开启定位服务:%@",newLocation);
+    soc.myLocation = newLocation;
+    soc.canLocation = YES;
+    //此处可访问第三方偏移量接口或者获得实际偏移量算法
+}
+
+-(void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    soc.canLocation = NO;
+    soc.debugMyLocation = [[[CLLocation alloc] initWithLatitude:30.290194 longitude:120.155073] autorelease];//120.155073,30.290194
+    if (error.code == kCLErrorDenied){
+        // User denied access to location service
+        DebugLog(@"没有开启定位服务:%@",error);
+        showHUDInfo(self,self.view,@"没有开启定位服务");
+        
+    }
+    else{
+        DebugLog(@"定位服务出错:%@",error);
+        showHUDInfo(self,self.view,@"定位服务出错");
+    }
+    //[[NSNotificationCenter defaultCenter] postNotificationName:kNotificationNameLocationDidUpdate object:nil];
+}
 
 #pragma mark -
 #pragma mark MBProgressHUDDelegate methods

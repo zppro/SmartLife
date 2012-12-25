@@ -11,6 +11,7 @@
 @interface RescueController (){
     BOOL pageControlUsed;
 }
+@property (nonatomic, retain) NSDictionary  *oldManInfo;
 @property (nonatomic, retain) DDPageControl  *pageControl;
 @property (nonatomic, retain) UILabel        *titleProcessLabel;
 @property (nonatomic, retain) UIScrollView   *scrollProcess;
@@ -19,6 +20,7 @@
 @end
 
 @implementation RescueController
+@synthesize oldManInfo;
 @synthesize pageControl;
 @synthesize titleProcessLabel;
 @synthesize scrollProcess;
@@ -28,21 +30,22 @@
 @synthesize arrProcessResponses;
 
 - (void)dealloc {
+    self.oldManInfo = nil;
     self.pageControl = nil;
     self.titleProcessLabel = nil;
     self.processActionTableView = nil;
     self.processResponseTableView = nil;
     self.scrollProcess = nil;
     self.arrProcessActions = nil;
-    self.arrProcessResponses = nil;
+    self.arrProcessResponses = nil; 
     [super dealloc];
 }
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+-(id)initWithOldManInfo:(NSDictionary*)aOldManInfo {
+    self = [super init];
+    if (self)
+    {
+        self.oldManInfo = aOldManInfo;
     }
     return self;
 }
@@ -66,7 +69,7 @@
                               nil];
     
 	// Do any additional setup after loading the view.
-    self.headerView.headerLabel.text = @"紧急服务－李琴需要救助";
+    self.headerView.headerLabel.text = MF_SWF(@"紧急服务－%@需要救助",[oldManInfo objectForKey:@"Name"]);
     
     UIView *cameraContainerView = [[UIView alloc] initWithFrame:CGRectMake(60.f, 3.5f, 200.f, 150.f)];
     cameraContainerView.backgroundColor = [UIColor clearColor];
@@ -85,7 +88,7 @@
     [self.containerView addSubview:titleProcessLabel];
 
     
-    scrollProcess = makeScrollView(0.0f, cameraContainerView.top+cameraContainerView.height+40.f, self.containerView.width, 160.f);
+    self.scrollProcess = makeScrollView(0.0f, cameraContainerView.top+cameraContainerView.height+40.f, self.containerView.width, 160.f);
     scrollProcess.backgroundColor = [UIColor clearColor];
     scrollProcess.showsVerticalScrollIndicator = false;
     scrollProcess.showsHorizontalScrollIndicator = false;

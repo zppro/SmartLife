@@ -103,7 +103,7 @@
     [forgetPasswordButton addTarget:self action:@selector(forgetPasswordButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:forgetPasswordButton];
     
-    userNameField.text = @"系统管理员高明智";
+    userNameField.text = @"57188976666";//@"13685756227/0";//@"蒋美华";@"爱源汽车服务";//'57188976666'
     passwordField.text = @"1234";
     
 }
@@ -133,15 +133,57 @@
         return;
     }
     
+    //[passwordField.text stringFromMD5]
+    NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys:userNameField.text,@"LoginId",passwordField.text,@"PassWord",nil];
     
-    NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys:userNameField.text,@"LoginId",[passwordField.text stringFromMD5],@"PassWord",nil];
-    
-    LeblueRequest* req =[LeblueRequest requestWithHead:1 WithPostData:Data];
+    LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(Login) WithPostData:Data];
      
     
     [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
         DebugLog(@"message:%@",((LeblueResponse*)result).message);
         DebugLog(@"records:%@",((LeblueResponse*)result).records);
+        NSDictionary *dict = [((LeblueResponse*)result).records objectAtIndex:0];
+        if([[dict objectForKey:@"UserId"] isEqualToString:@""]){
+           appSession.userId = @"C96FC381-E587-494C-91C9-F84B6D9B90A3";
+        }
+        else{
+            appSession.userId = [dict objectForKey:@"UserId"];
+            if([[dict objectForKey:@"IsChild"] intValue]==1){
+                appSession.userType = Child;
+            }
+            else if([[dict objectForKey:@"IsCompany"] intValue]==1){
+                appSession.userType = Company;
+                
+            }
+            else if([[dict objectForKey:@"IsEmployee"] intValue]==1){
+                appSession.userType = Employee;
+            }
+            else if([[dict objectForKey:@"IsGov"] intValue]==1){
+                appSession.userType = Gov;
+            }
+            else if([[dict objectForKey:@"IsOldMan"] intValue]==1){
+                appSession.userType = OldMan; 
+            }
+            
+            /*
+            [NSTimer scheduledTimerWithTimeInterval:10.f block:^(NSTimeInterval time) {
+                
+                dispatch_async(dispatch_get_main_queue(), ^{ 
+                    CLLocation *currentLocation = soc.canLocation? soc.myLocation:soc.DebugMyLocation;
+                    DebugLog(@"登记对象位置信息 %@ ",currentLocation);
+                    
+                    NSDictionary *Data1 = [NSDictionary dictionaryWithObjectsAndKeys:userNameField.text,@"LoginId",passwordField.text,@"PassWord",nil];
+                    
+                    LeblueRequest* req1 =[LeblueRequest requestWithHead:nwCode(Login) WithPostData:Data];
+                    
+                });
+                
+             
+            } repeats:YES];
+            */
+        }
+     
+        [self dismissModalViewControllerAnimated:YES];
         // 
     } failedBlock:^(NSError *error) {
         // 
@@ -181,7 +223,7 @@
     }
     */
     
-    [self dismissModalViewControllerAnimated:YES];
+    
 }
 
 - (void)forgetPasswordButtonClick:(id)sender{

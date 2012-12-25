@@ -53,6 +53,8 @@
 		ACACC6A81664AFF800CE5BC0 /* RescueController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACACC6A71664AFF700CE5BC0 /* RescueController.m */; };
 		ACB1629C168043B20029E395 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = ACB1629A168043B20029E395 /* 37x-Checkmark.png */; };
 		ACB1629D168043B20029E395 /* 37x-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ACB1629B168043B20029E395 /* 37x-Checkmark@2x.png */; };
+		ACB162BB1680703B0029E395 /* AppSession.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB162BA1680703A0029E395 /* AppSession.m */; };
+		ACB162D116897E6D0029E395 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACB162D016897E6C0029E395 /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,6 +149,9 @@
 		ACB1629A168043B20029E395 /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "37x-Checkmark.png"; path = "Images/MBProgressHUD/37x-Checkmark.png"; sourceTree = "<group>"; };
 		ACB1629B168043B20029E395 /* 37x-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "37x-Checkmark@2x.png"; path = "Images/MBProgressHUD/37x-Checkmark@2x.png"; sourceTree = "<group>"; };
 		ACB162A7168046020029E395 /* AppMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppMacro.h; path = AppCore/AppMacro.h; sourceTree = "<group>"; };
+		ACB162B91680703A0029E395 /* AppSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppSession.h; path = AppCore/AppSession.h; sourceTree = "<group>"; };
+		ACB162BA1680703A0029E395 /* AppSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppSession.m; path = AppCore/AppSession.m; sourceTree = "<group>"; };
+		ACB162D016897E6C0029E395 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +159,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACB162D116897E6D0029E395 /* CoreLocation.framework in Frameworks */,
 				AC4AB5D8167D7E51006D88B7 /* CFNetwork.framework in Frameworks */,
 				ACACC6A116611C1A00CE5BC0 /* AudioToolbox.framework in Frameworks */,
 				AC15B0E4165BD5A700E856E4 /* libxml2.dylib in Frameworks */,
@@ -197,6 +203,7 @@
 				AC15B082165B52BD00E856E4 /* core.xcodeproj */,
 				AC15B0DF165BD41100E856E4 /* libz.dylib */,
 				AC15B0E3165BD5A700E856E4 /* libxml2.dylib */,
+				ACB162D016897E6C0029E395 /* CoreLocation.framework */,
 				AC4AB5D7167D7E51006D88B7 /* CFNetwork.framework */,
 				ACACC6A016611C1900CE5BC0 /* AudioToolbox.framework */,
 				AC15B0DD165BD31600E856E4 /* CoreData.framework */,
@@ -259,6 +266,8 @@
 				AC15B09B165B56D400E856E4 /* GlobalObjectsContainer.h */,
 				AC15B09C165B56D400E856E4 /* GlobalObjectsContainer.m */,
 				ACB162A7168046020029E395 /* AppMacro.h */,
+				ACB162B91680703A0029E395 /* AppSession.h */,
+				ACB162BA1680703A0029E395 /* AppSession.m */,
 			);
 			name = AppCore;
 			sourceTree = "<group>";
@@ -485,6 +494,7 @@
 				ACA95940166E29A100302D82 /* LifeServiceAcceptOrderSuccessController.m in Sources */,
 				ACA95943166E29BC00302D82 /* LifeServiceAcceptOrderFailController.m in Sources */,
 				ACA95946166E29EC00302D82 /* LifeServiceAcceptOrderProcessController.m in Sources */,
+				ACB162BB1680703B0029E395 /* AppSession.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
