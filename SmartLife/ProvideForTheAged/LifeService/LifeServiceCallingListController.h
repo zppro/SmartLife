@@ -8,6 +8,6 @@
 
 #import "AppBaseController.h"
 
-@interface LifeServiceCallingListController : AppBaseController<UITableViewDelegate, UITableViewDataSource>
+@interface LifeServiceCallingListController : AppBaseController<UITableViewDelegate, UITableViewDataSource,EGORefreshTableHeaderDelegate>
 
 @end

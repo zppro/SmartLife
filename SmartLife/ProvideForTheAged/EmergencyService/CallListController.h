@@ -8,6 +8,6 @@
 
 #import "AppBaseController.h"
 
-@interface CallListController : AppBaseController<UITableViewDelegate, UITableViewDataSource>
+@interface CallListController : AppBaseController<UITableViewDelegate, UITableViewDataSource,EGORefreshTableHeaderDelegate>
 
 @end

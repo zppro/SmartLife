@@ -8,6 +8,6 @@
 
 #import "AppBaseController.h"
 
-@interface CommunityServiceCallingListController : AppBaseController<UITableViewDelegate, UITableViewDataSource>
+@interface CommunityServiceCallingListController : AppBaseController<UITableViewDelegate, UITableViewDataSource,EGORefreshTableHeaderDelegate>
 
 @end

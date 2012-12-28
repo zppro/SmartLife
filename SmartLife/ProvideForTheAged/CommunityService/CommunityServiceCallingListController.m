@@ -15,22 +15,30 @@
     UIButton *currentSelectedButton;
     UITableView *currentTableView;
     BOOL isInReceivedView;
+    BOOL reloading;
 }
 
 @property (nonatomic, retain) NSArray        *arrReceived;
 @property (nonatomic, retain) NSArray        *arrNotReceived;
 @property (nonatomic, retain) UITableView    *receivedTableView;
 @property (nonatomic, retain) UITableView    *notReceivedTableView;
+@property (nonatomic, retain) EGORefreshTableHeaderView     *receivedTableHeaderView;
+@property (nonatomic, retain) EGORefreshTableHeaderView     *notReceivedTableHeaderView;
+
 @end
 
 @implementation CommunityServiceCallingListController 
 @synthesize receivedTableView;
 @synthesize notReceivedTableView;
+@synthesize receivedTableHeaderView;
+@synthesize notReceivedTableHeaderView;
 @synthesize arrReceived;
 @synthesize arrNotReceived;
 - (void)dealloc { 
     self.receivedTableView = nil;
-    self.notReceivedTableView = nil; 
+    self.notReceivedTableView = nil;
+    self.receivedTableHeaderView = nil;
+    self.notReceivedTableHeaderView = nil;
     self.arrReceived = nil;
     self.arrNotReceived = nil;
     [super dealloc];
@@ -48,7 +56,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    
+    /*
     self.arrReceived = [NSMutableArray arrayWithObjects:
                               [NSDictionary dictionaryWithObjectsAndKeys:@"2012-09-01 10:30:23",@"CallTime", @"李琴",@"Name",@"我要接单",@"Status",nil],
                               [NSDictionary dictionaryWithObjectsAndKeys:@"2012-09-01 08:30:23",@"CallTime", @"李四",@"Name",@"接单成功",@"Status",nil],
@@ -68,7 +76,7 @@
                                 [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-28 08:30:23",@"CallTime", @"张四",@"Name",@"未接单",@"Status",nil],
                                 [NSDictionary dictionaryWithObjectsAndKeys:@"2012-08-27 08:30:23",@"CallTime", @"王二",@"Name",@"未接单",@"Status",nil],
                                 nil];
-    
+    */
 	// Do any additional setup after loading the view.
     self.headerView.headerLabel.text = @"社区服务－呼叫列表";
     
@@ -110,6 +118,22 @@
     [currentTableView frontMe];
     
     isInReceivedView = YES;
+     
+    receivedTableHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f,0.0f - receivedTableView.height,self.containerView.width,receivedTableView.height)];
+    receivedTableHeaderView.delegate = self;
+    [receivedTableView addSubview:receivedTableHeaderView];
+    
+    notReceivedTableHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f,0.0f - notReceivedTableView.height,self.containerView.width,notReceivedTableView.height)];
+    notReceivedTableHeaderView.delegate = self;
+    [notReceivedTableView addSubview:notReceivedTableHeaderView];
+    
+	//  update the last update date
+    if (isInReceivedView) {
+        [self.receivedTableHeaderView refreshLastUpdatedDate];
+    }
+    else{
+        [self.notReceivedTableHeaderView refreshLastUpdatedDate];
+    }
     
     [self fetchData];
 }
@@ -126,7 +150,7 @@
     
     NSDictionary *postData = [NSDictionary dictionaryWithObjectsAndKeys:appSession.userId,@"UserId",nil];
     
-    LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(CommunityService) WithPostData:postData];
+    LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(ReadListOfCommunityService) WithPostData:postData];
     
     
     [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
@@ -145,6 +169,9 @@
         [receivedTableView reloadData];
         [notReceivedTableView reloadData];
         
+        reloading = NO;
+        EGORefreshTableHeaderView *currentRefreshHeaderView = isInReceivedView?receivedTableHeaderView:notReceivedTableHeaderView;
+        [currentRefreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:currentTableView];
     }];
     
 }
@@ -312,6 +339,43 @@ static NSString * cellKey2 = @"bcell";
     else if([statusString isEqualToString:@"接单失败"]){
         CommunityServiceAcceptOrderFailController *communityServiceAcceptOrderFailVC = [[CommunityServiceAcceptOrderFailController alloc] init];
         [self presentModalViewController:communityServiceAcceptOrderFailVC animated: YES]; 
+    }
+}
+
+
+#pragma mark - EGORefreshTableHeaderDelegate Methods
+//开始刷新
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {
+    reloading = YES;
+    [self fetchData];
+}
+
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {
+	return reloading; // should return if data source model is reloading
+}
+
+- (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view {
+	return [NSDate date]; // should return date data source was last changed
+}
+
+#pragma mark - UIScrollViewDelegate Methods
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if(isInReceivedView){
+        [self.receivedTableHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    }
+    else{
+        [self.notReceivedTableHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    }
+	
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    if(isInReceivedView){
+        [self.receivedTableHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+    }
+    else{
+        [self.notReceivedTableHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
     }
 }
 

@@ -134,6 +134,8 @@
     [callButton addTarget:self action:@selector(doCall:) forControlEvents:UIControlEventTouchUpInside];
     [callButton setBackgroundColor:[UIColor clearColor]];
     [self.footerView addSubview:callButton];
+    
+    [self fetchData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -142,6 +144,29 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)fetchData{
+    [self showWaitViewWithTitle:@"读取求助信息处理日志"];
+    
+    NSDictionary *postData = [NSDictionary dictionaryWithObjectsAndKeys:[oldManInfo objectForKey:@"CallServiceId"],@"CallServiceId",nil];
+    
+    LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(ReadListOfProcessing) WithPostData:postData];
+    
+    
+    [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
+        DebugLog(@"message:%@",((LeblueResponse*)result).message);
+        DebugLog(@"records:%@",((LeblueResponse*)result).records);
+        //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"tel://123456789"]];
+        //self.arrCalls = ((LeblueResponse*)result).records;
+        //
+    } failedBlock:^(NSError *error) {
+        //
+        DebugLog(@"%@",error);
+    } completionBlock:^{
+        //
+        [self closeWaitView];
+        //[myTableView reloadData];
+    }];
+}
 
 #pragma mark - UITableView delegate
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -278,7 +303,7 @@ static NSString * cellKey2 = @"bcell";
     
     switch (button.tag) {
         case 1:{
-             
+            
             break;
         }
         case 2: {

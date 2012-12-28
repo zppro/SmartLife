@@ -21,9 +21,10 @@ typedef enum {
 
 typedef enum {
     Login,
-    EmergencyService,
-    CommunityService,
-    LifeService
+    ReadListOfEmergencyService,
+    ReadListOfCommunityService,
+    ReadListOfLifeService,
+    ReadListOfProcessing
 }BizInterfaceType;
 
 @interface AppSession : NSObject

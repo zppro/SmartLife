@@ -10,17 +10,21 @@
 #import "RescueController.h"
 
 
-@interface CallListController ()
+@interface CallListController (){
+    BOOL reloading;
+}
 @property (nonatomic, retain) NSArray      *arrCalls;
 @property (nonatomic, retain) UITableView  *myTableView;
-
+@property (nonatomic, retain) EGORefreshTableHeaderView  *refreshTableHeaderView;
 @end
 
 @implementation CallListController
 @synthesize myTableView;
+@synthesize refreshTableHeaderView;
 @synthesize arrCalls;
 - (void)dealloc {
     self.myTableView = nil;
+    self.refreshTableHeaderView = nil;
     self.arrCalls = nil;
     [super dealloc];
 }
@@ -58,7 +62,10 @@
     myTableView.dataSource = self;
     myTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self.containerView addSubview:myTableView];
-    
+     
+    refreshTableHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f,0.0f - myTableView.height,self.containerView.width,myTableView.height)];
+    refreshTableHeaderView.delegate = self;
+    [myTableView addSubview:refreshTableHeaderView];
     
     [self fetchData];
     
@@ -75,7 +82,7 @@
     
     NSDictionary *postData = [NSDictionary dictionaryWithObjectsAndKeys:appSession.userId,@"UserId",nil];
     
-    LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(EmergencyService) WithPostData:postData];
+    LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(ReadListOfEmergencyService) WithPostData:postData];
     
     
     [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
@@ -91,6 +98,9 @@
         //
         [self closeWaitView];
         [myTableView reloadData];
+        
+        reloading = NO;
+        [refreshTableHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:myTableView];
     }];
 }
 
@@ -209,7 +219,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSDictionary *dataItem = (NSDictionary*)[arrCalls objectAtIndex:indexPath.row];
-    NSDictionary *oldManInfo = [NSDictionary dictionaryWithObjectsAndKeys:[dataItem objectForKey:@"Name"],@"Name",[dataItem objectForKey:@"Address"],@"Address",[dataItem objectForKey:@"Gender"],@"Sex",[dataItem objectForKey:@"ServiceObjectId"],@"ServiceObjectId",nil];
+    NSDictionary *oldManInfo = [NSDictionary dictionaryWithObjectsAndKeys:[dataItem objectForKey:@"Name"],@"Name",[dataItem objectForKey:@"Address"],@"Address",[dataItem objectForKey:@"Gender"],@"Sex",[dataItem objectForKey:@"ServiceObjectId"],@"ServiceObjectId",[dataItem objectForKey:@"Address"],@"Address",[dataItem objectForKey:@"Gender"],@"Sex",[dataItem objectForKey:@"CallServiceId"],@"CallServiceId",nil];
     [self navigationTo:[[[RescueController alloc] initWithOldManInfo:oldManInfo] autorelease]];
 }
 
@@ -217,6 +227,33 @@
 
 - (UIImage*) getFooterBackgroundImage{
     return nil;
+}
+
+
+
+#pragma mark - EGORefreshTableHeaderDelegate Methods
+//开始刷新
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {
+    reloading = YES;
+    [self fetchData];
+}
+
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {
+	return reloading; // should return if data source model is reloading
+}
+
+- (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view {
+	return [NSDate date]; // should return date data source was last changed
+}
+
+#pragma mark - UIScrollViewDelegate Methods
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    [self.refreshTableHeaderView egoRefreshScrollViewDidScroll:scrollView];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    [self.refreshTableHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
 
 @end

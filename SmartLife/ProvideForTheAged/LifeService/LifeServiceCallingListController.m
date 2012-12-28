@@ -14,23 +14,30 @@
     UIButton *currentSelectedButton;
     UITableView *currentTableView;
     BOOL isInReceivedView;
+    BOOL reloading;
 }
 
 @property (nonatomic, retain) NSArray        *arrReceived;
 @property (nonatomic, retain) NSArray        *arrNotReceived;
 @property (nonatomic, retain) UITableView    *receivedTableView;
 @property (nonatomic, retain) UITableView    *notReceivedTableView;
-
+@property (nonatomic, retain) EGORefreshTableHeaderView     *receivedTableHeaderView;
+@property (nonatomic, retain) EGORefreshTableHeaderView     *notReceivedTableHeaderView;
 @end
 
 @implementation LifeServiceCallingListController
 @synthesize receivedTableView;
 @synthesize notReceivedTableView;
+@synthesize receivedTableHeaderView;
+@synthesize notReceivedTableHeaderView;
 @synthesize arrReceived;
 @synthesize arrNotReceived;
 - (void)dealloc {
+    
     self.receivedTableView = nil;
     self.notReceivedTableView = nil;
+    self.receivedTableHeaderView = nil;
+    self.notReceivedTableHeaderView = nil;
     self.arrReceived = nil;
     self.arrNotReceived = nil;
     [super dealloc];
@@ -109,7 +116,23 @@
     currentTableView = receivedTableView;
     [currentTableView frontMe];
     
-    isInReceivedView = YES;
+    isInReceivedView = YES; 
+    
+    receivedTableHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f,0.0f - receivedTableView.height,self.containerView.width,receivedTableView.height)];
+    receivedTableHeaderView.delegate = self;
+    [receivedTableView addSubview:receivedTableHeaderView];
+     
+    notReceivedTableHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f,0.0f - notReceivedTableView.height,self.containerView.width,notReceivedTableView.height)];
+    notReceivedTableHeaderView.delegate = self;
+    [notReceivedTableView addSubview:notReceivedTableHeaderView];
+     
+	//  update the last update date
+    if (isInReceivedView) {
+        [self.receivedTableHeaderView refreshLastUpdatedDate];
+    }
+    else{
+        [self.notReceivedTableHeaderView refreshLastUpdatedDate];
+    }
     
     [self fetchData];
 }
@@ -126,7 +149,7 @@
     
     NSDictionary *postData = [NSDictionary dictionaryWithObjectsAndKeys:appSession.userId,@"UserId",nil];
     
-    LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(LifeService) WithPostData:postData];
+    LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(ReadListOfLifeService) WithPostData:postData];
     
     
     [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
@@ -146,9 +169,14 @@
         [receivedTableView reloadData];
         [notReceivedTableView reloadData];
         
+        reloading = NO;
+        EGORefreshTableHeaderView *currentRefreshHeaderView = isInReceivedView?receivedTableHeaderView:notReceivedTableHeaderView;
+        [currentRefreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:currentTableView];
     }];
     
 }
+
+ 
 
 - (NSString*) getDescriptionFromAcceptStatus:(id) acceptStatus andDoStatus:(id) doStatus{
     if([acceptStatus intValue]==0){
@@ -317,6 +345,43 @@ static NSString * cellKey2 = @"bcell";
     }
 }
 
+
+#pragma mark - EGORefreshTableHeaderDelegate Methods
+//开始刷新
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {
+    reloading = YES;
+    [self fetchData];
+}
+
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {
+	return reloading; // should return if data source model is reloading
+}
+
+- (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view {
+	return [NSDate date]; // should return date data source was last changed
+}
+
+#pragma mark - UIScrollViewDelegate Methods
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    if(isInReceivedView){
+        [self.receivedTableHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    }
+    else{
+        [self.notReceivedTableHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    }
+	
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    if(isInReceivedView){
+        [self.receivedTableHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+    }
+    else{
+        [self.notReceivedTableHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+    }
+}
+
 #pragma mark -Button Click
 - (void)doAcceptOrder:(id)sender{
     //DebugLog(@"doAcceptOrder 接单");
@@ -348,5 +413,6 @@ static NSString * cellKey2 = @"bcell";
     }
     [currentTableView frontMe];
 }
+
 
 @end

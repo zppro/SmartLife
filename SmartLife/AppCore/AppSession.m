@@ -20,7 +20,7 @@ SYNTHESIZE_LESSER_SINGLETON_FOR_CLASS(AppSession);
             NWCode = 1;
             break;
         }
-        case EmergencyService:
+        case ReadListOfEmergencyService:
         {
             switch (userType) {
                 case Child:
@@ -51,7 +51,7 @@ SYNTHESIZE_LESSER_SINGLETON_FOR_CLASS(AppSession);
             }
             break;
         }
-        case CommunityService:
+        case ReadListOfCommunityService:
         {
             switch (userType) {
                 case Child:
@@ -82,7 +82,7 @@ SYNTHESIZE_LESSER_SINGLETON_FOR_CLASS(AppSession);
             }
             break;
         }
-        case LifeService:
+        case ReadListOfLifeService:
         {
             switch (userType) {
                 case Child:
@@ -111,6 +111,11 @@ SYNTHESIZE_LESSER_SINGLETON_FOR_CLASS(AppSession);
                 default:
                     break;
             }
+            break;
+        }
+        case ReadListOfProcessing:
+        {
+            NWCode = 12;
             break;
         }
         default:
