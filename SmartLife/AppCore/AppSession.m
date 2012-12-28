@@ -118,6 +118,11 @@ SYNTHESIZE_LESSER_SINGLETON_FOR_CLASS(AppSession);
             NWCode = 12;
             break;
         }
+        case DoResponse:
+        {
+            NWCode = 108;
+            break;
+        }
         default:
             break;
     }

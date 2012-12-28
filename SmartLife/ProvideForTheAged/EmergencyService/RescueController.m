@@ -9,7 +9,10 @@
 #import "RescueController.h"
 
 @interface RescueController (){
-    BOOL pageControlUsed;
+    BOOL pageControlUsed; 
+    BOOL isInProcessActionView;
+    BOOL reloading;
+    ZPUIActionSheet *callSheet;
 }
 @property (nonatomic, retain) NSDictionary  *oldManInfo;
 @property (nonatomic, retain) DDPageControl  *pageControl;
@@ -17,6 +20,8 @@
 @property (nonatomic, retain) UIScrollView   *scrollProcess;
 @property (nonatomic, retain) UITableView    *processActionTableView;
 @property (nonatomic, retain) UITableView    *processResponseTableView;
+@property (nonatomic, retain) EGORefreshTableHeaderView     *processActionTableHeaderView;
+@property (nonatomic, retain) EGORefreshTableHeaderView     *processResponseTableHeaderView;
 @end
 
 @implementation RescueController
@@ -26,6 +31,8 @@
 @synthesize scrollProcess;
 @synthesize processActionTableView;
 @synthesize processResponseTableView;
+@synthesize processActionTableHeaderView;
+@synthesize processResponseTableHeaderView;
 @synthesize arrProcessActions;
 @synthesize arrProcessResponses;
 
@@ -35,6 +42,8 @@
     self.titleProcessLabel = nil;
     self.processActionTableView = nil;
     self.processResponseTableView = nil;
+    self.processActionTableHeaderView = nil;
+    self.processResponseTableHeaderView = nil;
     self.scrollProcess = nil;
     self.arrProcessActions = nil;
     self.arrProcessResponses = nil; 
@@ -135,6 +144,24 @@
     [callButton setBackgroundColor:[UIColor clearColor]];
     [self.footerView addSubview:callButton];
     
+    isInProcessActionView = YES;
+    
+    processActionTableHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f,0.0f - processActionTableView.height,self.containerView.width,processActionTableView.height)];
+    processActionTableHeaderView.delegate = self;
+    [processActionTableView addSubview:processActionTableHeaderView];
+    
+    processResponseTableHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f,0.0f - processResponseTableView.height,self.containerView.width,processResponseTableView.height)];
+    processResponseTableHeaderView.delegate = self;
+    [processResponseTableView addSubview:processResponseTableHeaderView];
+    
+	//  update the last update date
+    if (isInProcessActionView) {
+        [self.processActionTableHeaderView refreshLastUpdatedDate];
+    }
+    else{
+        [self.processResponseTableHeaderView refreshLastUpdatedDate];
+    }
+    
     [self fetchData];
 }
 
@@ -164,7 +191,11 @@
     } completionBlock:^{
         //
         [self closeWaitView];
-        //[myTableView reloadData];
+          
+        reloading = NO;
+        EGORefreshTableHeaderView *currentRefreshHeaderView = isInProcessActionView?processActionTableHeaderView:processResponseTableHeaderView;
+        [currentRefreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:isInProcessActionView?processActionTableView:processResponseTableView];
+        
     }];
 }
 
@@ -249,6 +280,12 @@ static NSString * cellKey2 = @"bcell";
     int page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
     pageControl.currentPage = page;
     
+    if(isInProcessActionView){
+        [self.processActionTableHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    }
+    else{
+        [self.processResponseTableHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    }
 }
 
 // At the begin of scroll dragging, reset the boolean used when scrolls originate from the UIPageControl
@@ -263,6 +300,15 @@ static NSString * cellKey2 = @"bcell";
     pageControlUsed = NO;
 }
 
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    if(isInProcessActionView){
+        [self.processActionTableHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+    }
+    else{
+        [self.processResponseTableHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+    }
+}
+
 #pragma mark -DDPageControlDelegate
 - (void)dDPageControl:(DDPageControl*)theDDPageControl currentPageChangedFrom:(NSUInteger)oldPage to:(NSUInteger)newPage{
     if(newPage==1){
@@ -275,12 +321,28 @@ static NSString * cellKey2 = @"bcell";
 
 #pragma mark -Button Click
 - (void)doResponse:(id)sender {
+    NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys:[oldManInfo objectForKey:@"CallServiceId"],@"ServiceTracksId",nil];
     
+    LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(DoResponse) WithPostData:Data];
+    
+    
+    [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
+        DebugLog(@"message:%@",((LeblueResponse*)result).message);
+        DebugLog(@"records:%@",((LeblueResponse*)result).records);
+        //NSDictionary *dict = [((LeblueResponse*)result).records objectAtIndex:0];
+        //
+    } failedBlock:^(NSError *error) {
+        //
+        DebugLog(@"%@",error);
+    } completionBlock:^{
+        //
+    }];
+
 }
 
 - (void)doCall:(id)sender {
     UIImage *bg = MF_PngOfDefaultSkin(@"ProvideForTheAged/EmergencyService/99.png");
-    ZPUIActionSheet *callSheet = [ZPUIActionSheet zSheetWithHeight:bg.size.height/2.f withSheetTitle:@""];
+    callSheet = [ZPUIActionSheet zSheetWithHeight:bg.size.height/2.f withSheetTitle:@""];
     UIImageView *bgView = makeImageViewByFrame(callSheet.contentView.bounds);
     bgView.image = bg;
     [callSheet.contentView addSubview:bgView];
@@ -295,7 +357,7 @@ static NSString * cellKey2 = @"bcell";
     }
     
     [callSheet showInView:self.view];
-    
+
 }
 
 - (void) moduleClick:(id) sender{
@@ -303,14 +365,15 @@ static NSString * cellKey2 = @"bcell";
     
     switch (button.tag) {
         case 1:{
-            
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"telprompt://110"]];
             break;
         }
         case 2: {
-            
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"telprompt://120"]];
             break;
         }
         case 3: {
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"telprompt://119"]];
             break;
         }
         case 4:{
@@ -333,5 +396,27 @@ static NSString * cellKey2 = @"bcell";
         default:
             break;
     }
+    
+    [callSheet docancel];
 }
+
+
+#pragma mark - EGORefreshTableHeaderDelegate Methods
+//开始刷新
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view {
+    reloading = YES;
+    [self fetchData];
+}
+
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {
+	return reloading; // should return if data source model is reloading
+}
+
+- (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view {
+	return [NSDate date]; // should return date data source was last changed
+}
+ 
+
+
 @end

@@ -24,7 +24,8 @@ typedef enum {
     ReadListOfEmergencyService,
     ReadListOfCommunityService,
     ReadListOfLifeService,
-    ReadListOfProcessing
+    ReadListOfProcessing,
+    DoResponse
 }BizInterfaceType;
 
 @interface AppSession : NSObject
