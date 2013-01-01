@@ -23,7 +23,7 @@
 					<key>TextAlignment</key>
 					<string>Center</string>
 					<key>Enabled</key>
-					<string>NO</string>
+					<string>YES</string>
 					<key>Hidden</key>
 					<string>NO</string>
 					<key>BackgroundColor</key>

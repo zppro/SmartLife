@@ -55,6 +55,7 @@
 		ACB1629D168043B20029E395 /* 37x-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ACB1629B168043B20029E395 /* 37x-Checkmark@2x.png */; };
 		ACB162BB1680703B0029E395 /* AppSession.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB162BA1680703A0029E395 /* AppSession.m */; };
 		ACB162D116897E6D0029E395 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACB162D016897E6C0029E395 /* CoreLocation.framework */; };
+		ACF41BCE1692B6DD008F5F56 /* PersonalCenterIndexController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACF41BCD1692B6DD008F5F56 /* PersonalCenterIndexController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -152,6 +153,8 @@
 		ACB162B91680703A0029E395 /* AppSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppSession.h; path = AppCore/AppSession.h; sourceTree = "<group>"; };
 		ACB162BA1680703A0029E395 /* AppSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppSession.m; path = AppCore/AppSession.m; sourceTree = "<group>"; };
 		ACB162D016897E6C0029E395 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		ACF41BCC1692B6DD008F5F56 /* PersonalCenterIndexController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PersonalCenterIndexController.h; path = PersonalCenter/PersonalCenterIndexController.h; sourceTree = "<group>"; };
+		ACF41BCD1692B6DD008F5F56 /* PersonalCenterIndexController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PersonalCenterIndexController.m; path = PersonalCenter/PersonalCenterIndexController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,6 +225,7 @@
 		AC15B06B165B528C00E856E4 /* SmartLife */ = {
 			isa = PBXGroup;
 			children = (
+				ACF41BCB1692B6A0008F5F56 /* PersonalCenter */,
 				ACACC68B166111CC00CE5BC0 /* ProvideForTheAged */,
 				ACACC6731660F6A600CE5BC0 /* LoginAndRegister */,
 				AC15B098165B56C000E856E4 /* AppCore */,
@@ -383,6 +387,15 @@
 			name = MBProgressHUD;
 			sourceTree = "<group>";
 		};
+		ACF41BCB1692B6A0008F5F56 /* PersonalCenter */ = {
+			isa = PBXGroup;
+			children = (
+				ACF41BCC1692B6DD008F5F56 /* PersonalCenterIndexController.h */,
+				ACF41BCD1692B6DD008F5F56 /* PersonalCenterIndexController.m */,
+			);
+			name = PersonalCenter;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -495,6 +508,7 @@
 				ACA95943166E29BC00302D82 /* LifeServiceAcceptOrderFailController.m in Sources */,
 				ACA95946166E29EC00302D82 /* LifeServiceAcceptOrderProcessController.m in Sources */,
 				ACB162BB1680703B0029E395 /* AppSession.m in Sources */,
+				ACF41BCE1692B6DD008F5F56 /* PersonalCenterIndexController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -571,7 +585,7 @@
 		AC15B080165B528C00E856E4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: ping zhong (58T58G6A5E)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SmartLife/SmartLife-Prefix.pch";
 				INFOPLIST_FILE = "SmartLife/SmartLife-Info.plist";
@@ -581,7 +595,7 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "C6F10779-5B26-4ABF-933F-D5DB38854E3A";
 				USER_HEADER_SEARCH_PATHS = "../../com.zppro/core/**";
 				WRAPPER_EXTENSION = app;
 			};

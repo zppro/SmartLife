@@ -25,7 +25,8 @@ typedef enum {
     ReadListOfCommunityService,
     ReadListOfLifeService,
     ReadListOfProcessing,
-    DoResponse
+    DoResponse,
+    RegisterDevice
 }BizInterfaceType;
 
 @interface AppSession : NSObject
@@ -35,5 +36,7 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(AppSession);
 @property (nonatomic) UserType userType;
 
 - (NSInteger)getNWCode:(BizInterfaceType) biz;
+
+- (void) abandon;
 
 @end

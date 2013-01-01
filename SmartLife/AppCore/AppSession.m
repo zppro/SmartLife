@@ -123,11 +123,20 @@ SYNTHESIZE_LESSER_SINGLETON_FOR_CLASS(AppSession);
             NWCode = 108;
             break;
         }
+        case RegisterDevice:{
+            NWCode = 101;
+            break;
+        }
         default:
             break;
     }
     
     return NWCode;
+}
+
+- (void) abandon{
+    self.userId = nil;
+    self.userType = None;
 }
 
 @end

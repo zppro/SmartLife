@@ -165,6 +165,9 @@
                 appSession.userType = OldMan; 
             }
             
+            [self registerDevice];
+            
+            
             /*
             [NSTimer scheduledTimerWithTimeInterval:10.f block:^(NSTimeInterval time) {
                 
@@ -224,6 +227,31 @@
     */
     
     
+}
+
+- (void) registerDevice{
+    NSString *longitude = soc.canLocation?[ND(soc.myLocation.coordinate.longitude) stringValue]:[ND(soc.DebugMyLocation.coordinate.longitude) stringValue];
+    NSString *latitude = soc.canLocation?[ND(soc.myLocation.coordinate.latitude) stringValue]:[ND(soc.DebugMyLocation.coordinate.latitude) stringValue];
+    DebugLog(@"longitude:%@",longitude);
+    DebugLog(@"latitude:%@",latitude);
+      
+    NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys:soc.rom.model,@"deviceModel",soc.rom.deviceToken,@"deviceToken",soc.rom.osversion,@"iOSVersion",NI(1),@"isOnLine",longitude,@"longitude",latitude,@"latitude",soc.rom.applicationId,@"applicationId",appSession.userId,@"infoId",@"",@"comment",nil];
+    
+    LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(RegisterDevice) WithPostData:Data];
+    
+    
+    [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
+        DebugLog(@"message:%@",((LeblueResponse*)result).message);
+        DebugLog(@"records:%@",((LeblueResponse*)result).records);
+         
+        //
+    } failedBlock:^(NSError *error) {
+        //
+        DebugLog(@"%@",error);
+    } completionBlock:^{
+        //
+    }];
+
 }
 
 - (void)forgetPasswordButtonClick:(id)sender{

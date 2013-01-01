@@ -22,6 +22,14 @@
     
     [theSkinManager loadWithContentsOfFile:@"SkinIndex"];
      
+    soc.reach = [Reachability reachabilityForInternetConnection];
+    [soc.reach startNotifier];
+    
+    
+    
+    //APS
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeAlert |UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound];
+    
     
     self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
@@ -63,6 +71,30 @@
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+#pragma mark -
+#pragma mark 收到远程通知以后注册到CNS
+- (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
+    //将来地址可以通过配置解决
+    DebugLog(@"deviceToken:%@",deviceToken); 
+    const unsigned *tokenBytes = [deviceToken bytes]; 
+    soc.rom.deviceToken = [NSString stringWithFormat:@"%08x%08x%08x%08x%08x%08x%08x%08x",
+                           ntohl(tokenBytes[0]), ntohl(tokenBytes[1]), ntohl(tokenBytes[2]),
+                           ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]),
+                           ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
+    soc.rom.applicationId = @"com.zppro.SmartLife";
+    
+    DebugLog(@"deviceToken:%@",soc.rom.deviceToken);
+}
+
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{
+    DebugLog(@"CNS Error:%@",error);
+}
+
+- (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
+    DebugLog(@"%@",userInfo);
+}
+
 
 
 @end

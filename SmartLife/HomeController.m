@@ -8,6 +8,7 @@
 
 #import "HomeController.h"
 #import "LoginController.h"
+#import "PersonalCenterIndexController.h"
 #import "ProvideForTheAgedIndexController.h"
 #import "SmartPhoneController.h"
 #import "RecentCallController.h"
@@ -34,6 +35,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     
+    //location
     soc.locationManager = [[[CLLocationManager alloc] init] autorelease];//创建位置管理器
     soc.locationManager.delegate = self;
     soc.locationManager.desiredAccuracy=kCLLocationAccuracyBest;//指定需要的精度级别
@@ -56,8 +58,9 @@
                                                  name:kReachabilityChangedNotification
                                                object:nil];
     
-    soc.reach = [Reachability reachabilityForInternetConnection];
-    [soc.reach startNotifier];
+    //soc.reach = [Reachability reachabilityForInternetConnection];
+    //[soc.reach startNotifier];
+    
     
     
     self.view.backgroundColor = [UIColor clearColor];
@@ -75,12 +78,23 @@
     [self.view addSubview:mainMenu];
     [mainMenu release];
     
-    BOOL isSignIn = FALSE;
+    /*
+    BOOL isSignIn = appSession.userId!=nil;
     if(!isSignIn){ 
         LoginController *loginController = [[LoginController alloc] init];
         [self presentModalViewController:loginController animated: YES];
     }
+    */
+}
+
+- (void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
     
+    BOOL isSignIn = appSession.userId!=nil;
+    if(!isSignIn){
+        LoginController *loginController = [[LoginController alloc] init];
+        [self presentModalViewController:loginController animated: YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -104,8 +118,7 @@
     
     switch (button.tag) {
         case 1:{
-            
-            
+            [self navigationTo:[[[PersonalCenterIndexController alloc] init] autorelease]];
              break;
         }
         case 2: { 
@@ -210,6 +223,7 @@
 }
 
 
+
 #pragma mark -
 #pragma mark 位置管理器
 
@@ -217,7 +231,7 @@
 {
     //取得经纬度
     
-    DebugLog(@"没有开启定位服务:%@",newLocation);
+    DebugLog(@"定位成功:%@",newLocation);
     soc.myLocation = newLocation;
     soc.canLocation = YES;
     //此处可访问第三方偏移量接口或者获得实际偏移量算法
