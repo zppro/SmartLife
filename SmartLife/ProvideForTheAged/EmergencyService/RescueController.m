@@ -13,6 +13,9 @@
     BOOL isInProcessActionView;
     BOOL reloading;
     ZPUIActionSheet *callSheet;
+    UIView *maskView;
+    CGPoint defaultFooterViewCenter;
+    BOOL isEditing;
 }
 @property (nonatomic, retain) NSDictionary  *oldManInfo;
 @property (nonatomic, retain) DDPageControl  *pageControl;
@@ -22,6 +25,8 @@
 @property (nonatomic, retain) UITableView    *processResponseTableView;
 @property (nonatomic, retain) EGORefreshTableHeaderView     *processActionTableHeaderView;
 @property (nonatomic, retain) EGORefreshTableHeaderView     *processResponseTableHeaderView;
+@property (nonatomic, retain) UIButton *voiceButton;
+@property (nonatomic,retain) UITextField *userNameField;
 @end
 
 @implementation RescueController
@@ -35,6 +40,8 @@
 @synthesize processResponseTableHeaderView;
 @synthesize arrProcessActions;
 @synthesize arrProcessResponses;
+@synthesize voiceButton;
+@synthesize userNameField;
 
 - (void)dealloc {
     self.oldManInfo = nil;
@@ -46,7 +53,9 @@
     self.processResponseTableHeaderView = nil;
     self.scrollProcess = nil;
     self.arrProcessActions = nil;
-    self.arrProcessResponses = nil; 
+    self.arrProcessResponses = nil;
+    self.voiceButton = nil;
+    self.userNameField = nil;
     [super dealloc];
 }
 
@@ -130,20 +139,62 @@
     [self.containerView addSubview:pageControl];
     pageControl.frame = CGRectMake(self.containerView.width-100.f, scrollProcess.top + scrollProcess.height-12.f, 100.f, 24);
     
-    UIButton *responseButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [responseButton setFrame:CGRectMake((self.footerView.width/2.f-308/2.f)/2.0,(self.footerView.height - 61.f/2.f)/2.f, 308/2.f, 61/2.f)];
-    [responseButton setImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/EmergencyService/05.png") forState:UIControlStateNormal];
-    [responseButton addTarget:self action:@selector(doResponse:) forControlEvents:UIControlEventTouchUpInside];
-    [responseButton setBackgroundColor:[UIColor clearColor]];
-    [self.footerView addSubview:responseButton];
-    
-    UIButton *callButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [callButton setFrame:CGRectMake(self.footerView.width/2.f+(self.footerView.width/2.f-308/2.f)/2.0,(self.footerView.height - 61.f/2.f)/2.f, 308/2.f, 61/2.f)];
-    [callButton setImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/EmergencyService/06.png") forState:UIControlStateNormal];
-    [callButton addTarget:self action:@selector(doCall:) forControlEvents:UIControlEventTouchUpInside];
-    [callButton setBackgroundColor:[UIColor clearColor]];
-    [self.footerView addSubview:callButton];
-    
+    if ([[oldManInfo objectForKey:@"DoStatus"] intValue] == 1) {
+        UIButton *responseButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [responseButton setFrame:CGRectMake((self.footerView.width/2.f-308/2.f)/2.0,(self.footerView.height - 61.f/2.f)/2.f, 308/2.f, 61/2.f)];
+        [responseButton setImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/EmergencyService/05.png") forState:UIControlStateNormal];
+        [responseButton addTarget:self action:@selector(doResponse:) forControlEvents:UIControlEventTouchUpInside];
+        [responseButton setBackgroundColor:[UIColor clearColor]];
+        [self.footerView addSubview:responseButton];
+        
+        UIButton *callButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [callButton setFrame:CGRectMake(self.footerView.width/2.f+(self.footerView.width/2.f-308/2.f)/2.0,(self.footerView.height - 61.f/2.f)/2.f, 308/2.f, 61/2.f)];
+        [callButton setImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/EmergencyService/06.png") forState:UIControlStateNormal];
+        [callButton addTarget:self action:@selector(doCall:) forControlEvents:UIControlEventTouchUpInside];
+        [callButton setBackgroundColor:[UIColor clearColor]];
+        [self.footerView addSubview:callButton];
+    }
+    else{
+        self.footerView.backgroundColor = MF_ColorFromRGB(86, 96, 108);
+        
+        UIButton *keyboardButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [keyboardButton setFrame:CGRectMake(107/2.f,(self.footerView.height - 46.f/2.f)/2.f, 46/2.f, 46/2.f)];
+        [keyboardButton setImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/EmergencyService/IconKeyboard.png") forState:UIControlStateNormal];
+        [keyboardButton addTarget:self action:@selector(doKeyboard:) forControlEvents:UIControlEventTouchUpInside];
+        [keyboardButton setBackgroundColor:[UIColor clearColor]];
+        [self.footerView addSubview:keyboardButton];
+        
+        self.voiceButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [voiceButton setFrame:CGRectMake(169/2.f,(self.footerView.height - 46.f/2.f)/2.f, 299/2.f, 46/2.f)];
+        [voiceButton setTitle:@"按住说话" forState:UIControlStateNormal];
+        voiceButton.titleLabel.font = [UIFont systemFontOfSize:14.f];
+        [voiceButton setTitleColor:MF_ColorFromRGB(154, 154, 154) forState:UIControlStateNormal];
+        [voiceButton addTarget:self action:@selector(doVoice:) forControlEvents:UIControlEventTouchUpInside];
+        [voiceButton setBackgroundColor:[UIColor whiteColor]];
+        [self.footerView addSubview:voiceButton];
+        
+        userNameField = [[UITextField alloc] initWithFrame:voiceButton.frame];
+        userNameField.font = [UIFont systemFontOfSize:18];
+        userNameField.keyboardType = UIKeyboardTypeDefault;
+        userNameField.keyboardAppearance = UIKeyboardAppearanceDefault;
+        userNameField.delegate = self;
+        userNameField.backgroundColor = [UIColor whiteColor];
+        //userNameField.placeholder = NSLocalizedString(@"RegisterController_EntPhoneNo", nil);
+        //userNameField.inputAccessoryView = [CInputAssistView createWithDelegate:self target:userNameField style:CInputAssistViewAll];
+        userNameField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        [self.footerView addSubview:userNameField];
+        userNameField.hidden = YES;
+        
+        UIButton *picButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [picButton setFrame:CGRectMake(486/2.f,(self.footerView.height - 46.f/2.f)/2.f, 46.f/2.f, 46.f/2.f)];
+        [picButton setImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/EmergencyService/IconPic.png") forState:UIControlStateNormal];
+        [picButton addTarget:self action:@selector(doPic:) forControlEvents:UIControlEventTouchUpInside];
+        [picButton setBackgroundColor:[UIColor clearColor]];
+        [self.footerView addSubview:picButton];
+        
+        defaultFooterViewCenter = self.footerView.center;
+    }
+     
     isInProcessActionView = YES;
     
     processActionTableHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f,0.0f - processActionTableView.height,self.containerView.width,processActionTableView.height)];
@@ -163,12 +214,38 @@
     }
     
     [self fetchData];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark 子类重写方法
+
+- (UIImage*) getFooterBackgroundImage{
+    if ([[oldManInfo objectForKey:@"DoStatus"] intValue] == 1) {
+        return [super getFooterBackgroundImage];
+    }
+    else{
+        CGSize size = CGSizeMake(320,89.f/2.f);
+        UIGraphicsBeginImageContext(size);
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        
+        CGContextTranslateCTM(context, 0, size.height);
+        CGContextScaleCTM(context, 1.0, -1.0);
+        
+        //CGRect rect = CGRectMake(0, 0, size.width, size.height);
+        
+        // image drawing code here
+        
+        UIImage *coloredImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        return coloredImage;
+    }
 }
 
 - (void)fetchData{
@@ -360,6 +437,36 @@ static NSString * cellKey2 = @"bcell";
 
 }
 
+- (void)doKeyboard:(id)sender {
+    DebugLog(@"doKeyboard");
+    
+    if (!maskView){
+        DebugLog(@"create maskView:%@",maskView);
+        maskView = [[UIView alloc] initWithFrame:self.containerView.bounds];
+        [self.containerView addSubview:maskView];
+        [maskView release];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOut:)];
+        tap.cancelsTouchesInView = NO; // So that legit taps on the table bubble up to the tableview
+        [maskView addGestureRecognizer:tap];
+        [tap release];
+        
+        userNameField.hidden = NO;
+        [userNameField becomeFirstResponder];
+        voiceButton.hidden = YES;
+        [self.footerView moveMeTo:CGPointMake(self.footerView.center.x, 195) withDuration:.25f];
+        self.footerView.height = 43.5+26.75;
+        //[self.footerView setBounds:CGRectMake(0, 0, self.footerView.width, self.footerView.height+22)];
+    }
+}
+
+- (void)doVoice:(id)sender {
+    DebugLog(@"doVoice");
+}
+
+- (void)doPic:(id)sender {
+    DebugLog(@"doPic");
+}
+
 - (void) moduleClick:(id) sender{
     UIButton *button = (UIButton*) sender;
     
@@ -417,6 +524,32 @@ static NSString * cellKey2 = @"bcell";
 	return [NSDate date]; // should return date data source was last changed
 }
  
+-(void)tapOut:(UIGestureRecognizer *)gestureRecognizer {
+    [maskView removeFromSuperview];
+    maskView = nil;
+    [userNameField resignFirstResponder];
+    [self.footerView moveMeTo:defaultFooterViewCenter withDuration:.25f];
+    //[self.footerView setBounds:CGRectMake(0, 0, self.footerView.width, self.footerView.height-22)];
+    self.footerView.height = 43.5;
+}
+ 
+#pragma mark - UITextFieldDelegate
+- (void)textFieldDidBeginEditing:(UITextField *)textField{
+    if(isEditing){
+        //[self.footerView moveMeTo:CGPointMake(self.footerView.center.x, 200) withDuration:.1f];
+        return;
+    }
+    //CGPoint upCenter = CGPointMake(self.bodyView.center.x, self.bodyView.center.y - 120);
+    //[self.bodyView moveMeTo:upCenter];
+    isEditing = YES;
+}
 
+// done button pressed
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if(textField ==  userNameField){
+        DebugLog(@"send message");
+    }
+    return YES;
+}
 
 @end

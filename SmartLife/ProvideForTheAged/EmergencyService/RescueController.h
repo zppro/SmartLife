@@ -8,10 +8,9 @@
 
 #import "AppBaseController.h"
 
-@interface RescueController : AppBaseController<UITableViewDelegate, UITableViewDataSource,UIScrollViewDelegate,DDPageControlDelegate,EGORefreshTableHeaderDelegate>
+@interface RescueController : AppBaseController<UITableViewDelegate, UITableViewDataSource,UIScrollViewDelegate,DDPageControlDelegate,EGORefreshTableHeaderDelegate,UITextFieldDelegate>
 @property (nonatomic, retain) NSArray                   *arrProcessActions;
 @property (nonatomic, retain) NSArray                   *arrProcessResponses;
 
 -(id)initWithOldManInfo:(NSDictionary*)aOldManInfo;
-
 @end

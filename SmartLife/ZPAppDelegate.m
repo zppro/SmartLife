@@ -82,7 +82,7 @@
                            ntohl(tokenBytes[0]), ntohl(tokenBytes[1]), ntohl(tokenBytes[2]),
                            ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]),
                            ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
-    soc.rom.applicationId = @"com.zppro.SmartLife";
+    soc.rom.applicationId = @"C1B53491-00CA-4132-9C6C-FA21E214DD46";
     
     DebugLog(@"deviceToken:%@",soc.rom.deviceToken);
 }
