@@ -7,7 +7,8 @@
 //
 
 #import "AppBaseController.h"
+@class CServiceRecord;
 
 @interface LifeServiceAcceptOrderController : AppBaseController<TableHeaderDelegate>
--(id)initWithOrderInfo:(NSDictionary*)orderInfo;
+-(id)initWithServiceRecord:(CServiceRecord*)aServiceRecord;
 @end

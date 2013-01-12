@@ -7,9 +7,10 @@
 //
 
 #import "AppBaseController.h"
+@class CServiceRecord;
 
 @interface CommunityServiceAcceptOrderController : AppBaseController<TableHeaderDelegate>
 
--(id)initWithOrderInfo:(NSDictionary*)aOrderInfo;
+-(id)initWithServiceRecord:(CServiceRecord*)aServiceRecord;
 
 @end

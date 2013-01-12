@@ -26,14 +26,18 @@ typedef enum {
     ReadListOfLifeService,
     ReadListOfProcessing,
     DoResponse,
-    RegisterDevice
+    RegisterDevice,
+    SendServiceLog
 }BizInterfaceType;
 
 @interface AppSession : NSObject
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(AppSession);
-
+@property (nonatomic) NetworkStatus networkStatus;
 @property (nonatomic, retain) NSString *userId;
+@property (nonatomic, retain) NSString *userName;
 @property (nonatomic) UserType userType;
+
+
 
 - (NSInteger)getNWCode:(BizInterfaceType) biz;
 

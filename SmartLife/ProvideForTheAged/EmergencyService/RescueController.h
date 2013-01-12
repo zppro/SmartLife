@@ -7,10 +7,11 @@
 //
 
 #import "AppBaseController.h"
+@class CServiceRecord;
 
 @interface RescueController : AppBaseController<UITableViewDelegate, UITableViewDataSource,UIScrollViewDelegate,DDPageControlDelegate,EGORefreshTableHeaderDelegate,UITextFieldDelegate>
 @property (nonatomic, retain) NSArray                   *arrProcessActions;
 @property (nonatomic, retain) NSArray                   *arrProcessResponses;
 
--(id)initWithOldManInfo:(NSDictionary*)aOldManInfo;
+-(id)initWithServiceRecord:(CServiceRecord*)aServiceRecord;
 @end

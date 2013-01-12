@@ -8,24 +8,25 @@
 
 #import "CommunityServiceAcceptOrderSuccessController.h"
 #import "CommunityServiceAcceptOrderProcessController.h"
+#import "CServiceRecord.h"
 
 @interface CommunityServiceAcceptOrderSuccessController ()
-@property (nonatomic, retain) NSDictionary  *orderInfo;
+@property (nonatomic, retain) CServiceRecord  *servieRecord;
 @end
 
 @implementation CommunityServiceAcceptOrderSuccessController
-@synthesize orderInfo;
+@synthesize servieRecord;
 
 - (void)dealloc {
-    self.orderInfo = nil;
+    self.servieRecord = nil;
     [super dealloc];
 }
 
--(id)initWithOrderInfo:(NSDictionary*)aOrderInfo {
+-(id)initWithServiceRecord:(CServiceRecord*)aServiceRecord{
     self = [super init];
     if (self)
     {
-        self.orderInfo = aOrderInfo;
+        self.servieRecord = aServiceRecord;
     }
     return self;
 }
@@ -50,7 +51,7 @@
     nameLabel.backgroundColor = [UIColor clearColor];
     nameLabel.font = [UIFont systemFontOfSize:16.0f];
     nameLabel.textAlignment = UITextAlignmentLeft;
-    nameLabel.text = MF_SWF(@"老人姓名:%@",[self.orderInfo objectForKey:@"Name"]);
+    nameLabel.text = MF_SWF(@"老人姓名:%@",servieRecord.name);
     [self.containerView addSubview:nameLabel];
     [nameLabel release];
     
@@ -58,7 +59,7 @@
     sexLabel.backgroundColor = [UIColor clearColor];
     sexLabel.font = [UIFont systemFontOfSize:16.0f];
     sexLabel.textAlignment = UITextAlignmentLeft;
-    sexLabel.text = MF_SWF(@"性别:%@",[self.orderInfo objectForKey:@"Sex"]);
+    sexLabel.text = MF_SWF(@"性别:%@",servieRecord.gender);
     [self.containerView addSubview:sexLabel];
     [sexLabel release];
     
@@ -66,7 +67,7 @@
     addressLabel.backgroundColor = [UIColor clearColor];
     addressLabel.font = [UIFont systemFontOfSize:16.0f];
     addressLabel.textAlignment = UITextAlignmentLeft;
-    addressLabel.text = MF_SWF(@"地址:%@",[self.orderInfo objectForKey:@"Address"]);
+    addressLabel.text = MF_SWF(@"地址:%@",servieRecord.address);
     addressLabel.numberOfLines = 3;
     [self.containerView addSubview:addressLabel];
     [addressLabel release];
@@ -76,7 +77,7 @@
     serveContentLabel.backgroundColor = [UIColor clearColor];
     serveContentLabel.font = [UIFont systemFontOfSize:16.0f];
     serveContentLabel.textAlignment = UITextAlignmentLeft;
-    serveContentLabel.text = MF_SWF(@"服务内容:%@",[self.orderInfo objectForKey:@"ServeContent"]);
+    serveContentLabel.text = MF_SWF(@"服务内容:%@",servieRecord.content);
     [self.containerView addSubview:serveContentLabel];
     [serveContentLabel release];
     
@@ -84,7 +85,7 @@
     serveModeLabel.backgroundColor = [UIColor clearColor];
     serveModeLabel.font = [UIFont systemFontOfSize:16.0f];
     serveModeLabel.textAlignment = UITextAlignmentLeft;
-    serveModeLabel.text = MF_SWF(@"服务方式:%@",[self.orderInfo objectForKey:@"ServeMode"]);
+    serveModeLabel.text = MF_SWF(@"服务方式:%@",@"上门服务");
     [self.containerView addSubview:serveModeLabel];
     [serveModeLabel release];
     

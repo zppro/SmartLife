@@ -10,7 +10,9 @@
 
 @implementation AppSession
 SYNTHESIZE_LESSER_SINGLETON_FOR_CLASS(AppSession);
+@synthesize networkStatus;
 @synthesize userId;
+@synthesize userName;
 @synthesize userType;
 
 - (NSInteger)getNWCode:(BizInterfaceType) biz {
@@ -127,6 +129,10 @@ SYNTHESIZE_LESSER_SINGLETON_FOR_CLASS(AppSession);
             NWCode = 101;
             break;
         }
+        case SendServiceLog:{
+            NWCode = 106;
+            break;
+        }
         default:
             break;
     }
@@ -136,6 +142,7 @@ SYNTHESIZE_LESSER_SINGLETON_FOR_CLASS(AppSession);
 
 - (void) abandon{
     self.userId = nil;
+    self.userName = nil;
     self.userType = None;
 }
 

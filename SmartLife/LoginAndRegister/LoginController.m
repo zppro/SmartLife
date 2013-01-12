@@ -8,7 +8,7 @@
 
 #import "LoginController.h"
 #import "AppMacro.h"
-
+#import "CUser.h"
 
 @interface LoginController(){
     BOOL isEditing;
@@ -131,70 +131,94 @@
     if([passwordField.text isEqualToString:@""]){
         showHUDInfo(self,self.view,@"密码不能为空");
         return;
-    }
+    } 
     
-    //[passwordField.text stringFromMD5]
-    NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys:userNameField.text,@"LoginId",passwordField.text,@"PassWord",nil];
-    
-    LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(Login) WithPostData:Data];
-     
-    
-    [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
-        DebugLog(@"message:%@",((LeblueResponse*)result).message);
-        DebugLog(@"records:%@",((LeblueResponse*)result).records);
-        NSDictionary *dict = [((LeblueResponse*)result).records objectAtIndex:0];
-        if([[dict objectForKey:@"UserId"] isEqualToString:@""]){
-           appSession.userId = @"C96FC381-E587-494C-91C9-F84B6D9B90A3";
+    if (appSession.networkStatus != ReachableViaWWAN && appSession.networkStatus != ReachableViaWiFi) {
+        //本地登录
+        CUser *instance = [CUser loadWithName:userNameField.text andPassword:passwordField.text];
+        
+        if(instance == nil){
         }
         else{
-            appSession.userId = [dict objectForKey:@"UserId"];
-            if([[dict objectForKey:@"IsChild"] intValue]==1){
-                appSession.userType = Child;
-            }
-            else if([[dict objectForKey:@"IsCompany"] intValue]==1){
-                appSession.userType = Company;
-                
-            }
-            else if([[dict objectForKey:@"IsEmployee"] intValue]==1){
-                appSession.userType = Employee;
-            }
-            else if([[dict objectForKey:@"IsGov"] intValue]==1){
-                appSession.userType = Gov;
-            }
-            else if([[dict objectForKey:@"IsOldMan"] intValue]==1){
-                appSession.userType = OldMan; 
-            }
-            
-            [self registerDevice];
-            
-            
-            /*
-            [NSTimer scheduledTimerWithTimeInterval:10.f block:^(NSTimeInterval time) {
-                
-                dispatch_async(dispatch_get_main_queue(), ^{ 
-                    CLLocation *currentLocation = soc.canLocation? soc.myLocation:soc.DebugMyLocation;
-                    DebugLog(@"登记对象位置信息 %@ ",currentLocation);
-                    
-                    NSDictionary *Data1 = [NSDictionary dictionaryWithObjectsAndKeys:userNameField.text,@"LoginId",passwordField.text,@"PassWord",nil];
-                    
-                    LeblueRequest* req1 =[LeblueRequest requestWithHead:nwCode(Login) WithPostData:Data];
-                    
-                });
-                
-             
-            } repeats:YES];
-            */
+            instance.lastLoginTime = [NSDate date];
         }
-     
-        [self dismissModalViewControllerAnimated:YES];
-        // 
-    } failedBlock:^(NSError *error) {
-        // 
-        DebugLog(@"%@",error);
-    } completionBlock:^{
-        //
-    }];
+        [moc save];
+    }
+    else{
     
+    //[passwordField.text stringFromMD5]
+        NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys:userNameField.text,@"LoginId",passwordField.text,@"PassWord",nil];
+        
+        LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(Login) WithPostData:Data];
+         
+        
+         
+        [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
+            DebugLog(@"message:%@",((LeblueResponse*)result).message);
+            DebugLog(@"records:%@",((LeblueResponse*)result).records);
+            NSDictionary *dict = [((LeblueResponse*)result).records objectAtIndex:0];
+            if([[dict objectForKey:@"UserId"] isEqualToString:@""]){
+               appSession.userId = @"C96FC381-E587-494C-91C9-F84B6D9B90A3";
+            }
+            else{
+                appSession.userId = [dict objectForKey:@"UserId"];
+                appSession.userName = userNameField.text;
+                if([[dict objectForKey:@"IsChild"] intValue]==1){
+                    appSession.userType = Child;
+                }
+                else if([[dict objectForKey:@"IsCompany"] intValue]==1){
+                    appSession.userType = Company;
+                    
+                }
+                else if([[dict objectForKey:@"IsEmployee"] intValue]==1){
+                    appSession.userType = Employee;
+                }
+                else if([[dict objectForKey:@"IsGov"] intValue]==1){
+                    appSession.userType = Gov;
+                }
+                else if([[dict objectForKey:@"IsOldMan"] intValue]==1){
+                    appSession.userType = OldMan; 
+                }
+                
+                [self registerDevice];
+                
+                
+                /*
+                [NSTimer scheduledTimerWithTimeInterval:10.f block:^(NSTimeInterval time) {
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{ 
+                        CLLocation *currentLocation = soc.canLocation? soc.myLocation:soc.DebugMyLocation;
+                        DebugLog(@"登记对象位置信息 %@ ",currentLocation);
+                        
+                        NSDictionary *Data1 = [NSDictionary dictionaryWithObjectsAndKeys:userNameField.text,@"LoginId",passwordField.text,@"PassWord",nil];
+                        
+                        LeblueRequest* req1 =[LeblueRequest requestWithHead:nwCode(Login) WithPostData:Data];
+                        
+                    });
+                    
+                 
+                } repeats:YES];
+                */
+            }
+             
+            [self dismissModalViewControllerAnimated:YES];
+            // 
+        } failedBlock:^(NSError *error) {
+            // 
+            DebugLog(@"%@",error);
+        } completionBlock:^{
+            //
+            CUser *instance = [CUser objectByEntityKey:appSession.userId];
+            if(instance == nil){
+                NSDictionary *dataItem = [NSDictionary dictionaryWithObjectsAndKeys:appSession.userId,@"UserId",appSession.userName,@"Name",passwordField.text,@"Password",[NSDate date],@"LastLoginTime",nil];
+                [CUser createWithIEntity:dataItem];
+            }
+            else{
+                instance.lastLoginTime = [NSDate date];
+            }
+            [moc save];
+        }];
+    }
     /*
     UIButton *button = (UIButton*)sender;
     [button recordBehaviorForFunction1:FUNC_01 andFunction2:FUNC_0102 withAction:mdMethodName andEvent:UIControlEventTouchUpInside];

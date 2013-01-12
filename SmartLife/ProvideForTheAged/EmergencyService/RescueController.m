@@ -7,6 +7,8 @@
 //
 
 #import "RescueController.h"
+#import "CServiceRecord.h"
+#define NOT_PROCESS 1
 
 @interface RescueController (){
     BOOL pageControlUsed; 
@@ -16,8 +18,9 @@
     UIView *maskView;
     CGPoint defaultFooterViewCenter;
     BOOL isEditing;
+    MBProgressHUD *HUD;
 }
-@property (nonatomic, retain) NSDictionary  *oldManInfo;
+@property (nonatomic, retain) CServiceRecord *servieRecord;
 @property (nonatomic, retain) DDPageControl  *pageControl;
 @property (nonatomic, retain) UILabel        *titleProcessLabel;
 @property (nonatomic, retain) UIScrollView   *scrollProcess;
@@ -26,11 +29,11 @@
 @property (nonatomic, retain) EGORefreshTableHeaderView     *processActionTableHeaderView;
 @property (nonatomic, retain) EGORefreshTableHeaderView     *processResponseTableHeaderView;
 @property (nonatomic, retain) UIButton *voiceButton;
-@property (nonatomic,retain) UITextField *userNameField;
+@property (nonatomic,retain) UITextField *messageField;
 @end
 
 @implementation RescueController
-@synthesize oldManInfo;
+@synthesize servieRecord;
 @synthesize pageControl;
 @synthesize titleProcessLabel;
 @synthesize scrollProcess;
@@ -41,10 +44,10 @@
 @synthesize arrProcessActions;
 @synthesize arrProcessResponses;
 @synthesize voiceButton;
-@synthesize userNameField;
+@synthesize messageField;
 
 - (void)dealloc {
-    self.oldManInfo = nil;
+    self.servieRecord = nil;
     self.pageControl = nil;
     self.titleProcessLabel = nil;
     self.processActionTableView = nil;
@@ -55,15 +58,15 @@
     self.arrProcessActions = nil;
     self.arrProcessResponses = nil;
     self.voiceButton = nil;
-    self.userNameField = nil;
+    self.messageField = nil;
     [super dealloc];
 }
 
--(id)initWithOldManInfo:(NSDictionary*)aOldManInfo {
+-(id)initWithServiceRecord:(CServiceRecord*)aServiceRecord {
     self = [super init];
     if (self)
     {
-        self.oldManInfo = aOldManInfo;
+        self.servieRecord = aServiceRecord;
     }
     return self;
 }
@@ -87,7 +90,7 @@
                               nil];
     
 	// Do any additional setup after loading the view.
-    self.headerView.headerLabel.text = MF_SWF(@"紧急服务－%@需要救助",[oldManInfo objectForKey:@"Name"]);
+    self.headerView.headerLabel.text = MF_SWF(@"紧急服务－%@需要救助",servieRecord.name);
     
     UIView *cameraContainerView = [[UIView alloc] initWithFrame:CGRectMake(60.f, 3.5f, 200.f, 150.f)];
     cameraContainerView.backgroundColor = [UIColor clearColor];
@@ -139,7 +142,7 @@
     [self.containerView addSubview:pageControl];
     pageControl.frame = CGRectMake(self.containerView.width-100.f, scrollProcess.top + scrollProcess.height-12.f, 100.f, 24);
     
-    if ([[oldManInfo objectForKey:@"DoStatus"] intValue] == 1) {
+    if ([servieRecord.doStatus intValue] == NOT_PROCESS) {
         UIButton *responseButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [responseButton setFrame:CGRectMake((self.footerView.width/2.f-308/2.f)/2.0,(self.footerView.height - 61.f/2.f)/2.f, 308/2.f, 61/2.f)];
         [responseButton setImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/EmergencyService/05.png") forState:UIControlStateNormal];
@@ -169,21 +172,30 @@
         [voiceButton setTitle:@"按住说话" forState:UIControlStateNormal];
         voiceButton.titleLabel.font = [UIFont systemFontOfSize:14.f];
         [voiceButton setTitleColor:MF_ColorFromRGB(154, 154, 154) forState:UIControlStateNormal];
-        [voiceButton addTarget:self action:@selector(doVoice:) forControlEvents:UIControlEventTouchUpInside];
+        //[voiceButton addTarget:self action:@selector(doVoice:) forControlEvents:UIControlEventTouchUpInside];
         [voiceButton setBackgroundColor:[UIColor whiteColor]];
         [self.footerView addSubview:voiceButton];
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]
+                                                   initWithTarget:self
+                                                   action:@selector(handleLongPress:)];
+        longPress.minimumPressDuration = 0.2f;
+        [voiceButton addGestureRecognizer:longPress];
+        [longPress release];
         
-        userNameField = [[UITextField alloc] initWithFrame:voiceButton.frame];
-        userNameField.font = [UIFont systemFontOfSize:18];
-        userNameField.keyboardType = UIKeyboardTypeDefault;
-        userNameField.keyboardAppearance = UIKeyboardAppearanceDefault;
-        userNameField.delegate = self;
-        userNameField.backgroundColor = [UIColor whiteColor];
+
+        
+        messageField = [[UITextField alloc] initWithFrame:voiceButton.frame];
+        messageField.font = [UIFont systemFontOfSize:18];
+        messageField.keyboardType = UIKeyboardTypeDefault;
+        messageField.keyboardAppearance = UIKeyboardAppearanceDefault;
+        messageField.delegate = self;
+        messageField.returnKeyType = UIReturnKeyDone;
+        messageField.backgroundColor = [UIColor whiteColor];
         //userNameField.placeholder = NSLocalizedString(@"RegisterController_EntPhoneNo", nil);
         //userNameField.inputAccessoryView = [CInputAssistView createWithDelegate:self target:userNameField style:CInputAssistViewAll];
-        userNameField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        [self.footerView addSubview:userNameField];
-        userNameField.hidden = YES;
+        messageField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        [self.footerView addSubview:messageField];
+        messageField.hidden = YES;
         
         UIButton *picButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [picButton setFrame:CGRectMake(486/2.f,(self.footerView.height - 46.f/2.f)/2.f, 46.f/2.f, 46.f/2.f)];
@@ -227,7 +239,7 @@
 #pragma mark 子类重写方法
 
 - (UIImage*) getFooterBackgroundImage{
-    if ([[oldManInfo objectForKey:@"DoStatus"] intValue] == 1) {
+    if ([servieRecord.doStatus intValue] == NOT_PROCESS) {
         return [super getFooterBackgroundImage];
     }
     else{
@@ -251,7 +263,7 @@
 - (void)fetchData{
     [self showWaitViewWithTitle:@"读取求助信息处理日志"];
     
-    NSDictionary *postData = [NSDictionary dictionaryWithObjectsAndKeys:[oldManInfo objectForKey:@"CallServiceId"],@"CallServiceId",nil];
+    NSDictionary *postData = [NSDictionary dictionaryWithObjectsAndKeys:servieRecord.callServiceId,@"CallServiceId",nil];
     
     LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(ReadListOfProcessing) WithPostData:postData];
     
@@ -270,6 +282,9 @@
         [self closeWaitView];
           
         reloading = NO;
+        UITableView *currentTableView  = isInProcessActionView?processActionTableView:processResponseTableView;
+        [currentTableView reloadData];
+        
         EGORefreshTableHeaderView *currentRefreshHeaderView = isInProcessActionView?processActionTableHeaderView:processResponseTableHeaderView;
         [currentRefreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:isInProcessActionView?processActionTableView:processResponseTableView];
         
@@ -346,6 +361,7 @@ static NSString * cellKey2 = @"bcell";
 #pragma mark UIScrollViewDelegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 {
+    
     if (pageControlUsed)
     {
         // do nothing - the scroll was initiated from the page control, not the user dragging
@@ -356,6 +372,7 @@ static NSString * cellKey2 = @"bcell";
     CGFloat pageWidth = scrollView.frame.size.width;
     int page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
     pageControl.currentPage = page;
+    
     
     if(isInProcessActionView){
         [self.processActionTableHeaderView egoRefreshScrollViewDidScroll:scrollView];
@@ -378,6 +395,7 @@ static NSString * cellKey2 = @"bcell";
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    
     if(isInProcessActionView){
         [self.processActionTableHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
     }
@@ -390,15 +408,17 @@ static NSString * cellKey2 = @"bcell";
 - (void)dDPageControl:(DDPageControl*)theDDPageControl currentPageChangedFrom:(NSUInteger)oldPage to:(NSUInteger)newPage{
     if(newPage==1){
         titleProcessLabel.text = @"处理结果";
+        isInProcessActionView = NO;
     }
     else{
         titleProcessLabel.text = @"应急处理";
+        isInProcessActionView = YES;
     }
 }
 
 #pragma mark -Button Click
 - (void)doResponse:(id)sender {
-    NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys:[oldManInfo objectForKey:@"CallServiceId"],@"ServiceTracksId",nil];
+    NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys:servieRecord.serviceTracksId,@"ServiceTracksId",nil];
     
     LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(DoResponse) WithPostData:Data];
     
@@ -408,6 +428,7 @@ static NSString * cellKey2 = @"bcell";
         DebugLog(@"records:%@",((LeblueResponse*)result).records);
         //NSDictionary *dict = [((LeblueResponse*)result).records objectAtIndex:0];
         //
+        [self navigationToPrevious];
     } failedBlock:^(NSError *error) {
         //
         DebugLog(@"%@",error);
@@ -441,7 +462,7 @@ static NSString * cellKey2 = @"bcell";
     DebugLog(@"doKeyboard");
     
     if (!maskView){
-        DebugLog(@"create maskView:%@",maskView);
+        DebugLog(@"create maskView:%@-%f",maskView,self.footerView.height);
         maskView = [[UIView alloc] initWithFrame:self.containerView.bounds];
         [self.containerView addSubview:maskView];
         [maskView release];
@@ -449,18 +470,19 @@ static NSString * cellKey2 = @"bcell";
         tap.cancelsTouchesInView = NO; // So that legit taps on the table bubble up to the tableview
         [maskView addGestureRecognizer:tap];
         [tap release];
-        
-        userNameField.hidden = NO;
-        [userNameField becomeFirstResponder];
+        messageField.hidden = NO;
+        [messageField becomeFirstResponder];
         voiceButton.hidden = YES;
         [self.footerView moveMeTo:CGPointMake(self.footerView.center.x, 195) withDuration:.25f];
-        self.footerView.height = 43.5+26.75;
+        self.footerView.height = self.footerView.height+25.75;
         //[self.footerView setBounds:CGRectMake(0, 0, self.footerView.width, self.footerView.height+22)];
     }
 }
 
 - (void)doVoice:(id)sender {
     DebugLog(@"doVoice");
+    
+    
 }
 
 - (void)doPic:(id)sender {
@@ -507,6 +529,27 @@ static NSString * cellKey2 = @"bcell";
     [callSheet docancel];
 }
 
+#pragma mark - 长按
+-  (void)handleLongPress:(UILongPressGestureRecognizer*)sender {
+    if (sender.state == UIGestureRecognizerStateEnded) { 
+        [HUD hide:YES];
+    }
+    else if (sender.state == UIGestureRecognizerStateBegan){  
+        HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+        [self.containerView addSubview:HUD];
+        [HUD release];
+        HUD.customView = [[[UIImageView alloc] initWithImage:MF_PngOfDefaultSkin(@"Index/microphone.png")] autorelease];
+        
+        // Set custom view mode
+        HUD.mode = MBProgressHUDModeCustomView;
+        
+        //HUD.delegate = self;
+        HUD.labelText = @"  开始说话  ";
+        
+        [HUD show:YES];
+        
+    }
+}
 
 #pragma mark - EGORefreshTableHeaderDelegate Methods
 //开始刷新
@@ -527,10 +570,13 @@ static NSString * cellKey2 = @"bcell";
 -(void)tapOut:(UIGestureRecognizer *)gestureRecognizer {
     [maskView removeFromSuperview];
     maskView = nil;
-    [userNameField resignFirstResponder];
+    [messageField resignFirstResponder];
+    self.footerView.height = self.footerView.height-25.75;
     [self.footerView moveMeTo:defaultFooterViewCenter withDuration:.25f];
+    messageField.hidden = YES;
+    voiceButton.hidden = NO;
     //[self.footerView setBounds:CGRectMake(0, 0, self.footerView.width, self.footerView.height-22)];
-    self.footerView.height = 43.5;
+    
 }
  
 #pragma mark - UITextFieldDelegate
@@ -546,9 +592,37 @@ static NSString * cellKey2 = @"bcell";
 
 // done button pressed
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    if(textField ==  userNameField){
+    if(textField ==  messageField){
         DebugLog(@"send message");
+        id theServiceTracksId = servieRecord.serviceTracksId;
+        if(theServiceTracksId == nil){
+            theServiceTracksId = [NSNull null];
+        }
+        NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys: NI(0),@"Type",appSession.userName,@"UserName", messageField.text,@"LogContent",[NSNull null],@"LogSoundFile",theServiceTracksId,@"ServiceTracksId",servieRecord.callServiceId,@"CallServiceId",nil];
+        
+        LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(SendServiceLog) WithPostData:Data];
+        
+        
+        [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
+            DebugLog(@"message:%@",((LeblueResponse*)result).message);
+            DebugLog(@"records:%@",((LeblueResponse*)result).records); 
+            // 
+        } failedBlock:^(NSError *error) {
+            // 
+            DebugLog(@"%@",error);
+        } completionBlock:^{
+            //
+            [maskView removeFromSuperview];
+            maskView = nil;
+            [messageField resignFirstResponder];
+            self.footerView.height = self.footerView.height-25.75;
+            [self.footerView moveMeTo:defaultFooterViewCenter withDuration:.25f];
+            messageField.hidden = YES;
+            voiceButton.hidden = NO;
+        }];
+
     }
+    isEditing = NO;
     return YES;
 }
 

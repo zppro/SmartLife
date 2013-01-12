@@ -7,24 +7,24 @@
 //
 
 #import "CommunityServiceAcceptOrderController.h"
-
+#import "CServiceRecord.h"
 @interface CommunityServiceAcceptOrderController ()
-@property (nonatomic, retain) NSDictionary  *orderInfo;
+@property (nonatomic, retain) CServiceRecord  *servieRecord;
 @end
 
 @implementation CommunityServiceAcceptOrderController
-@synthesize orderInfo;
+@synthesize servieRecord;
 - (void)dealloc {
-    self.orderInfo = nil;
+    self.servieRecord = nil;
     [super dealloc];
 }
 
 
--(id)initWithOrderInfo:(NSDictionary*)aOrderInfo {
+-(id)initWithServiceRecord:(CServiceRecord*)aServiceRecord {
     self = [super init];
     if (self)
     {
-        self.orderInfo = aOrderInfo; 
+        self.servieRecord = aServiceRecord; 
     }
     return self;
 }
@@ -40,7 +40,7 @@
     nameLabel.backgroundColor = [UIColor clearColor];
     nameLabel.font = [UIFont systemFontOfSize:16.0f];
     nameLabel.textAlignment = UITextAlignmentLeft;
-    nameLabel.text = MF_SWF(@"老人姓名:%@",[self.orderInfo objectForKey:@"Name"]);
+    nameLabel.text = MF_SWF(@"老人姓名:%@",servieRecord.name);
     [self.containerView addSubview:nameLabel];
     [nameLabel release];
     
@@ -48,7 +48,7 @@
     addressLabel.backgroundColor = [UIColor clearColor];
     addressLabel.font = [UIFont systemFontOfSize:16.0f];
     addressLabel.textAlignment = UITextAlignmentLeft;
-    addressLabel.text = MF_SWF(@"地址:%@",[self.orderInfo objectForKey:@"Address"]);
+    addressLabel.text = MF_SWF(@"地址:%@",servieRecord.address);
     addressLabel.numberOfLines = 3;
     [self.containerView addSubview:addressLabel];
     [addressLabel release];

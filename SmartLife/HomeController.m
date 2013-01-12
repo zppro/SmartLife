@@ -182,15 +182,15 @@
 - (BOOL) updateInterfaceWithReachability{
     BOOL ret = YES;
     NSString *title = nil;
-    
-    NetworkStatus status = [soc.reach currentReachabilityStatus];
+    appSession.networkStatus = [soc.reach currentReachabilityStatus];
+     
     // 3G网络
-    if (status == ReachableViaWWAN) {
+    if (appSession.networkStatus == ReachableViaWWAN) {
         DebugLog(@"#####3G");
         title = @"正在使用3G";
     }
     // WIFI
-    else if (status == ReachableViaWiFi) {
+    else if (appSession.networkStatus == ReachableViaWiFi) {
         DebugLog(@"#####Wifi");
         title = @"正在使用Wifi";
     }

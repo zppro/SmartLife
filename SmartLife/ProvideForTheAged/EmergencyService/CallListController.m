@@ -8,6 +8,7 @@
 
 #import "CallListController.h"
 #import "RescueController.h"
+#import "CServiceRecord.h"
 
 
 @interface CallListController (){
@@ -67,8 +68,6 @@
     refreshTableHeaderView.delegate = self;
     [myTableView addSubview:refreshTableHeaderView];
     
-    [self fetchData];
-    
 }
 
 - (void)didReceiveMemoryWarning
@@ -77,32 +76,62 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    [self fetchData];
+}
+
+- (void)fetchDataLocal{
+    self.arrCalls = [CServiceRecord listEmergencyServiceWithUserId:appSession.userId];
+    [myTableView reloadData];
+}
+
 - (void)fetchData{
     [self showWaitViewWithTitle:@"读取紧急服务"];
     
-    NSDictionary *postData = [NSDictionary dictionaryWithObjectsAndKeys:appSession.userId,@"UserId",nil];
-    
-    LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(ReadListOfEmergencyService) WithPostData:postData];
-    
-    
-    [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
-        DebugLog(@"message:%@",((LeblueResponse*)result).message);
-        DebugLog(@"records:%@",((LeblueResponse*)result).records);
-        
-        self.arrCalls = ((LeblueResponse*)result).records;
-        //
-    } failedBlock:^(NSError *error) {
-        //
-        DebugLog(@"%@",error);
-    } completionBlock:^{
-        //
+    if (appSession.networkStatus != ReachableViaWWAN && appSession.networkStatus != ReachableViaWiFi) {
+        //本地登录
+        [self fetchDataLocal];
         [self closeWaitView];
-        [myTableView reloadData];
+    }
+    else{
+        NSDictionary *postData = [NSDictionary dictionaryWithObjectsAndKeys:appSession.userId,@"UserId",nil];
         
-        reloading = NO;
-        [refreshTableHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:myTableView];
-    }];
+        LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(ReadListOfEmergencyService) WithPostData:postData];
+        
+        
+        [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
+            DebugLog(@"message:%@",((LeblueResponse*)result).message);
+            DebugLog(@"records:%@",((LeblueResponse*)result).records);
+             
+            NSArray *records = [((LeblueResponse*)result).records map:^(id obj){
+                NSMutableDictionary *newObj = [NSMutableDictionary dictionaryWithDictionary:obj];
+                [newObj setValue:appSession.userId forKey:@"FetchByUserId"];
+                [newObj setValue:[NSDate date] forKey:@"LocalSyncTime"];
+                [newObj setValue:NI(EmergencyService) forKey:@"ServiceType"];
+                 
+                if([newObj objectForKey:@"AcceptStatus"]==nil){
+                    [newObj setValue:NI(0) forKey:@"AcceptStatus"];
+                }
+                return newObj;
+            }]; 
+            [CServiceRecord updateWithData:records By:appSession.userId type:EmergencyService];
+        } failedBlock:^(NSError *error) {
+            //
+            DebugLog(@"%@",error);
+        } completionBlock:^{
+            //
+            [self fetchDataLocal]; 
+            
+            reloading = NO;
+            [refreshTableHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:myTableView];
+            [self closeWaitView];
+        }];
+    }
 }
+
+
 
 - (NSString*) getDescriptionFromDoStatus:(id) doStatus{
     switch ([doStatus intValue]) {
@@ -179,7 +208,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"acell"];
-    NSDictionary *dataItem = (NSDictionary*)[arrCalls objectAtIndex:indexPath.row];
+    CServiceRecord *dataItem = (CServiceRecord*)[arrCalls objectAtIndex:indexPath.row];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                        reuseIdentifier:@"acell"] autorelease];
@@ -210,17 +239,16 @@
         [cell.contentView addSubview:valueStatus];
         [valueStatus release];
     }
-    ((UILabel*)[cell.contentView viewWithTag:1001]).text = GetDateString(ParseDateFromStringFormat([dataItem objectForKey:@"CheckInTime"],@"yyyy-MM-dd'T'HH:mm:ss.SSS"),@"yyyy-MM-dd HH:mm:ss");
-    ((UILabel*)[cell.contentView viewWithTag:1002]).text = [dataItem objectForKey:@"Name"];
-    ((UILabel*)[cell.contentView viewWithTag:1003]).text = [self getDescriptionFromDoStatus:[dataItem objectForKey:@"DoStatus"]];
+    ((UILabel*)[cell.contentView viewWithTag:1001]).text = GetDateString(dataItem.checkInTime,@"yyyy-MM-dd HH:mm:ss");
+    ((UILabel*)[cell.contentView viewWithTag:1002]).text = dataItem.name;
+    ((UILabel*)[cell.contentView viewWithTag:1003]).text = [self getDescriptionFromDoStatus:dataItem.doStatus];
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NSDictionary *dataItem = (NSDictionary*)[arrCalls objectAtIndex:indexPath.row];
-    NSDictionary *oldManInfo = [NSDictionary dictionaryWithObjectsAndKeys:[dataItem objectForKey:@"Name"],@"Name",[dataItem objectForKey:@"Address"],@"Address",[dataItem objectForKey:@"Gender"],@"Sex",[dataItem objectForKey:@"ServiceObjectId"],@"ServiceObjectId",[dataItem objectForKey:@"Address"],@"Address",[dataItem objectForKey:@"Gender"],@"Sex",[dataItem objectForKey:@"CallServiceId"],@"CallServiceId",nil];
-    [self navigationTo:[[[RescueController alloc] initWithOldManInfo:oldManInfo] autorelease]];
+    CServiceRecord *dataItem = (CServiceRecord*)[arrCalls objectAtIndex:indexPath.row]; 
+    [self navigationTo:[[[RescueController alloc] initWithServiceRecord:dataItem] autorelease]];
 }
 
 #pragma mark 子类重写方法

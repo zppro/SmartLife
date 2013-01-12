@@ -10,6 +10,7 @@
 #import "CommunityServiceAcceptOrderController.h"
 #import "CommunityServiceAcceptOrderSuccessController.h"
 #import "CommunityServiceAcceptOrderFailController.h"
+#import "CServiceRecord.h"
 
 @interface CommunityServiceCallingListController (){
     UIButton *currentSelectedButton;
@@ -144,36 +145,55 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)fetchDataLocal{
+    self.arrNotReceived = [CServiceRecord listCommunityServiceNotReceivedWithUserId:appSession.userId];
+    self.arrReceived = [CServiceRecord listCommunityServiceReceivedWithUserId:appSession.userId];
+    [receivedTableView reloadData];
+    [notReceivedTableView reloadData];
+}
 
 - (void)fetchData{
     [self showWaitViewWithTitle:@"读取社区服务"];
-    
-    NSDictionary *postData = [NSDictionary dictionaryWithObjectsAndKeys:appSession.userId,@"UserId",nil];
-    
-    LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(ReadListOfCommunityService) WithPostData:postData];
-    
-    
-    [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
-        DebugLog(@"message:%@",((LeblueResponse*)result).message);
-        DebugLog(@"records:%@",((LeblueResponse*)result).records);
-        self.arrReceived = [[[((LeblueResponse*)result).records query] where:@"AcceptStatus" greaterThan:NI(0)] results];
-        self.arrNotReceived = [[[((LeblueResponse*)result).records query] where:@"AcceptStatus" equals:NI(0)] results];
-         
-        
-    } failedBlock:^(NSError *error) {
-        //
-        DebugLog(@"%@",error);
-    } completionBlock:^{
-        //
+    if (appSession.networkStatus != ReachableViaWWAN && appSession.networkStatus != ReachableViaWiFi) {
+        //本地登录
+        [self fetchDataLocal];
         [self closeWaitView];
-        [receivedTableView reloadData];
-        [notReceivedTableView reloadData];
+    }
+    else{
+        NSDictionary *postData = [NSDictionary dictionaryWithObjectsAndKeys:appSession.userId,@"UserId",nil];
         
-        reloading = NO;
-        EGORefreshTableHeaderView *currentRefreshHeaderView = isInReceivedView?receivedTableHeaderView:notReceivedTableHeaderView;
-        [currentRefreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:currentTableView];
-    }];
-    
+        LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(ReadListOfCommunityService) WithPostData:postData];
+        
+        
+        [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
+            DebugLog(@"message:%@",((LeblueResponse*)result).message);
+            DebugLog(@"records:%@",((LeblueResponse*)result).records);
+            
+            NSArray *records = [((LeblueResponse*)result).records map:^(id obj){
+                NSMutableDictionary *newObj = [NSMutableDictionary dictionaryWithDictionary:obj];
+                [newObj setValue:appSession.userId forKey:@"FetchByUserId"];
+                [newObj setValue:[NSDate date] forKey:@"LocalSyncTime"];
+                [newObj setValue:NI(CommunityService) forKey:@"ServiceType"];
+                if([newObj objectForKey:@"AcceptStatus"]==nil){
+                    [newObj setValue:NI(0) forKey:@"AcceptStatus"];
+                }
+                return newObj;
+            }];
+            [CServiceRecord updateWithData:records By:appSession.userId type:CommunityService];
+        } failedBlock:^(NSError *error) {
+            //
+            DebugLog(@"%@",error);
+        } completionBlock:^{
+            //
+            [self fetchDataLocal];
+            
+            reloading = NO;
+            EGORefreshTableHeaderView *currentRefreshHeaderView = isInReceivedView?receivedTableHeaderView:notReceivedTableHeaderView;
+            [currentRefreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:currentTableView];
+            
+            [self closeWaitView];
+        }];
+    } 
 }
 
 - (NSString*) getDescriptionFromAcceptStatus:(id) acceptStatus andDoStatus:(id) doStatus{
@@ -274,7 +294,7 @@ static NSString * cellKey2 = @"bcell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:tableView == receivedTableView?cellKey1:cellKey2];
     NSArray *arrData = tableView == receivedTableView?arrReceived:arrNotReceived;
-    NSDictionary *dataItem = (NSDictionary*)[arrData objectAtIndex:indexPath.row];
+    CServiceRecord *dataItem = (CServiceRecord*)[arrData objectAtIndex:indexPath.row];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                        reuseIdentifier:tableView == receivedTableView?cellKey1:cellKey2] autorelease];
@@ -315,25 +335,24 @@ static NSString * cellKey2 = @"bcell";
         [cell.contentView addSubview:acceptOrder];
         acceptOrder.hidden = YES;
     } 
-    
-    ((UILabel*)[cell.contentView viewWithTag:1001]).text = GetDateString(ParseDateFromStringFormat([dataItem objectForKey:@"CheckInTime"],@"yyyy-MM-dd'T'HH:mm:ss.SSS"),@"yyyy-MM-dd HH:mm:ss");
-    ((UILabel*)[cell.contentView viewWithTag:1002]).text = [dataItem objectForKey:@"Name"];
-    ((UILabel*)[cell.contentView viewWithTag:1003]).text = [self getDescriptionFromAcceptStatus:[dataItem objectForKey:@"AcceptStatus"] andDoStatus:[dataItem objectForKey:@"DoStatus"]];
-    ((UIButton*)[cell.contentView viewWithTag:1004]).hidden = ![[self getDescriptionFromAcceptStatus:[dataItem objectForKey:@"AcceptStatus"] andDoStatus:[dataItem objectForKey:@"DoStatus"]] isEqualToString:@"我要接单"];
+     
+    ((UILabel*)[cell.contentView viewWithTag:1001]).text = GetDateString(dataItem.checkInTime,@"yyyy-MM-dd HH:mm:ss");
+    ((UILabel*)[cell.contentView viewWithTag:1002]).text = dataItem.name;
+    ((UILabel*)[cell.contentView viewWithTag:1003]).text = [self getDescriptionFromAcceptStatus:dataItem.acceptStatus andDoStatus:dataItem.doStatus];
+    ((UIButton*)[cell.contentView viewWithTag:1004]).hidden = ![((UILabel*)[cell.contentView viewWithTag:1003]).text isEqualToString:@"我要接单"];
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSArray *arrData = tableView == receivedTableView?arrReceived:arrNotReceived;
-    NSDictionary *dataItem = (NSDictionary*)[arrData objectAtIndex:indexPath.row];
-    NSString *statusString = [self getDescriptionFromAcceptStatus:[dataItem objectForKey:@"AcceptStatus"] andDoStatus:[dataItem objectForKey:@"DoStatus"]];
+    CServiceRecord *dataItem = (CServiceRecord*)[arrData objectAtIndex:indexPath.row];
+    NSString *statusString = [self getDescriptionFromAcceptStatus:dataItem.acceptStatus andDoStatus:dataItem.doStatus];
     if([statusString isEqualToString:@"我要接单"]){ 
         return;
     }
-    else if([statusString isEqualToString:@"接单成功"]){
-        NSDictionary *orderInfo = [NSDictionary dictionaryWithObjectsAndKeys:[dataItem objectForKey:@"Name"],@"Name",[dataItem objectForKey:@"Address"],@"Address",[dataItem objectForKey:@"Gender"],@"Sex",[dataItem objectForKey:@"Content"],@"ServeContent",@"上门服务",@"ServeMode",nil];
-        CommunityServiceAcceptOrderSuccessController *communityServiceAcceptOrderSuccessVC = [[CommunityServiceAcceptOrderSuccessController alloc] initWithOrderInfo:orderInfo];
+    else if([statusString isEqualToString:@"接单成功"]){ 
+        CommunityServiceAcceptOrderSuccessController *communityServiceAcceptOrderSuccessVC = [[CommunityServiceAcceptOrderSuccessController alloc] initWithServiceRecord:dataItem];
         [self presentModalViewController:communityServiceAcceptOrderSuccessVC animated: YES];
     }
     else if([statusString isEqualToString:@"接单失败"]){
@@ -386,11 +405,9 @@ static NSString * cellKey2 = @"bcell";
     UITableViewCell* cell = (UITableViewCell*)[[(UIButton*)sender superview] superview];
     int row = [notReceivedTableView indexPathForCell:cell].row;
     NSArray *arrData = arrNotReceived;
-    NSDictionary *dataItem = (NSDictionary*)[arrData objectAtIndex:row];
+    CServiceRecord *dataItem = (CServiceRecord*)[arrData objectAtIndex:row];
     
-    NSDictionary *orderInfo = [NSDictionary dictionaryWithObjectsAndKeys:[dataItem objectForKey:@"Name"],@"Name",[dataItem objectForKey:@"Address"],@"Address",[dataItem objectForKey:@"Gender"],@"Sex",[dataItem objectForKey:@"Content"],@"ServeContent",@"上门服务",@"ServeMode",nil];
-    
-    CommunityServiceAcceptOrderController *communityServiceAcceptOrderVC = [[CommunityServiceAcceptOrderController alloc] initWithOrderInfo:orderInfo];
+    CommunityServiceAcceptOrderController *communityServiceAcceptOrderVC = [[CommunityServiceAcceptOrderController alloc] initWithServiceRecord:dataItem];
     [self presentModalViewController:communityServiceAcceptOrderVC animated: YES];
 }
 - (void)doToggle:(id)sender {
