@@ -33,6 +33,8 @@
 		AC8EB8AF169D1091001F3A06 /* SmartLifeModels.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AC8EB8AD169D1091001F3A06 /* SmartLifeModels.xcdatamodeld */; };
 		AC8EB8B2169D1308001F3A06 /* CUser.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8EB8B1169D1308001F3A06 /* CUser.m */; };
 		AC8EB8BE169D4777001F3A06 /* CServiceRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8EB8BD169D4777001F3A06 /* CServiceRecord.m */; };
+		AC8EB8C716A143C9001F3A06 /* CServiceLog.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8EB8C616A143C8001F3A06 /* CServiceLog.m */; };
+		AC8EB8E016A6DDCC001F3A06 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC8EB8DF16A6DDCB001F3A06 /* AVFoundation.framework */; };
 		ACA95907166CD1DD00302D82 /* SmartPhoneController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA95906166CD1DD00302D82 /* SmartPhoneController.m */; };
 		ACA9590A166CD40D00302D82 /* RecentCallController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA95909166CD40D00302D82 /* RecentCallController.m */; };
 		ACA9590D166CD4C900302D82 /* AddressBookController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA9590C166CD4C900302D82 /* AddressBookController.m */; };
@@ -114,6 +116,9 @@
 		AC8EB8B1169D1308001F3A06 /* CUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CUser.m; path = AppModel/CUser.m; sourceTree = "<group>"; };
 		AC8EB8BC169D4777001F3A06 /* CServiceRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CServiceRecord.h; path = AppModel/CServiceRecord.h; sourceTree = "<group>"; };
 		AC8EB8BD169D4777001F3A06 /* CServiceRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CServiceRecord.m; path = AppModel/CServiceRecord.m; sourceTree = "<group>"; };
+		AC8EB8C516A143C7001F3A06 /* CServiceLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CServiceLog.h; path = AppModel/CServiceLog.h; sourceTree = "<group>"; };
+		AC8EB8C616A143C8001F3A06 /* CServiceLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CServiceLog.m; path = AppModel/CServiceLog.m; sourceTree = "<group>"; };
+		AC8EB8DF16A6DDCB001F3A06 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		ACA95905166CD1DD00302D82 /* SmartPhoneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SmartPhoneController.h; path = ProvideForTheAged/VOIP/SmartPhoneController.h; sourceTree = "<group>"; };
 		ACA95906166CD1DD00302D82 /* SmartPhoneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SmartPhoneController.m; path = ProvideForTheAged/VOIP/SmartPhoneController.m; sourceTree = "<group>"; };
 		ACA95908166CD40D00302D82 /* RecentCallController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecentCallController.h; path = ProvideForTheAged/VOIP/RecentCallController.h; sourceTree = "<group>"; };
@@ -170,6 +175,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AC8EB8E016A6DDCC001F3A06 /* AVFoundation.framework in Frameworks */,
 				ACB162D116897E6D0029E395 /* CoreLocation.framework in Frameworks */,
 				AC4AB5D8167D7E51006D88B7 /* CFNetwork.framework in Frameworks */,
 				ACACC6A116611C1A00CE5BC0 /* AudioToolbox.framework in Frameworks */,
@@ -214,6 +220,7 @@
 				AC15B082165B52BD00E856E4 /* core.xcodeproj */,
 				AC15B0DF165BD41100E856E4 /* libz.dylib */,
 				AC15B0E3165BD5A700E856E4 /* libxml2.dylib */,
+				AC8EB8DF16A6DDCB001F3A06 /* AVFoundation.framework */,
 				ACB162D016897E6C0029E395 /* CoreLocation.framework */,
 				AC4AB5D7167D7E51006D88B7 /* CFNetwork.framework */,
 				ACACC6A016611C1900CE5BC0 /* AudioToolbox.framework */,
@@ -289,6 +296,8 @@
 			isa = PBXGroup;
 			children = (
 				AC8EB8AD169D1091001F3A06 /* SmartLifeModels.xcdatamodeld */,
+				AC8EB8C516A143C7001F3A06 /* CServiceLog.h */,
+				AC8EB8C616A143C8001F3A06 /* CServiceLog.m */,
 				AC8EB8BC169D4777001F3A06 /* CServiceRecord.h */,
 				AC8EB8BD169D4777001F3A06 /* CServiceRecord.m */,
 				AC8EB8B0169D1308001F3A06 /* CUser.h */,
@@ -533,6 +542,7 @@
 				AC8EB8AF169D1091001F3A06 /* SmartLifeModels.xcdatamodeld in Sources */,
 				AC8EB8B2169D1308001F3A06 /* CUser.m in Sources */,
 				AC8EB8BE169D4777001F3A06 /* CServiceRecord.m in Sources */,
+				AC8EB8C716A143C9001F3A06 /* CServiceLog.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,6 +8,7 @@
 
 #import "RescueController.h"
 #import "CServiceRecord.h"
+#import "CServiceLog.h"
 #define NOT_PROCESS 1
 
 @interface RescueController (){
@@ -19,6 +20,11 @@
     CGPoint defaultFooterViewCenter;
     BOOL isEditing;
     MBProgressHUD *HUD;
+    
+    
+    AVAudioPlayer *player;
+    AVAudioRecorder *recorder;
+    BOOL isRecording;
 }
 @property (nonatomic, retain) CServiceRecord *servieRecord;
 @property (nonatomic, retain) DDPageControl  *pageControl;
@@ -29,7 +35,8 @@
 @property (nonatomic, retain) EGORefreshTableHeaderView     *processActionTableHeaderView;
 @property (nonatomic, retain) EGORefreshTableHeaderView     *processResponseTableHeaderView;
 @property (nonatomic, retain) UIButton *voiceButton;
-@property (nonatomic,retain) UITextField *messageField;
+@property (nonatomic, retain) UITextField *messageField;
+@property (nonatomic, retain) NSString *recordedFile;
 @end
 
 @implementation RescueController
@@ -45,6 +52,7 @@
 @synthesize arrProcessResponses;
 @synthesize voiceButton;
 @synthesize messageField;
+@synthesize recordedFile;
 
 - (void)dealloc {
     self.servieRecord = nil;
@@ -59,6 +67,7 @@
     self.arrProcessResponses = nil;
     self.voiceButton = nil;
     self.messageField = nil;
+    self.recordedFile = nil;
     [super dealloc];
 }
 
@@ -74,7 +83,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    /*
     self.arrProcessActions = [NSMutableArray arrayWithObjects:
                      [NSDictionary dictionaryWithObjectsAndKeys:@"2012-11-11 15:30:01",@"ActionTime", @"120已接通",@"Description",nil],
                      [NSDictionary dictionaryWithObjectsAndKeys:@"2012-11-11 15:32:01",@"ActionTime", @"社区医生已接通",@"Description",nil],
@@ -88,6 +97,7 @@
                               [NSDictionary dictionaryWithObjectsAndKeys:@"2012-11-11 15:35:01",@"ResponseTime", @"01.mp3",@"ResponseContent",@"audio",@"ResponseType",nil],
                               [NSDictionary dictionaryWithObjectsAndKeys:@"2012-11-11 15:35:10",@"ResponseTime", @"02.mp3",@"ResponseContent",@"audio",@"ResponseType",nil],
                               nil];
+    */
     
 	// Do any additional setup after loading the view.
     self.headerView.headerLabel.text = MF_SWF(@"紧急服务－%@需要救助",servieRecord.name);
@@ -227,7 +237,7 @@
     
     [self fetchData];
     
-    
+    isRecording = NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -260,35 +270,75 @@
     }
 }
 
+#pragma mark - 数据处理 
+- (void)saveDataLocal:(BOOL)remoteSubmit WithPK:(NSString*) serviceTracksLogId withContent:(NSString*) content withSoundFile:(NSString*)soundFile {
+    CServiceLog *log = [CServiceLog create];
+    log.localSyncTime = [NSDate date];
+    log.localSyncFlag = NB(remoteSubmit);
+    
+    log.callServiceId = self.servieRecord.callServiceId;
+    log.checkInTime = [NSDate date];
+    if(remoteSubmit){
+        log.serviceTracksLogId = serviceTracksLogId;
+    }
+    
+    log.logContent = content;
+    if(soundFile){
+        log.logSoundFile = soundFile;
+    } 
+    
+    log.fetchByUserId = appSession.userId;
+    log.serviceTracksId = self.servieRecord.serviceTracksId;
+    log.type = NI(0);
+    log.logName = appSession.userName;
+    
+    [moc save];
+}
+
+- (void)fetchDataLocal{
+    self.arrProcessActions = [CServiceLog listProcessActionByService:servieRecord.callServiceId];
+    self.arrProcessResponses = [CServiceLog listProcessResponseByService:servieRecord.callServiceId];
+    [processActionTableView reloadData];
+    [processResponseTableView reloadData];
+}
+
 - (void)fetchData{
     [self showWaitViewWithTitle:@"读取求助信息处理日志"];
-    
-    NSDictionary *postData = [NSDictionary dictionaryWithObjectsAndKeys:servieRecord.callServiceId,@"CallServiceId",nil];
-    
-    LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(ReadListOfProcessing) WithPostData:postData];
-    
-    
-    [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
-        DebugLog(@"message:%@",((LeblueResponse*)result).message);
-        DebugLog(@"records:%@",((LeblueResponse*)result).records);
-        //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"tel://123456789"]];
-        //self.arrCalls = ((LeblueResponse*)result).records;
-        //
-    } failedBlock:^(NSError *error) {
-        //
-        DebugLog(@"%@",error);
-    } completionBlock:^{
-        //
+    if (appSession.networkStatus != ReachableViaWWAN && appSession.networkStatus != ReachableViaWiFi) {
+        //本地登录
+        [self fetchDataLocal];
         [self closeWaitView];
-          
-        reloading = NO;
-        UITableView *currentTableView  = isInProcessActionView?processActionTableView:processResponseTableView;
-        [currentTableView reloadData];
+    }
+    else{
+        NSDictionary *postData = [NSDictionary dictionaryWithObjectsAndKeys:servieRecord.callServiceId,@"CallServiceId",nil];
         
-        EGORefreshTableHeaderView *currentRefreshHeaderView = isInProcessActionView?processActionTableHeaderView:processResponseTableHeaderView;
-        [currentRefreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:isInProcessActionView?processActionTableView:processResponseTableView];
+        LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(ReadListOfProcessing) WithPostData:postData];
         
-    }];
+        
+        [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
+            DebugLog(@"message:%@",((LeblueResponse*)result).message);
+            DebugLog(@"records:%@",((LeblueResponse*)result).records); 
+            NSArray *records = [((LeblueResponse*)result).records map:^(id obj){
+                NSMutableDictionary *newObj = [NSMutableDictionary dictionaryWithDictionary:obj];
+                [newObj setValue:NI(1) forKey:@"LocalSyncFlag"];
+                return newObj;
+            }];
+            [CServiceLog updateWithData:records ByService:servieRecord.callServiceId];
+        } failedBlock:^(NSError *error) {
+            //
+            DebugLog(@"%@",error);
+        } completionBlock:^{
+            //
+            [self fetchDataLocal];
+            
+            reloading = NO;
+            UITableView *currentTableView  = isInProcessActionView?processActionTableView:processResponseTableView;
+            [currentTableView reloadData]; 
+            EGORefreshTableHeaderView *currentRefreshHeaderView = isInProcessActionView?processActionTableHeaderView:processResponseTableHeaderView;
+            [currentRefreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:isInProcessActionView?processActionTableView:processResponseTableView];
+            [self closeWaitView];
+        }];
+    } 
 }
 
 #pragma mark - UITableView delegate
@@ -316,7 +366,7 @@ static NSString * cellKey2 = @"bcell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:tableView == processActionTableView?cellKey1:cellKey2];
     NSArray *arrData = tableView == processActionTableView?arrProcessActions:arrProcessResponses;
-    NSDictionary *dataItem = (NSDictionary*)[arrData objectAtIndex:indexPath.row];
+    CServiceLog *dataItem = (CServiceLog*)[arrData objectAtIndex:indexPath.row];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                        reuseIdentifier:tableView == processActionTableView?cellKey1:cellKey2] autorelease];
@@ -334,15 +384,25 @@ static NSString * cellKey2 = @"bcell";
         valueName.backgroundColor = [UIColor clearColor];
         valueName.font = [UIFont systemFontOfSize:14.0f];
         valueName.tag = 1002;
-        valueName.textAlignment = UITextAlignmentCenter;
+        valueName.textAlignment = UITextAlignmentLeft;
         [cell.contentView addSubview:valueName];
-        [valueName release]; 
-    }
-    NSString *key1 = tableView==processActionTableView?@"ActionTime":@"ResponseTime";
-    NSString *key2 = tableView==processActionTableView?@"Description":@"ResponseContent";
+        [valueName release];
+        
+        UIButton *playVoice = [UIButton buttonWithType:UIButtonTypeCustom];
+        playVoice.tag = 1003;
+        [playVoice setFrame:CGRectMake(160,(78/2.f - 43/2.f)/2.f,102/2.f, 43/2.f)];
+        [playVoice setBackgroundImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/EmergencyService/02.png") forState:UIControlStateNormal];
+        //[playVoice setTitle:@"我要接单" forState:UIControlStateNormal];
+        [playVoice addTarget:self action:@selector(doPlayVoice:) forControlEvents:UIControlEventTouchUpInside];
+        [cell.contentView addSubview:playVoice];
+        playVoice.hidden = YES;
+    } 
     
-    ((UILabel*)[cell.contentView viewWithTag:1001]).text = [dataItem objectForKey:key1];
-    ((UILabel*)[cell.contentView viewWithTag:1002]).text = [dataItem objectForKey:key2];
+    ((UILabel*)[cell.contentView viewWithTag:1001]).text = GetDateString(dataItem.checkInTime,@"yyyy-MM-dd HH:mm:ss");
+    
+    BOOL haveLogSoundFile = (dataItem.logSoundFile != nil&&![dataItem.logSoundFile isEqualToString:@""]);
+    ((UILabel*)[cell.contentView viewWithTag:1002]).text = !haveLogSoundFile?dataItem.logContent:@"";
+    ((UIButton*)[cell.contentView viewWithTag:1003]).hidden = !haveLogSoundFile;
     return cell;
 }
 
@@ -426,8 +486,7 @@ static NSString * cellKey2 = @"bcell";
     [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
         DebugLog(@"message:%@",((LeblueResponse*)result).message);
         DebugLog(@"records:%@",((LeblueResponse*)result).records);
-        //NSDictionary *dict = [((LeblueResponse*)result).records objectAtIndex:0];
-        //
+        
         [self navigationToPrevious];
     } failedBlock:^(NSError *error) {
         //
@@ -485,6 +544,40 @@ static NSString * cellKey2 = @"bcell";
     
 }
 
+- (void)doPlayVoice:(id)sender{
+    UITableViewCell* cell = (UITableViewCell*)[[(UIButton*)sender superview] superview];
+    UITableView *tableView = isInProcessActionView?processActionTableView:processResponseTableView;
+    int row = [tableView indexPathForCell:cell].row;
+    NSArray *arrData = isInProcessActionView?arrProcessActions:arrProcessResponses;
+    CServiceLog *dataItem = (CServiceLog*)[arrData objectAtIndex:row];
+    
+    
+    HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    [self.containerView addSubview:HUD];
+    [HUD release];
+    HUD.customView = [[[UIImageView alloc] initWithImage:MF_PngOfDefaultSkin(@"Index/loud.png")] autorelease];
+    
+    // Set custom view mode
+    HUD.mode = MBProgressHUDModeCustomView;
+    
+    //HUD.delegate = self;
+    HUD.labelText = @"  开始播放  ";
+    [HUD show:YES];
+    //NSString *destDir = JOINP(localSoundDir,@"a24e60d4-be66-4493-a02d-f75a679791af/2991aeef-d6d8-47e0-922c-43d1cfb7dcb1");
+    NSError *playerError; 
+    player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:JOINP(dataItem.logContent,dataItem.logSoundFile)] error:&playerError];
+    
+    if (player == nil)
+    {
+        DebugLog(@"ERror creating player: %@", [playerError description]);
+        [HUD hide:YES];
+    }
+    player.delegate = self;
+    
+    [player play];
+    
+} 
+
 - (void)doPic:(id)sender {
     DebugLog(@"doPic");
 }
@@ -531,8 +624,79 @@ static NSString * cellKey2 = @"bcell";
 
 #pragma mark - 长按
 -  (void)handleLongPress:(UILongPressGestureRecognizer*)sender {
-    if (sender.state == UIGestureRecognizerStateEnded) { 
-        [HUD hide:YES];
+    if (sender.state == UIGestureRecognizerStateEnded) {
+        isRecording = NO; 
+        [recorder stop];
+        recorder = nil;
+        NSString *sourcePath = JOINP(NSTemporaryDirectory(),recordedFile);
+        NSString *destDir = JOINP2(localSoundDir,servieRecord.callServiceId,appSession.userId);
+        
+        //move to Documents and save to local
+        [PHResourceManager moveResourceFrom:sourcePath To:JOINP(destDir,recordedFile) sucessBlock:^(id result) {
+            if (appSession.networkStatus != ReachableViaWWAN && appSession.networkStatus != ReachableViaWiFi) {
+                //保存到本地
+                
+                [self saveDataLocal:NO WithPK:nil withContent:destDir withSoundFile:recordedFile];
+                
+                HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
+                HUD.mode = MBProgressHUDModeCustomView;
+                HUD.labelText = @"保存成功";
+                [HUD hide:YES];
+            }
+            else{
+                id theServiceTracksId = servieRecord.serviceTracksId;
+                if(theServiceTracksId == nil){
+                    theServiceTracksId = [NSNull null];
+                }
+                NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys: NI(0),@"Type",appSession.userName,@"UserName", destDir,@"LogContent",recordedFile,@"LogSoundFile",theServiceTracksId,@"ServiceTracksId",servieRecord.callServiceId,@"CallServiceId",nil];
+                
+                LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(SendServiceLog) WithPostData:Data];
+                
+                
+                [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
+                    DebugLog(@"message:%@",((LeblueResponse*)result).message);
+                    DebugLog(@"records:%@",((LeblueResponse*)result).records);
+
+                    [self saveDataLocal:YES WithPK:[((LeblueResponse*)result).records objectAtIndex:0] withContent:destDir withSoundFile:recordedFile];
+                    
+                    HUD.labelText = @"保存成功";
+                    
+                    //开始上传
+                    HUD.mode = MBProgressHUDModeDeterminate;
+                    HUD.labelText = @"上传中...";
+                    float progress = 0.0f;
+                    while (progress < 1.0f)
+                    {
+                        progress += 0.01f;
+                        HUD.progress = progress;
+                        usleep(50000);
+                    }
+                    
+                    HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
+                    HUD.mode = MBProgressHUDModeCustomView;
+                    HUD.labelText = @"上传成功";
+                } failedBlock:^(NSError *error) {
+                    //
+                    DebugLog(@"%@",error);
+                    //[self saveDataLocalAsSoundFile:NO WithPK:nil With:recordedFile];
+                } completionBlock:^{
+                    // 
+                    int64_t delayInSeconds = 0.5f;
+                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                        [HUD hide:YES];
+                        [self fetchData];
+                    });
+                    
+                }];
+            }
+            
+        } failedBlock:^(NSError *error) {
+            DebugLog(@"record move error:%@",error);
+            [HUD hide:YES];
+        } completionBlock:^{
+            
+        }]; 
     }
     else if (sender.state == UIGestureRecognizerStateBegan){  
         HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
@@ -548,7 +712,35 @@ static NSString * cellKey2 = @"bcell";
         
         [HUD show:YES];
         
+        self.recordedFile = GUID;
+        DebugLog(@"recordedFile:%@",self.recordedFile);
+        
+        AVAudioSession *session = [AVAudioSession sharedInstance];
+        
+        NSError *sessionError;
+        [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&sessionError];
+        
+        if(session != nil){
+            [session setActive:YES error:nil];
+            if(!isRecording)
+            {
+                isRecording = YES;
+                recorder = [[AVAudioRecorder alloc] initWithURL:NURL(JOINP(NSTemporaryDirectory(),recordedFile)) settings:nil error:nil];
+                [recorder prepareToRecord];
+                [recorder record];
+                player = nil;
+            }
+        }
+        else{
+            DebugLog(@"Error creating session: %@", [sessionError description]);
+        } 
     }
+}
+
+#pragma mark - AVAudioPlayerDelegate
+- (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+    [HUD hide:YES];
 }
 
 #pragma mark - EGORefreshTableHeaderDelegate Methods
@@ -593,25 +785,10 @@ static NSString * cellKey2 = @"bcell";
 // done button pressed
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if(textField ==  messageField){
-        DebugLog(@"send message");
-        id theServiceTracksId = servieRecord.serviceTracksId;
-        if(theServiceTracksId == nil){
-            theServiceTracksId = [NSNull null];
-        }
-        NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys: NI(0),@"Type",appSession.userName,@"UserName", messageField.text,@"LogContent",[NSNull null],@"LogSoundFile",theServiceTracksId,@"ServiceTracksId",servieRecord.callServiceId,@"CallServiceId",nil];
-        
-        LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(SendServiceLog) WithPostData:Data];
-        
-        
-        [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
-            DebugLog(@"message:%@",((LeblueResponse*)result).message);
-            DebugLog(@"records:%@",((LeblueResponse*)result).records); 
-            // 
-        } failedBlock:^(NSError *error) {
-            // 
-            DebugLog(@"%@",error);
-        } completionBlock:^{
-            //
+
+        [self showWaitViewWithTitle:@"提交应急处理"];
+        if (appSession.networkStatus != ReachableViaWWAN && appSession.networkStatus != ReachableViaWiFi) {
+            [self saveDataLocal:NO WithPK:nil withContent:messageField.text withSoundFile:nil]; 
             [maskView removeFromSuperview];
             maskView = nil;
             [messageField resignFirstResponder];
@@ -619,8 +796,39 @@ static NSString * cellKey2 = @"bcell";
             [self.footerView moveMeTo:defaultFooterViewCenter withDuration:.25f];
             messageField.hidden = YES;
             voiceButton.hidden = NO;
-        }];
-
+            [self closeWaitView];
+        }
+        else{
+            id theServiceTracksId = servieRecord.serviceTracksId;
+            if(theServiceTracksId == nil){
+                theServiceTracksId = [NSNull null];
+            }
+            NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys: NI(0),@"Type",appSession.userName,@"UserName", messageField.text,@"LogContent",[NSNull null],@"LogSoundFile",theServiceTracksId,@"ServiceTracksId",servieRecord.callServiceId,@"CallServiceId",nil];
+            
+            LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(SendServiceLog) WithPostData:Data];
+            
+            
+            [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
+                DebugLog(@"message:%@",((LeblueResponse*)result).message);
+                DebugLog(@"records:%@",((LeblueResponse*)result).records);
+                [self saveDataLocal:YES WithPK:[((LeblueResponse*)result).records objectAtIndex:0] withContent:messageField.text withSoundFile:nil]; 
+            } failedBlock:^(NSError *error) {
+                //
+                DebugLog(@"%@",error);
+            } completionBlock:^{
+                //
+                [maskView removeFromSuperview];
+                maskView = nil;
+                [messageField resignFirstResponder];
+                self.footerView.height = self.footerView.height-25.75;
+                [self.footerView moveMeTo:defaultFooterViewCenter withDuration:.25f];
+                messageField.hidden = YES;
+                voiceButton.hidden = NO;
+                [self closeWaitView];
+                
+                [self fetchData];
+            }];
+        } 
     }
     isEditing = NO;
     return YES;

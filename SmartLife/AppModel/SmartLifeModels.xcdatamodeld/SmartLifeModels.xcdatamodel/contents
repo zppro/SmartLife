@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1810" systemVersion="11G63" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="CServiceLog" representedClassName="CServiceLog" syncable="YES">
+        <attribute name="callServiceId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="checkInTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="fetchByUserId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="localSyncFlag" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="localSyncTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="logContent" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="logName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="logSoundFile" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="serviceTracksId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="serviceTracksLogId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+    </entity>
     <entity name="CServiceRecord" representedClassName="CServiceRecord" syncable="YES">
         <attribute name="acceptStatus" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
@@ -33,5 +46,6 @@
     <elements>
         <element name="CUser" positionX="160" positionY="192" width="128" height="105"/>
         <element name="CServiceRecord" positionX="160" positionY="192" width="128" height="375"/>
+        <element name="CServiceLog" positionX="160" positionY="192" width="128" height="210"/>
     </elements>
 </model>

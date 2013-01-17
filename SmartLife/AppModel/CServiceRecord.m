@@ -73,28 +73,28 @@
     DKPredicateBuilder *builder = [[[DKPredicateBuilder alloc] init] autorelease];
     [builder where:@"fetchByUserId" equals:userId];
     [builder where:@"serviceType" equals:NI(EmergencyService)];
-    return [CServiceRecord fetchWithPredicateFormat:builder.compoundPredicate.predicateFormat];
+    return [CServiceRecord fetchWithSortBy:@"checkInTime" ascending:NO predicateWithFormat:builder.compoundPredicate.predicateFormat];
 }
 + (NSArray *)listCommunityServiceNotReceivedWithUserId:(NSString *)userId{
     DKPredicateBuilder *builder = [[[DKPredicateBuilder alloc] init] autorelease];
     [builder where:@"fetchByUserId" equals:userId];
     [builder where:@"serviceType" equals:NI(CommunityService)];
     [builder where:@"acceptStatus" equals:NI(0)];
-    return [CServiceRecord fetchWithPredicateFormat:builder.compoundPredicate.predicateFormat];
+    return [CServiceRecord fetchWithSortBy:@"checkInTime" ascending:NO predicateWithFormat:builder.compoundPredicate.predicateFormat];
 }
 + (NSArray *)listCommunityServiceReceivedWithUserId:(NSString *)userId{
     DKPredicateBuilder *builder = [[[DKPredicateBuilder alloc] init] autorelease];
     [builder where:@"fetchByUserId" equals:userId];
     [builder where:@"serviceType" equals:NI(CommunityService)];
     [builder where:@"acceptStatus" greaterThan:NI(0)];
-    return [CServiceRecord fetchWithPredicateFormat:builder.compoundPredicate.predicateFormat];
+    return [CServiceRecord fetchWithSortBy:@"checkInTime" ascending:NO predicateWithFormat:builder.compoundPredicate.predicateFormat];
 }
 + (NSArray *)listLifeServiceNotReceivedWithUserId:(NSString *)userId{
     DKPredicateBuilder *builder = [[[DKPredicateBuilder alloc] init] autorelease];
     [builder where:@"fetchByUserId" equals:userId];
     [builder where:@"serviceType" equals:NI(LifeService)];
     [builder where:@"acceptStatus" equals:NI(0)];
-    return [CServiceRecord fetchWithPredicateFormat:builder.compoundPredicate.predicateFormat];
+    return [CServiceRecord fetchWithSortBy:@"checkInTime" ascending:NO predicateWithFormat:builder.compoundPredicate.predicateFormat]; 
 }
 
 + (NSArray *)listLifeServiceReceivedWithUserId:(NSString *)userId{
@@ -102,7 +102,7 @@
     [builder where:@"fetchByUserId" equals:userId];
     [builder where:@"serviceType" equals:NI(LifeService)];
     [builder where:@"acceptStatus" greaterThan:NI(0)];
-    return [CServiceRecord fetchWithPredicateFormat:builder.compoundPredicate.predicateFormat];
+    return [CServiceRecord fetchWithSortBy:@"checkInTime" ascending:NO predicateWithFormat:builder.compoundPredicate.predicateFormat]; 
 }
 
 + (BOOL)updateWithData:(NSArray *)data By:(NSString*) userId type:(ServiceType) type{

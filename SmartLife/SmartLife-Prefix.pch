@@ -11,6 +11,7 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
+    #import <AVFoundation/AVFoundation.h>
     #import "core.h"
     #import "GlobalObjectsContainer.h"
     #import "AppMacro.h"

@@ -11,5 +11,6 @@
 
 #define baseURL @"http://www.lifeblue.com.cn/WebService/Default.ashx"
 #define nwCode(x) [appSession getNWCode:x]
+#define localSoundDir JOINP(MF_DocumentFolder(),@"sound")
 
 #endif
