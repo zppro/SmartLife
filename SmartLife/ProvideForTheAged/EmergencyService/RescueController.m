@@ -9,6 +9,9 @@
 #import "RescueController.h"
 #import "CServiceRecord.h"
 #import "CServiceLog.h"
+#import "ASIHTTPRequest.h"
+#import "ASIFormDataRequest.h"
+
 #define NOT_PROCESS 1
 
 @interface RescueController (){
@@ -25,6 +28,8 @@
     AVAudioPlayer *player;
     AVAudioRecorder *recorder;
     BOOL isRecording;
+    BOOL isUploading;
+    BOOL isPlaying;
 }
 @property (nonatomic, retain) CServiceRecord *servieRecord;
 @property (nonatomic, retain) DDPageControl  *pageControl;
@@ -316,8 +321,8 @@
         
         
         [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
-            DebugLog(@"message:%@",((LeblueResponse*)result).message);
-            DebugLog(@"records:%@",((LeblueResponse*)result).records); 
+            //DebugLog(@"message:%@",((LeblueResponse*)result).message);
+            //DebugLog(@"records:%@",((LeblueResponse*)result).records);
             NSArray *records = [((LeblueResponse*)result).records map:^(id obj){
                 NSMutableDictionary *newObj = [NSMutableDictionary dictionaryWithDictionary:obj];
                 [newObj setValue:NI(1) forKey:@"LocalSyncFlag"];
@@ -545,27 +550,57 @@ static NSString * cellKey2 = @"bcell";
 }
 
 - (void)doPlayVoice:(id)sender{
-    UITableViewCell* cell = (UITableViewCell*)[[(UIButton*)sender superview] superview];
-    UITableView *tableView = isInProcessActionView?processActionTableView:processResponseTableView;
-    int row = [tableView indexPathForCell:cell].row;
-    NSArray *arrData = isInProcessActionView?arrProcessActions:arrProcessResponses;
-    CServiceLog *dataItem = (CServiceLog*)[arrData objectAtIndex:row];
-    
-    
     HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
     [self.containerView addSubview:HUD];
-    [HUD release];
+    [HUD release];  
+    [HUD showAnimated:YES whileExecutingBlock:^{
+        UITableViewCell* cell = (UITableViewCell*)[[(UIButton*)sender superview] superview];
+        UITableView *tableView = isInProcessActionView?processActionTableView:processResponseTableView;
+        int row = [tableView indexPathForCell:cell].row;
+        NSArray *arrData = isInProcessActionView?arrProcessActions:arrProcessResponses;
+        CServiceLog *dataItem = (CServiceLog*)[arrData objectAtIndex:row];
+         
+        isPlaying = NO;
+        NSString *path = JOINP2(localSoundDir,dataItem.logContent,dataItem.logSoundFile);
+        if(!MF_FileExists(path)){
+            //不存在，从网上下载
+            HUD.mode = MBProgressHUDModeDeterminate;
+            HUD.labelText = @"下载中...";
+            sleep(1);
+
+            
+            NSString *urlAudio = JOINP2(baseURL3,dataItem.logContent,dataItem.logSoundFile);
+            DebugLog(@"success:%@",urlAudio);
+            [HttpSynchronous httpDownload:urlAudio destination:path delegate:self sucessBlock:^(id result) {
+                
+                [self playAudio:path];
+            } failedBlock:^(NSError *error) {
+                DebugLog(@"error:%@",error);
+            } completionBlock:^{
+                
+            }];
+        }
+        else {
+            //存在直接播放
+            [self playAudio:path];
+        }
+        
+        while (isPlaying) {
+            //waiting
+        }
+    }];  
+}
+
+- (void)playAudio:(NSString *) path{
     HUD.customView = [[[UIImageView alloc] initWithImage:MF_PngOfDefaultSkin(@"Index/loud.png")] autorelease];
     
     // Set custom view mode
     HUD.mode = MBProgressHUDModeCustomView;
-    
-    //HUD.delegate = self;
     HUD.labelText = @"  开始播放  ";
-    [HUD show:YES];
+    
     //NSString *destDir = JOINP(localSoundDir,@"a24e60d4-be66-4493-a02d-f75a679791af/2991aeef-d6d8-47e0-922c-43d1cfb7dcb1");
-    NSError *playerError; 
-    player = [[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:JOINP(dataItem.logContent,dataItem.logSoundFile)] error:&playerError];
+    NSError *playerError;
+    player = [[[AVAudioPlayer alloc] initWithContentsOfURL:[NSURL fileURLWithPath:path] error:&playerError] autorelease];
     
     if (player == nil)
     {
@@ -573,10 +608,9 @@ static NSString * cellKey2 = @"bcell";
         [HUD hide:YES];
     }
     player.delegate = self;
-    
     [player play];
-    
-} 
+    isPlaying = YES;
+}
 
 - (void)doPic:(id)sender {
     DebugLog(@"doPic");
@@ -625,81 +659,16 @@ static NSString * cellKey2 = @"bcell";
 #pragma mark - 长按
 -  (void)handleLongPress:(UILongPressGestureRecognizer*)sender {
     if (sender.state == UIGestureRecognizerStateEnded) {
+        
         isRecording = NO; 
         [recorder stop];
-        recorder = nil;
-        NSString *sourcePath = JOINP(NSTemporaryDirectory(),recordedFile);
-        NSString *destDir = JOINP2(localSoundDir,servieRecord.callServiceId,appSession.userId);
+        recorder = nil; 
         
-        //move to Documents and save to local
-        [PHResourceManager moveResourceFrom:sourcePath To:JOINP(destDir,recordedFile) sucessBlock:^(id result) {
-            if (appSession.networkStatus != ReachableViaWWAN && appSession.networkStatus != ReachableViaWiFi) {
-                //保存到本地
-                
-                [self saveDataLocal:NO WithPK:nil withContent:destDir withSoundFile:recordedFile];
-                
-                HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
-                HUD.mode = MBProgressHUDModeCustomView;
-                HUD.labelText = @"保存成功";
-                [HUD hide:YES];
-            }
-            else{
-                id theServiceTracksId = servieRecord.serviceTracksId;
-                if(theServiceTracksId == nil){
-                    theServiceTracksId = [NSNull null];
-                }
-                NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys: NI(0),@"Type",appSession.userName,@"UserName", destDir,@"LogContent",recordedFile,@"LogSoundFile",theServiceTracksId,@"ServiceTracksId",servieRecord.callServiceId,@"CallServiceId",nil];
-                
-                LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(SendServiceLog) WithPostData:Data];
-                
-                
-                [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
-                    DebugLog(@"message:%@",((LeblueResponse*)result).message);
-                    DebugLog(@"records:%@",((LeblueResponse*)result).records);
-
-                    [self saveDataLocal:YES WithPK:[((LeblueResponse*)result).records objectAtIndex:0] withContent:destDir withSoundFile:recordedFile];
-                    
-                    HUD.labelText = @"保存成功";
-                    
-                    //开始上传
-                    HUD.mode = MBProgressHUDModeDeterminate;
-                    HUD.labelText = @"上传中...";
-                    float progress = 0.0f;
-                    while (progress < 1.0f)
-                    {
-                        progress += 0.01f;
-                        HUD.progress = progress;
-                        usleep(50000);
-                    }
-                    
-                    HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
-                    HUD.mode = MBProgressHUDModeCustomView;
-                    HUD.labelText = @"上传成功";
-                } failedBlock:^(NSError *error) {
-                    //
-                    DebugLog(@"%@",error);
-                    //[self saveDataLocalAsSoundFile:NO WithPK:nil With:recordedFile];
-                } completionBlock:^{
-                    // 
-                    int64_t delayInSeconds = 0.5f;
-                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                        [HUD hide:YES];
-                        [self fetchData];
-                    });
-                    
-                }];
-            }
-            
-        } failedBlock:^(NSError *error) {
-            DebugLog(@"record move error:%@",error);
-            [HUD hide:YES];
-        } completionBlock:^{
-            
-        }]; 
     }
-    else if (sender.state == UIGestureRecognizerStateBegan){  
-        HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+    else if (sender.state == UIGestureRecognizerStateBegan){
+        
+        
+        HUD = [[MBProgressHUD alloc] initWithView:self.containerView];
         [self.containerView addSubview:HUD];
         [HUD release];
         HUD.customView = [[[UIImageView alloc] initWithImage:MF_PngOfDefaultSkin(@"Index/microphone.png")] autorelease];
@@ -708,12 +677,9 @@ static NSString * cellKey2 = @"bcell";
         HUD.mode = MBProgressHUDModeCustomView;
         
         //HUD.delegate = self;
-        HUD.labelText = @"  开始说话  ";
-        
-        [HUD show:YES];
-        
-        self.recordedFile = GUID;
-        DebugLog(@"recordedFile:%@",self.recordedFile);
+        HUD.labelText = @"  开始说话  "; 
+
+        self.recordedFile = GUID; 
         
         AVAudioSession *session = [AVAudioSession sharedInstance];
         
@@ -725,22 +691,132 @@ static NSString * cellKey2 = @"bcell";
             if(!isRecording)
             {
                 isRecording = YES;
-                recorder = [[AVAudioRecorder alloc] initWithURL:NURL(JOINP(NSTemporaryDirectory(),recordedFile)) settings:nil error:nil];
+                isUploading = NO;
+                recorder = [[AVAudioRecorder alloc] initWithURL:NFURL(JOINP(NSTemporaryDirectory(),recordedFile)) settings:nil error:nil];
                 [recorder prepareToRecord];
+                recorder.meteringEnabled = YES;
                 [recorder record];
-                player = nil;
+                //player = nil;
+                
+                [HUD showAnimated:YES whileExecutingBlock:^{
+                    double lowPassResults;
+                    while (isRecording) {
+                        //测试音量 
+                        [recorder updateMeters];
+                        
+                        const double ALPHA = 0.05;
+                        double peakPowerForChannel = pow(10, (0.05 * [recorder peakPowerForChannel:0]));
+                        lowPassResults = ALPHA * peakPowerForChannel + (1.0 - ALPHA) * lowPassResults;
+                        int levels = (int)(lowPassResults*100/20);
+                        NSMutableString *s0 = [NSMutableString stringWithString:@"□□□□□"];
+                        NSMutableString *s = [NSMutableString string];
+                         
+                        while (levels) {
+                            [s appendString:@"■"];
+                            levels--;
+                        }
+                        [s0 replaceCharactersInRange:NSMakeRange(0, s.length) withString:s];
+                        HUD.labelText = s0;
+                    }
+                    
+                    NSString *sourcePath = JOINP(NSTemporaryDirectory(),recordedFile);
+                    NSString *dirCallServiceIdAndUserId = JOINP(servieRecord.callServiceId,appSession.userId);
+                    NSString *destDir = JOINP(localSoundDir,dirCallServiceIdAndUserId);
+                    
+                    //move to Documents and save to local
+                    isUploading = YES;
+                    [PHResourceManager moveResourceFrom:sourcePath To:JOINP(destDir,recordedFile) sucessBlock:^(id result) {
+                        if (appSession.networkStatus != ReachableViaWWAN && appSession.networkStatus != ReachableViaWiFi) {
+                            //保存到本地
+                            
+                            [self saveDataLocal:NO WithPK:nil withContent:destDir withSoundFile:recordedFile];
+                            
+                            HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
+                            HUD.mode = MBProgressHUDModeCustomView;
+                            HUD.labelText = @"保存成功";
+                            isUploading = YES;
+                        }
+                        else{
+                            
+                            //开始上传
+                            HUD.mode = MBProgressHUDModeDeterminate;
+                            HUD.labelText = @"上传中...";
+                            sleep(1);
+                            
+                            id theServiceTracksId = servieRecord.serviceTracksId;
+                            if(theServiceTracksId == nil){
+                                theServiceTracksId = [NSNull null];
+                            }
+                            NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys: NI(0),@"Type",appSession.userId,@"UserId",appSession.userName,@"UserName", dirCallServiceIdAndUserId,@"LogContent",recordedFile,@"LogSoundFile",theServiceTracksId,@"ServiceTracksId",servieRecord.callServiceId,@"CallServiceId",nil];
+                            
+                            LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(SendServiceLog) WithPostData:Data];
+                            
+                            [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
+                                
+                                [self saveDataLocal:YES WithPK:[((LeblueResponse*)result).records objectAtIndex:0] withContent:destDir withSoundFile:recordedFile];
+                                
+                                NSDictionary *dataPost = [NSDictionary dictionaryWithObjectsAndKeys: recordedFile,@"LogSoundFile",appSession.userId,@"UserId",servieRecord.callServiceId,@"CallServiceId",nil];
+                                
+                                [HttpSynchronous httpUploadTo:baseURL2 file:JOINP(destDir,recordedFile) data:dataPost delegate:self sucessBlock:^(id result) {
+                                    HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
+                                    HUD.mode = MBProgressHUDModeCustomView;
+                                    HUD.labelText = @"上传成功";
+                                    DebugLog(@"%@",@"上传成功");
+                                } failedBlock:^(NSError *error) {
+                                    HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
+                                    HUD.mode = MBProgressHUDModeCustomView;
+                                    HUD.labelText = @"上传失败";
+                                    DebugLog(@"%@",@"上传失败");
+                                } completionBlock:^{
+                                    sleep(1);
+                                }];
+ 
+                                
+                            } failedBlock:^(NSError *error) {
+                                //
+                                DebugLog(@"%@",error);
+                                //[self saveDataLocalAsSoundFile:NO WithPK:nil With:recordedFile];
+                            } completionBlock:^{
+                                DebugLog(@"record save end");
+                                isUploading = NO;
+                                
+                            }];
+                        }
+                        
+                    } failedBlock:^(NSError *error) {
+                        DebugLog(@"record move error:%@",error);
+                    } completionBlock:^{
+                        DebugLog(@"record move end");
+                    }];
+                    
+                    while (isUploading) {
+                        usleep(100000);
+                    }
+                    DebugLog(@"HUD show block end");
+                    [self fetchData];
+                    
+                }];//end show block
             }
         }
         else{
             DebugLog(@"Error creating session: %@", [sessionError description]);
+            [HUD hide:YES];
         } 
     }
 }
 
+#pragma mark- ASIProgressDelegate
+-(void)setProgress:(float)newProgress{
+    DebugLog(@"setProgress:%f",newProgress);
+    HUD.progress = newProgress;
+    usleep(50000);
+}
+
+
 #pragma mark - AVAudioPlayerDelegate
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
-    [HUD hide:YES];
+    isPlaying = NO;
 }
 
 #pragma mark - EGORefreshTableHeaderDelegate Methods
@@ -803,7 +879,7 @@ static NSString * cellKey2 = @"bcell";
             if(theServiceTracksId == nil){
                 theServiceTracksId = [NSNull null];
             }
-            NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys: NI(0),@"Type",appSession.userName,@"UserName", messageField.text,@"LogContent",[NSNull null],@"LogSoundFile",theServiceTracksId,@"ServiceTracksId",servieRecord.callServiceId,@"CallServiceId",nil];
+            NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys: NI(0),@"Type",appSession.userId,@"UserId",appSession.userName,@"UserName", messageField.text,@"LogContent",[NSNull null],@"LogSoundFile",theServiceTracksId,@"ServiceTracksId",servieRecord.callServiceId,@"CallServiceId",nil];
             
             LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(SendServiceLog) WithPostData:Data];
             

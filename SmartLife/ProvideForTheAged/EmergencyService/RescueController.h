@@ -10,7 +10,7 @@
 
 @class CServiceRecord;
 
-@interface RescueController : AppBaseController<UITableViewDelegate, UITableViewDataSource,UIScrollViewDelegate,DDPageControlDelegate,EGORefreshTableHeaderDelegate,UITextFieldDelegate,AVAudioPlayerDelegate>
+@interface RescueController : AppBaseController<UITableViewDelegate, UITableViewDataSource,UIScrollViewDelegate,DDPageControlDelegate,EGORefreshTableHeaderDelegate,UITextFieldDelegate,AVAudioPlayerDelegate,ASIHTTPRequestDelegate,ASIProgressDelegate>
 @property (nonatomic, retain) NSArray                   *arrProcessActions;
 @property (nonatomic, retain) NSArray                   *arrProcessResponses;
 
