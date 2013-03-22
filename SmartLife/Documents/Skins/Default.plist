@@ -13,7 +13,7 @@
 					<key>Name</key>
 					<string>MemberCenter</string>
 					<key>Frame</key>
-					<string>{{0.5,0},{160.5,91}}</string>
+					<string>{{0,0},{80.5,91.5}}</string>
 					<key>Tag</key>
 					<integer>1</integer>
 					<key>Title</key>
@@ -29,19 +29,19 @@
 					<key>BackgroundColor</key>
 					<string>{0,0,0}</string>
 					<key>Image</key>
-					<string>Index/images_01.png</string>
+					<string>Index/01.png</string>
 					<key>ElementType</key>
 					<string>UIButton</string>
 				</dict>
 				<dict>
 					<key>Name</key>
-					<string>ProvideForTheAged</string>
+					<string>CallCenter</string>
 					<key>Frame</key>
-					<string>{{162,0},{158,183.5}}</string>
+					<string>{{80.5,0},{80.5,91.5}}</string>
 					<key>Tag</key>
 					<integer>2</integer>
 					<key>Title</key>
-					<string>养老服务</string>
+					<string>客服中心</string>
 					<key>Font</key>
 					<integer>16</integer>
 					<key>TextAlignment</key>
@@ -53,19 +53,19 @@
 					<key>BackgroundColor</key>
 					<string>{0,0,0}</string>
 					<key>Image</key>
-					<string>Index/images_04.png</string>
+					<string>Index/02.png</string>
 					<key>ElementType</key>
 					<string>UIButton</string>
 				</dict>
 				<dict>
 					<key>Name</key>
-					<string>CommunityManage</string>
+					<string>VoiceService</string>
 					<key>Frame</key>
-					<string>{{0.5,92},{160.5,183.5}}</string>
+					<string>{{0,91.5},{161,184}}</string>
 					<key>Tag</key>
 					<integer>3</integer>
 					<key>Title</key>
-					<string>社区管理</string>
+					<string>语音服务</string>
 					<key>Font</key>
 					<integer>16</integer>
 					<key>TextAlignment</key>
@@ -77,7 +77,7 @@
 					<key>BackgroundColor</key>
 					<string>{0,0,0}</string>
 					<key>Image</key>
-					<string>Index/images_02.png</string>
+					<string>Index/03.png</string>
 					<key>ElementType</key>
 					<string>UIButton</string>
 				</dict>
@@ -85,7 +85,7 @@
 					<key>Name</key>
 					<string>RemoteVideo</string>
 					<key>Frame</key>
-					<string>{{162,184.5},{158,183.5}}</string>
+					<string>{{0,275.5},{161,184.5}}</string>
 					<key>Tag</key>
 					<integer>4</integer>
 					<key>Title</key>
@@ -101,19 +101,19 @@
 					<key>BackgroundColor</key>
 					<string>{0,0,0}</string>
 					<key>Image</key>
-					<string>Index/images_05.png</string>
+					<string>Index/04.png</string>
 					<key>ElementType</key>
 					<string>UIButton</string>
 				</dict>
 				<dict>
 					<key>Name</key>
-					<string>VoiceService</string>
+					<string>ProvideForTheAged</string>
 					<key>Frame</key>
-					<string>{{0.5,276.5},{160.5,183.5}}</string>
+					<string>{{161,0},{159,184}}</string>
 					<key>Tag</key>
 					<integer>5</integer>
 					<key>Title</key>
-					<string>语音服务</string>
+					<string>智慧养老</string>
 					<key>Font</key>
 					<integer>16</integer>
 					<key>TextAlignment</key>
@@ -125,19 +125,19 @@
 					<key>BackgroundColor</key>
 					<string>{0,0,0}</string>
 					<key>Image</key>
-					<string>Index/images_03.png</string>
+					<string>Index/05.png</string>
 					<key>ElementType</key>
 					<string>UIButton</string>
 				</dict>
 				<dict>
 					<key>Name</key>
-					<string>CallCenter</string>
+					<string>CommunityManage</string>
 					<key>Frame</key>
-					<string>{{162,369},{158,91}}</string>
+					<string>{{161,184},{159,184}}</string>
 					<key>Tag</key>
 					<integer>6</integer>
 					<key>Title</key>
-					<string>客服中心</string>
+					<string>社区办公</string>
 					<key>Font</key>
 					<integer>16</integer>
 					<key>TextAlignment</key>
@@ -149,7 +149,31 @@
 					<key>BackgroundColor</key>
 					<string>{0,0,0}</string>
 					<key>Image</key>
-					<string>Index/images_06.png</string>
+					<string>Index/06.png</string>
+					<key>ElementType</key>
+					<string>UIButton</string>
+				</dict>
+				<dict>
+					<key>Name</key>
+					<string>SmartControl</string>
+					<key>Frame</key>
+					<string>{{161,368},{159,92}}</string>
+					<key>Tag</key>
+					<integer>7</integer>
+					<key>Title</key>
+					<string>智能控制</string>
+					<key>Font</key>
+					<integer>16</integer>
+					<key>TextAlignment</key>
+					<string>Center</string>
+					<key>Enabled</key>
+					<string>YES</string>
+					<key>Hidden</key>
+					<string>NO</string>
+					<key>BackgroundColor</key>
+					<string>{0,0,0}</string>
+					<key>Image</key>
+					<string>Index/07.png</string>
 					<key>ElementType</key>
 					<string>UIButton</string>
 				</dict>

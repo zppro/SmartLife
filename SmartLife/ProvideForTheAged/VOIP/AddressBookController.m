@@ -40,6 +40,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    /*
     self.arrAB = [NSMutableArray arrayWithObjects: 
                             [NSDictionary dictionaryWithObjectsAndKeys:@"陈昌达",@"Name",nil],
                             [NSDictionary dictionaryWithObjectsAndKeys:@"董智勇",@"Name",nil],
@@ -49,6 +50,7 @@
                             [NSDictionary dictionaryWithObjectsAndKeys:@"方小雪",@"Name",nil],
                             [NSDictionary dictionaryWithObjectsAndKeys:@"陈静",@"Name",nil],
                             nil];
+    */
     self.headerView.headerLabel.text = @"通讯录";
     
     searchField = [[UITextField alloc] initWithFrame:CGRectMake(50.0/2,(93/2.f - 48.0/2.f)/2.f,450.f/2.f, 48.0/2)];
@@ -72,12 +74,42 @@
     myTableView.dataSource = self;
     myTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self.containerView addSubview:myTableView];
+    
+    __block BOOL accessGranted = NO;
+    if (ABAddressBookRequestAccessWithCompletion != NULL) { // we're on iOS 6
+        DebugLog(@"1");
+        dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+        ABAddressBookRequestAccessWithCompletion(ABAddressBookCreate(), ^(bool granted, CFErrorRef error) {
+            accessGranted = granted;
+            dispatch_semaphore_signal(sema);
+        });
+        dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+        dispatch_release(sema);
+    }
+    else { // we're on iOS 5 or older
+        accessGranted = YES;
+        DebugLog(@"2");
+    }
+    
+    if (accessGranted) {
+        // Do whatever you want here.
+        [self fetchData];
+    }
+    
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark -数据操作
+- (void) fetchData{
+    [self showWaitViewWithTitle:@"读取本地通讯录"];
+    DebugLog(@"people count:%d",[ab personCount]);
+    self.arrAB = [[ABAddressBook sharedAddressBook] allPeopleSorted];
+    [self closeWaitView];
 }
 
 #pragma mark - UITableView delegate
@@ -96,7 +128,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"acell"];
-    NSDictionary *dataItem = (NSDictionary*)[arrAB objectAtIndex:indexPath.row];
+    ABPerson *dataItem = (ABPerson*)[arrAB objectAtIndex:indexPath.row];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                        reuseIdentifier:@"acell"] autorelease];
@@ -130,7 +162,7 @@
         [networkIntercomButton setBackgroundColor:[UIColor clearColor]];
         [cell.contentView addSubview:networkIntercomButton];
     }
-    ((UILabel*)[cell.contentView viewWithTag:1001]).text = [dataItem objectForKey:@"Name"];
+    ((UILabel*)[cell.contentView viewWithTag:1001]).text =  JOINF(@" ", dataItem.lastName, dataItem.firstName);
     return cell;
 }
 

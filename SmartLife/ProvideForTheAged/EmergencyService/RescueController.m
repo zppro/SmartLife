@@ -12,7 +12,7 @@
 #import "ASIHTTPRequest.h"
 #import "ASIFormDataRequest.h"
 
-#define NOT_PROCESS 1
+#define NOT_PROCESS 0
 
 @interface RescueController (){
     BOOL pageControlUsed; 
@@ -197,7 +197,6 @@
         [voiceButton addGestureRecognizer:longPress];
         [longPress release];
         
-
         
         messageField = [[UITextField alloc] initWithFrame:voiceButton.frame];
         messageField.font = [UIFont systemFontOfSize:18];
@@ -242,6 +241,10 @@
     
     [self fetchData];
     
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self fetchCamera];
+    });
+    
     isRecording = NO;
 }
 
@@ -276,6 +279,30 @@
 }
 
 #pragma mark - 数据处理 
+- (void) fetchCamera{
+    if (appSession.networkStatus != ReachableViaWWAN && appSession.networkStatus != ReachableViaWiFi) {
+        //无网络
+    }
+    else{
+        NSDictionary *postData = [NSDictionary dictionaryWithObjectsAndKeys:servieRecord.serviceObjectId,@"ServiceObjectId",nil];
+        
+        LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(ReadListOfCamera) WithPostData:postData];
+        
+        
+        [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
+            DebugLog(@"message:%@",((LeblueResponse*)result).message);
+            DebugLog(@"records:%@",((LeblueResponse*)result).records);
+            
+        } failedBlock:^(NSError *error) {
+            //
+            DebugLog(@"%@",error);
+        } completionBlock:^{
+            //
+            
+        }];
+    }
+}
+
 - (void)saveDataLocal:(BOOL)remoteSubmit WithPK:(NSString*) serviceTracksLogId withContent:(NSString*) content withSoundFile:(NSString*)soundFile {
     CServiceLog *log = [CServiceLog create];
     log.localSyncTime = [NSDate date];
@@ -565,7 +592,7 @@ static NSString * cellKey2 = @"bcell";
         if(!MF_FileExists(path)){
             //不存在，从网上下载
             HUD.mode = MBProgressHUDModeDeterminate;
-            HUD.labelText = @"下载中...";
+            HUD.labelText = @"  开始下载  ";
             sleep(1);
 
             
@@ -585,9 +612,6 @@ static NSString * cellKey2 = @"bcell";
             [self playAudio:path];
         }
         
-        while (isPlaying) {
-            //waiting
-        }
     }];  
 }
 
@@ -607,9 +631,30 @@ static NSString * cellKey2 = @"bcell";
         DebugLog(@"ERror creating player: %@", [playerError description]);
         [HUD hide:YES];
     }
+    player.meteringEnabled = YES;
     player.delegate = self;
     [player play];
     isPlaying = YES;
+    double lowPassResults;
+    while (isPlaying) {
+        //测试音量
+        [player updateMeters];
+        
+        const double ALPHA = 0.05;
+        double peakPowerForChannel = pow(10, (0.05 * [player peakPowerForChannel:0]));
+        lowPassResults = ALPHA * peakPowerForChannel + (1.0 - ALPHA) * lowPassResults;
+        int levels = (int)(lowPassResults*100/20);
+        NSMutableString *s0 = [NSMutableString stringWithString:@"□□□□□"];
+        NSMutableString *s = [NSMutableString string];
+        
+        while (levels) {
+            [s appendString:@"■"];
+            levels--;
+        }
+        [s0 replaceCharactersInRange:NSMakeRange(0, s.length) withString:s];
+        HUD.labelText = s0;
+    }
+    
 }
 
 - (void)doPic:(id)sender {
@@ -740,7 +785,7 @@ static NSString * cellKey2 = @"bcell";
                             
                             //开始上传
                             HUD.mode = MBProgressHUDModeDeterminate;
-                            HUD.labelText = @"上传中...";
+                            HUD.labelText = @"  开始上传  ";
                             sleep(1);
                             
                             id theServiceTracksId = servieRecord.serviceTracksId;
@@ -760,12 +805,12 @@ static NSString * cellKey2 = @"bcell";
                                 [HttpSynchronous httpUploadTo:baseURL2 file:JOINP(destDir,recordedFile) data:dataPost delegate:self sucessBlock:^(id result) {
                                     HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
                                     HUD.mode = MBProgressHUDModeCustomView;
-                                    HUD.labelText = @"上传成功";
+                                    HUD.labelText = @"  上传成功  ";
                                     DebugLog(@"%@",@"上传成功");
                                 } failedBlock:^(NSError *error) {
                                     HUD.customView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"37x-Checkmark.png"]] autorelease];
                                     HUD.mode = MBProgressHUDModeCustomView;
-                                    HUD.labelText = @"上传失败";
+                                    HUD.labelText = @"  上传失败  ";
                                     DebugLog(@"%@",@"上传失败");
                                 } completionBlock:^{
                                     sleep(1);

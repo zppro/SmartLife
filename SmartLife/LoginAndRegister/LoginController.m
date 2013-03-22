@@ -9,6 +9,7 @@
 #import "LoginController.h"
 #import "AppMacro.h"
 #import "CUser.h"
+#import "RegisterController.h"
 
 @interface LoginController(){
     BOOL isEditing;
@@ -16,17 +17,20 @@
 }
 @property (nonatomic,retain) UITextField *userNameField;
 @property (nonatomic,retain) UITextField *passwordField;
+@property (nonatomic,retain) UIButton *registerButton;
 @property (nonatomic,retain) UIButton *loginButton;
 @end
 
 @implementation LoginController
 @synthesize userNameField;
 @synthesize passwordField;
+@synthesize registerButton;
 @synthesize loginButton;
 
 - (void)dealloc {
     self.userNameField = nil;
     self.passwordField = nil;
+    self.registerButton = nil;
     self.loginButton = nil;
     [super dealloc];
 }
@@ -71,7 +75,7 @@
     
     userNameField = [[UITextField alloc] initWithFrame:CGRectMake(240.0/2,240/2.f,300.f/2.f, 38.0/2)];
     userNameField.font = [UIFont systemFontOfSize:18];
-    userNameField.keyboardType = UIKeyboardTypePhonePad;
+    userNameField.keyboardType = UIKeyboardTypeDefault;
     userNameField.keyboardAppearance = UIKeyboardAppearanceDefault;
     userNameField.delegate = self;
     userNameField.backgroundColor = [UIColor whiteColor];
@@ -92,18 +96,22 @@
     passwordField.inputAccessoryView = [CInputAssistView createWithDelegate:self target:passwordField style:CInputAssistViewAll];
     [self.view addSubview:passwordField];
     
+    registerButton = makeButton(175.0/2,400/2.f,121.f/2.f, 48.0/2);
+    [registerButton setImage:MF_PngOfDefaultSkin(@"Index/sign_08.png") forState:UIControlStateNormal];
+    [registerButton addTarget:self action:@selector(registerButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:registerButton];
     
-    loginButton = makeButton(240.0/2,400/2.f,161.f/2.f, 48.0/2);
+    loginButton = makeButton(328.0/2,400/2.f,121.f/2.f, 48.0/2);
     [loginButton setImage:MF_PngOfDefaultSkin(@"Index/sign_05.png") forState:UIControlStateNormal];
     [loginButton addTarget:self action:@selector(loginButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:loginButton];
     
-    UIButton *forgetPasswordButton = makeButton(420.0/2,413/2.f,121.f/2.f, 22.0/2);
+    UIButton *forgetPasswordButton = makeButton(460.0/2,420/2.f,121.f/2.f, 22.0/2);
     [forgetPasswordButton setImage:MF_PngOfDefaultSkin(@"Index/sign_06.png") forState:UIControlStateNormal];
     [forgetPasswordButton addTarget:self action:@selector(forgetPasswordButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:forgetPasswordButton];
     
-    userNameField.text = @"57188976666";//@"13685756227/0";//@"蒋美华";@"爱源汽车服务";//'57188976666'
+    userNameField.text = @"宏润家政";//宏润家政 //@"13685756227/0";//@"蒋美华";@"爱源汽车服务";//'57188976666' //'99901'
     passwordField.text = @"1234";
     
 }
@@ -116,6 +124,11 @@
 
 
 #pragma mark - button click
+- (void)registerButtonClick:(id)sender{
+    RegisterController *regController = [[RegisterController alloc] init];
+    [self navigationTo:regController];
+    [regController release];
+}
 - (void)loginButtonClick:(id)sender{
     if(isEditing){ 
         [userNameField resignFirstResponder];

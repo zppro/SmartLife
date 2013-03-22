@@ -8,8 +8,11 @@
 
 #import "AppBaseController.h"
 
-@interface AppBaseController ()
+@interface AppBaseController (){
+    CGPoint _containerDefaultCenter;
+}
 @property (nonatomic, retain) UIImageView* leftImage;
+
 @end
 
 @implementation AppBaseController
@@ -17,6 +20,7 @@
 @synthesize leftImage = _leftImage;
 @synthesize headerView = _headerView;
 @synthesize footerView = _footerView;
+
 - (void)dealloc {
     [_containerView release];
     [_leftImage release];
@@ -32,6 +36,21 @@
 	// Do any additional setup after loading the view.
     self.view.backgroundColor = MF_ColorFromRGB(236, 236, 236);
     
+    
+    
+    _containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 87.0/2.f, 320, (920-87.0)/2.f)];
+    _containerView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:_containerView];
+    _containerDefaultCenter = _containerView.center;
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapContainerView:)];
+    [_containerView addGestureRecognizer:tapGesture];
+    [tapGesture release];
+    
+    self.waitView = [[[MBProgressHUD alloc] initWithView:self.view] autorelease];
+    [self.waitView setFrame:CGRectMake(0, 0, 320, 920)];
+    self.waitView.delegate = self;
+    
     UIImage *backgroundImageOfHeader = [self getHeaderBackgroundImage];
     UIImage *backButtonImage = MF_PngOfDefaultSkin(@"Index/button.png");
     if(backgroundImageOfHeader != nil){
@@ -39,15 +58,6 @@
         _headerView.delegate = self;
         [self.view addSubview:_headerView];
     }
-    
-    _containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 87.0/2.f, 320, (920-87.0)/2.f)];
-    _containerView.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:_containerView];
-    
-    self.waitView = [[[MBProgressHUD alloc] initWithView:self.view] autorelease];
-    [self.waitView setFrame:CGRectMake(0, 0, 320, 920)];
-    self.waitView.delegate = self;
-     
     
     UIImage *backgroundImageOfFooter = [self getFooterBackgroundImage];
     if(backgroundImageOfFooter != nil){
@@ -57,6 +67,10 @@
         bgFooter.image = backgroundImageOfFooter;
         [_footerView addSubview:bgFooter];
     }
+}
+
+- (CGPoint) getContainerDefaultCenter{
+    return _containerDefaultCenter;
 }
 
 #pragma mark 子类重写方法
@@ -72,6 +86,10 @@
     [super viewWillAppear:YES];
     // setting navigation bar hidden
     [self.navigationController setNavigationBarHidden:YES];
+}
+
+- (void)tapContainerView:(UIGestureRecognizer *)gestureRecognizer {
+    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

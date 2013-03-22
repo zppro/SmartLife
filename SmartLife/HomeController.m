@@ -45,6 +45,8 @@
         [soc.locationManager startUpdatingLocation];//启动位置管理器
     });
     
+    //adressbook
+    //ab.delegate = self;
     
     
     if([self updateInterfaceWithReachability]){
@@ -92,8 +94,9 @@
     
     BOOL isSignIn = appSession.userId!=nil;
     if(!isSignIn){
-        LoginController *loginController = [[LoginController alloc] init];
-        [self presentModalViewController:loginController animated: YES];
+        LoginController *loginController = [[[LoginController alloc] init] autorelease];
+        UINavigationController *nav2 = [[UINavigationController alloc] initWithRootViewController:loginController];
+        [self presentModalViewController:nav2 animated: YES];
     }
 }
 
@@ -122,14 +125,15 @@
              break;
         }
         case 2: { 
+            
+            break;
+        }
+        case 5:{
             [self navigationTo:[[[ProvideForTheAgedIndexController alloc] init] autorelease]];
             break;
         }
-        case 3:{
-            break;
-        }
-        case 4:
-        case 5:{
+        case 3:
+        case 4:{
             UITabBarController *voipController = [[UITabBarController alloc] init];
             SmartPhoneController *smartPhoneVC = [[SmartPhoneController alloc] init];
             UITabBarItem *itemOfSmartPhone = [[UITabBarItem alloc] initWithTitle:@"智慧电话" image:nil tag:1];
@@ -263,4 +267,5 @@
 	[HUD release];
 	HUD = nil;
 }
+ 
 @end

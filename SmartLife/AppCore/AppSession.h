@@ -25,6 +25,7 @@ typedef enum {
     ReadListOfCommunityService,
     ReadListOfLifeService,
     ReadListOfProcessing,
+    ReadListOfCamera,
     DoResponse,
     RegisterDevice,
     SendServiceLog

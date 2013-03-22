@@ -13,7 +13,7 @@
 @property (nonatomic, retain) UIView* containerView;
 @property(nonatomic,retain) TableHeaderView *headerView;
 @property (nonatomic,retain) UIView *footerView;
-
+@property (nonatomic, readonly,assign) CGPoint containerDefaultCenter;
 - (UIImage*) getFooterBackgroundImage;
 
 @end
