@@ -14,6 +14,7 @@
 #import "RecentCallController.h"
 #import "AddressBookController.h"
 #import "DialingController.h"
+#import "SmartControlIndexController.h"
 
 @interface HomeController ()
 
@@ -130,6 +131,11 @@
         }
         case 5:{
             [self navigationTo:[[[ProvideForTheAgedIndexController alloc] init] autorelease]];
+            break;
+        }
+        case 7:{
+            
+            [self navigationTo:[[[SmartControlIndexController alloc] init] autorelease]];
             break;
         }
         case 3:

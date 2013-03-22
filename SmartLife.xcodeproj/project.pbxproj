@@ -38,6 +38,9 @@
 		AC8EB94916AA7592001F3A06 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC8EB94716AA758D001F3A06 /* AddressBook.framework */; };
 		AC8EB94A16AA7592001F3A06 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC8EB94816AA758F001F3A06 /* AddressBookUI.framework */; };
 		AC96EFFB16FAB465004BD83F /* RegisterController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC96EFFA16FAB465004BD83F /* RegisterController.m */; };
+		AC96F00C16FBFA4D004BD83F /* SmartControlIndexController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC96F00B16FBFA4D004BD83F /* SmartControlIndexController.m */; };
+		AC96F01A16FC093F004BD83F /* CDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = AC96F01916FC093F004BD83F /* CDevice.m */; };
+		AC96F01D16FC3815004BD83F /* SmartControlDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = AC96F01C16FC3815004BD83F /* SmartControlDetailController.m */; };
 		ACA95907166CD1DD00302D82 /* SmartPhoneController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA95906166CD1DD00302D82 /* SmartPhoneController.m */; };
 		ACA9590A166CD40D00302D82 /* RecentCallController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA95909166CD40D00302D82 /* RecentCallController.m */; };
 		ACA9590D166CD4C900302D82 /* AddressBookController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA9590C166CD4C900302D82 /* AddressBookController.m */; };
@@ -135,6 +138,13 @@
 		AC8EB94816AA758F001F3A06 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		AC96EFF916FAB465004BD83F /* RegisterController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RegisterController.h; path = LoginAndRegister/RegisterController.h; sourceTree = "<group>"; };
 		AC96EFFA16FAB465004BD83F /* RegisterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RegisterController.m; path = LoginAndRegister/RegisterController.m; sourceTree = "<group>"; };
+		AC96F00A16FBFA4D004BD83F /* SmartControlIndexController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SmartControlIndexController.h; path = SmartControl/SmartControlIndexController.h; sourceTree = "<group>"; };
+		AC96F00B16FBFA4D004BD83F /* SmartControlIndexController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SmartControlIndexController.m; path = SmartControl/SmartControlIndexController.m; sourceTree = "<group>"; };
+		AC96F00E16FBFE0B004BD83F /* SmartLifeModels0.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = SmartLifeModels0.1.xcdatamodel; sourceTree = "<group>"; };
+		AC96F01816FC093F004BD83F /* CDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDevice.h; path = AppModel/CDevice.h; sourceTree = "<group>"; };
+		AC96F01916FC093F004BD83F /* CDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDevice.m; path = AppModel/CDevice.m; sourceTree = "<group>"; };
+		AC96F01B16FC3815004BD83F /* SmartControlDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SmartControlDetailController.h; path = SmartControl/SmartControlDetailController.h; sourceTree = "<group>"; };
+		AC96F01C16FC3815004BD83F /* SmartControlDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SmartControlDetailController.m; path = SmartControl/SmartControlDetailController.m; sourceTree = "<group>"; };
 		ACA95905166CD1DD00302D82 /* SmartPhoneController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SmartPhoneController.h; path = ProvideForTheAged/VOIP/SmartPhoneController.h; sourceTree = "<group>"; };
 		ACA95906166CD1DD00302D82 /* SmartPhoneController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SmartPhoneController.m; path = ProvideForTheAged/VOIP/SmartPhoneController.m; sourceTree = "<group>"; };
 		ACA95908166CD40D00302D82 /* RecentCallController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecentCallController.h; path = ProvideForTheAged/VOIP/RecentCallController.h; sourceTree = "<group>"; };
@@ -269,6 +279,7 @@
 		AC15B06B165B528C00E856E4 /* SmartLife */ = {
 			isa = PBXGroup;
 			children = (
+				AC96F00916FBF8D1004BD83F /* SmartControl */,
 				ACF41BCB1692B6A0008F5F56 /* PersonalCenter */,
 				ACACC68B166111CC00CE5BC0 /* ProvideForTheAged */,
 				ACACC6731660F6A600CE5BC0 /* LoginAndRegister */,
@@ -324,6 +335,8 @@
 		AC8EB8AC169D0F98001F3A06 /* AppModel */ = {
 			isa = PBXGroup;
 			children = (
+				AC96F01816FC093F004BD83F /* CDevice.h */,
+				AC96F01916FC093F004BD83F /* CDevice.m */,
 				AC8EB8AD169D1091001F3A06 /* SmartLifeModels.xcdatamodeld */,
 				AC8EB8C516A143C7001F3A06 /* CServiceLog.h */,
 				AC8EB8C616A143C8001F3A06 /* CServiceLog.m */,
@@ -333,6 +346,17 @@
 				AC8EB8B1169D1308001F3A06 /* CUser.m */,
 			);
 			name = AppModel;
+			sourceTree = "<group>";
+		};
+		AC96F00916FBF8D1004BD83F /* SmartControl */ = {
+			isa = PBXGroup;
+			children = (
+				AC96F00A16FBFA4D004BD83F /* SmartControlIndexController.h */,
+				AC96F00B16FBFA4D004BD83F /* SmartControlIndexController.m */,
+				AC96F01B16FC3815004BD83F /* SmartControlDetailController.h */,
+				AC96F01C16FC3815004BD83F /* SmartControlDetailController.m */,
+			);
+			name = SmartControl;
 			sourceTree = "<group>";
 		};
 		ACA95904166CD15F00302D82 /* VOIP */ = {
@@ -601,6 +625,9 @@
 				AC8EB8BE169D4777001F3A06 /* CServiceRecord.m in Sources */,
 				AC8EB8C716A143C9001F3A06 /* CServiceLog.m in Sources */,
 				AC96EFFB16FAB465004BD83F /* RegisterController.m in Sources */,
+				AC96F00C16FBFA4D004BD83F /* SmartControlIndexController.m in Sources */,
+				AC96F01A16FC093F004BD83F /* CDevice.m in Sources */,
+				AC96F01D16FC3815004BD83F /* SmartControlDetailController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -743,9 +770,10 @@
 		AC8EB8AD169D1091001F3A06 /* SmartLifeModels.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				AC96F00E16FBFE0B004BD83F /* SmartLifeModels0.1.xcdatamodel */,
 				AC8EB8AE169D1091001F3A06 /* SmartLifeModels.xcdatamodel */,
 			);
-			currentVersion = AC8EB8AE169D1091001F3A06 /* SmartLifeModels.xcdatamodel */;
+			currentVersion = AC96F00E16FBFE0B004BD83F /* SmartLifeModels0.1.xcdatamodel */;
 			name = SmartLifeModels.xcdatamodeld;
 			path = AppModel/SmartLifeModels.xcdatamodeld;
 			sourceTree = "<group>";
