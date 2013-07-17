@@ -62,46 +62,48 @@
 }
 
 - (void)fetchDataLocal{
-    /*
-    NSDictionary *dataItem11 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST01",@"DeviceId",@"AirCondition01",@"DeviceCode",@"空调",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.userId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(1),@"OrderNo",nil];
-    [CDevice createWithIEntity:dataItem11];
     
-    NSDictionary *dataItem12 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST02",@"DeviceId",@"Switch01",@"DeviceCode",@"开关一",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.userId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(2),@"OrderNo",nil];
-    [CDevice createWithIEntity:dataItem12];
-    
-    NSDictionary *dataItem21 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST03",@"DeviceId",@"WaterHeater01",@"DeviceCode",@"热水器",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.userId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(3),@"OrderNo",nil];
-    [CDevice createWithIEntity:dataItem21];
-    
-    NSDictionary *dataItem22 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST04",@"DeviceId",@"Switch02",@"DeviceCode",@"开关二",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.userId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(4),@"OrderNo",nil];
-    [CDevice createWithIEntity:dataItem22];
-    
-    NSDictionary *dataItem31 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST05",@"DeviceId",@"Fountain01",@"DeviceCode",@"饮水机",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.userId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(5),@"OrderNo",nil];
-    [CDevice createWithIEntity:dataItem31];
-    
-    NSDictionary *dataItem32 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST06",@"DeviceId",@"Switch03",@"DeviceCode",@"开关三",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.userId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(6),@"OrderNo",nil];
-    [CDevice createWithIEntity:dataItem32];
-    
-    NSDictionary *dataItem41 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST07",@"DeviceId",@"Sound01",@"DeviceCode",@"音响",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.userId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(7),@"OrderNo",nil];
-    [CDevice createWithIEntity:dataItem41];
-    
-    NSDictionary *dataItem42 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST08",@"DeviceId",@"curtain01",@"DeviceCode",@"窗帘",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.userId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(8),@"OrderNo",nil];
-    [CDevice createWithIEntity:dataItem42];
-    
-    NSDictionary *dataItem51 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST09",@"DeviceId",@"Socket01",@"DeviceCode",@"插座一",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.userId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(9),@"OrderNo",nil];
-    [CDevice createWithIEntity:dataItem51];
-    
-    NSDictionary *dataItem52 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST10",@"DeviceId",@"Socket02",@"DeviceCode",@"插座二",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.userId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(10),@"OrderNo",nil];
-    [CDevice createWithIEntity:dataItem52];
-    
-    NSDictionary *dataItem61 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST11",@"DeviceId",@"Socket03",@"DeviceCode",@"插座三",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.userId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(11),@"OrderNo",nil];
-    [CDevice createWithIEntity:dataItem61];
-    
-    NSDictionary *dataItem62 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST12",@"DeviceId",@"Socket04",@"DeviceCode",@"插座四",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.userId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(12),@"OrderNo",nil];
-    [CDevice createWithIEntity:dataItem62];
-    
-    [moc save];
-    */
-    self.arrDevices = [CDevice listDevicesByUser:appSession.userId];
+    self.arrDevices = [CDevice listDevicesByUser:appSession.authId];
+    if([self.arrDevices count] == 0){
+        NSDictionary *dataItem11 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST01",@"DeviceId",@"AirCondition01",@"DeviceCode",@"空调",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.authId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(1),@"OrderNo",nil];
+        [CDevice createWithIEntity:dataItem11];
+        
+        NSDictionary *dataItem12 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST02",@"DeviceId",@"Switch01",@"DeviceCode",@"开关一",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.authId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(2),@"OrderNo",nil];
+        [CDevice createWithIEntity:dataItem12];
+        
+        NSDictionary *dataItem21 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST03",@"DeviceId",@"WaterHeater01",@"DeviceCode",@"热水器",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.authId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(3),@"OrderNo",nil];
+        [CDevice createWithIEntity:dataItem21];
+        
+        NSDictionary *dataItem22 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST04",@"DeviceId",@"Switch02",@"DeviceCode",@"开关二",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.authId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(4),@"OrderNo",nil];
+        [CDevice createWithIEntity:dataItem22];
+        
+        NSDictionary *dataItem31 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST05",@"DeviceId",@"Fountain01",@"DeviceCode",@"饮水机",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.authId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(5),@"OrderNo",nil];
+        [CDevice createWithIEntity:dataItem31];
+        
+        NSDictionary *dataItem32 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST06",@"DeviceId",@"Switch03",@"DeviceCode",@"开关三",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.authId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(6),@"OrderNo",nil];
+        [CDevice createWithIEntity:dataItem32];
+        
+        NSDictionary *dataItem41 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST07",@"DeviceId",@"Sound01",@"DeviceCode",@"音响",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.authId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(7),@"OrderNo",nil];
+        [CDevice createWithIEntity:dataItem41];
+        
+        NSDictionary *dataItem42 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST08",@"DeviceId",@"curtain01",@"DeviceCode",@"窗帘",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.authId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(8),@"OrderNo",nil];
+        [CDevice createWithIEntity:dataItem42];
+        
+        NSDictionary *dataItem51 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST09",@"DeviceId",@"Socket01",@"DeviceCode",@"插座一",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.authId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(9),@"OrderNo",nil];
+        [CDevice createWithIEntity:dataItem51];
+        
+        NSDictionary *dataItem52 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST10",@"DeviceId",@"Socket02",@"DeviceCode",@"插座二",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.authId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(10),@"OrderNo",nil];
+        [CDevice createWithIEntity:dataItem52];
+        
+        NSDictionary *dataItem61 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST11",@"DeviceId",@"Socket03",@"DeviceCode",@"插座三",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.authId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(11),@"OrderNo",nil];
+        [CDevice createWithIEntity:dataItem61];
+        
+        NSDictionary *dataItem62 = [NSDictionary dictionaryWithObjectsAndKeys:@"TEST12",@"DeviceId",@"Socket04",@"DeviceCode",@"插座四",@"DeviceName",NB(FALSE),@"SwitchOnFlag",appSession.authId,@"UserId",NB(FALSE),@"LocalSyncFlag",NI(12),@"OrderNo",nil];
+        [CDevice createWithIEntity:dataItem62];
+        
+        [moc save];
+    } 
+    self.arrDevices = [CDevice listDevicesByUser:appSession.authId];
 }
 
 #pragma mark 子类重写方法

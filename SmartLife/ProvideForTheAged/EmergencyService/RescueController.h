@@ -8,11 +8,11 @@
 
 #import "AppBaseController.h"
 
-@class CServiceRecord;
+@class CCallService;
 
-@interface RescueController : AppBaseController<UITableViewDelegate, UITableViewDataSource,UIScrollViewDelegate,DDPageControlDelegate,EGORefreshTableHeaderDelegate,UITextFieldDelegate,AVAudioPlayerDelegate,ASIHTTPRequestDelegate,ASIProgressDelegate>
-@property (nonatomic, retain) NSArray                   *arrProcessActions;
-@property (nonatomic, retain) NSArray                   *arrProcessResponses;
+@interface RescueController : AppBaseController<UITableViewDelegate, UITableViewDataSource,EGORefreshTableHeaderDelegate>
+@property (nonatomic, retain) NSArray                   *arrLogs; 
 
--(id)initWithServiceRecord:(CServiceRecord*)aServiceRecord;
+-(id)initWithCallService:(CCallService*)aCallService;
+
 @end

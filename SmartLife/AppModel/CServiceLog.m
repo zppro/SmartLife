@@ -2,7 +2,7 @@
 //  CServiceLog.m
 //  SmartLife
 //
-//  Created by zppro on 13-1-12.
+//  Created by zppro on 13-7-17.
 //  Copyright (c) 2013年 zppro. All rights reserved.
 //
 
@@ -10,60 +10,53 @@
 
 
 @implementation CServiceLog
-@dynamic localSyncTime;
-@dynamic localSyncFlag;
 
-@dynamic checkInTime;
-@dynamic logContent; 
 @dynamic callServiceId;
-@dynamic fetchByUserId;
-@dynamic serviceTracksLogId;
-@dynamic type;
-@dynamic logSoundFile;
-@dynamic logName;
-@dynamic serviceTracksId;
+@dynamic checkInTime;
+@dynamic belongFamilyMemberId;
+@dynamic localSyncFlag;
+@dynamic localSyncTime;
+@dynamic logContent;
+@dynamic logFile;
+@dynamic logId;
+@dynamic logType;
+@dynamic belongMemberId;
+@dynamic logFileType;
+
 
 + (NSString*) localEntityKey{
-    return @"serviceTracksLogId";
+    return @"logId";
 }
 + (NSString*) dataSourceKey{
-    return @"ServiceTracksLogId";
+    return @"LogId";
 }
 
 - (NSDictionary *)elementToPropertMappings
 {
     return [NSDictionary dictionaryWithObjectsAndKeys:
-            @"localSyncFlag", @"LocalSyncFlag",
-            @"checkInTime",@"CheckInTime",
-            @"logContent", @"LogContent",
             @"callServiceId", @"CallServiceId",
-            @"fetchByUserId", @"LogPersonId",
-            @"serviceTracksLogId", @"ServiceTracksLogId",
-            @"type", @"Type",
-            @"logSoundFile", @"LogSoundFile",
-            @"logName", @"LogName",
-            @"serviceTracksId", @"ServiceTracksId",
+            @"checkInTime",@"CheckInTime",
+            @"belongFamilyMemberId", @"belongFamilyMemberId",
+            @"localSyncFlag", @"localSyncFlag",
+            @"localSyncTime", @"localSyncTime", 
+            @"logContent", @"LogContent",
+            @"logFile", @"LogFile",
+            @"logId", @"LogId",
+            @"logType", @"LogType",
+            @"belongMemberId", @"BelongMemberId",
+            @"logFileType", @"LogFileType",
             nil];
 }
 
-+ (NSArray *)listProcessActionByService:(NSString*) callServiceId{
-    DKPredicateBuilder *builder = [[[DKPredicateBuilder alloc] init] autorelease]; 
-    [builder where:@"callServiceId" equals:callServiceId];
-    [builder where:@"type" equals:NI(0)];
-    return [CServiceLog fetchWithSortBy:@"checkInTime" ascending:NO predicateWithFormat:builder.compoundPredicate.predicateFormat];
-}
-
-+ (NSArray *)listProcessResponseByService:(NSString*) callServiceId{
++ (NSArray *)listByService:(NSString*) callServiceId{
     DKPredicateBuilder *builder = [[[DKPredicateBuilder alloc] init] autorelease];
     [builder where:@"callServiceId" equals:callServiceId];
-    [builder where:@"type" equals:NI(1)];
-    return [CServiceLog fetchWithSortBy:@"checkInTime" ascending:NO predicateWithFormat:builder.compoundPredicate.predicateFormat];
+    [builder where:@"logType" equals:NI(0)];
+    return [CServiceLog fetchWithSortBy:@"checkInTime" ascending:YES predicateWithFormat:builder.compoundPredicate.predicateFormat];
 }
-
 + (BOOL)updateWithData:(NSArray *)data ByService:(NSString*) callServiceId{
     DKPredicateBuilder *builder = [[[DKPredicateBuilder alloc] init] autorelease];
-    [builder where:@"callServiceId" equals:callServiceId]; 
+    [builder where:@"callServiceId" equals:callServiceId];
     return [CServiceLog updateWithData:data EntityKey:[CServiceLog localEntityKey] IEntityKey:[CServiceLog dataSourceKey] fethchFormat:builder.compoundPredicate.predicateFormat];
 }
-
 @end

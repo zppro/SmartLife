@@ -8,27 +8,27 @@
 
 #import "LoginController.h"
 #import "AppMacro.h"
-#import "CUser.h"
 #import "RegisterController.h"
+#import "CMember.h"
 
 @interface LoginController(){
     BOOL isEditing;
     MBProgressHUD *HUD;
 }
-@property (nonatomic,retain) UITextField *userNameField;
+@property (nonatomic,retain) UITextField *theIDNoField;
 @property (nonatomic,retain) UITextField *passwordField;
 @property (nonatomic,retain) UIButton *registerButton;
 @property (nonatomic,retain) UIButton *loginButton;
 @end
 
 @implementation LoginController
-@synthesize userNameField;
+@synthesize theIDNoField;
 @synthesize passwordField;
 @synthesize registerButton;
 @synthesize loginButton;
 
 - (void)dealloc {
-    self.userNameField = nil;
+    self.theIDNoField = nil;
     self.passwordField = nil;
     self.registerButton = nil;
     self.loginButton = nil;
@@ -65,30 +65,30 @@
     lineView.backgroundColor = MF_ColorFromRGB(2, 94, 141);
     [self.view addSubview:lineView];
      
-    UIImageView *userNameLabel = makeImageView(100.f/2.f, 240/2.f, 114.f/2.f, 33.f/2.f);
-    userNameLabel.image = MF_PngOfDefaultSkin(@"Index/sign_03.png");
-    [self.view addSubview:userNameLabel];
+    UIImageView *theIDNoLabel = makeImageView(40.f/2.f, 240/2.f, 114.f/2.f, 33.f/2.f);
+    theIDNoLabel.image = MF_PngOfDefaultSkin(@"Index/sign_03.png");
+    [self.view addSubview:theIDNoLabel];
     
-    UIImageView *passwordLabel = makeImageView(100.f/2.f, 320/2.f, 114.f/2.f, 33.f/2.f);
+    UIImageView *passwordLabel = makeImageView(40.f/2.f, 320/2.f, 114.f/2.f, 33.f/2.f);
     passwordLabel.image = MF_PngOfDefaultSkin(@"Index/sign_04.png");
     [self.view addSubview:passwordLabel];
     
-    userNameField = [[UITextField alloc] initWithFrame:CGRectMake(240.0/2,240/2.f,300.f/2.f, 38.0/2)];
-    userNameField.font = [UIFont systemFontOfSize:18];
-    userNameField.keyboardType = UIKeyboardTypeDefault;
-    userNameField.keyboardAppearance = UIKeyboardAppearanceDefault;
-    userNameField.delegate = self;
-    userNameField.backgroundColor = [UIColor whiteColor];
+    theIDNoField = [[UITextField alloc] initWithFrame:CGRectMake(170.0/2,240/2.f,370.f/2.f, 38.0/2)];
+    theIDNoField.font = [UIFont systemFontOfSize:18];
+    theIDNoField.keyboardType = UIKeyboardTypeDefault;
+    theIDNoField.keyboardAppearance = UIKeyboardAppearanceDefault;
+    theIDNoField.delegate = self;
+    theIDNoField.backgroundColor = [UIColor whiteColor];
     //userNameField.placeholder = NSLocalizedString(@"RegisterController_EntPhoneNo", nil);
-    userNameField.inputAccessoryView = [CInputAssistView createWithDelegate:self target:userNameField style:CInputAssistViewAll];
-    userNameField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    [self.view addSubview:userNameField];
+    theIDNoField.inputAccessoryView = [CInputAssistView createWithDelegate:self target:theIDNoField style:CInputAssistViewAll];
+    theIDNoField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    [self.view addSubview:theIDNoField];
     
-    passwordField = [[UITextField alloc] initWithFrame:CGRectMake(240.0/2,320/2.f,300.f/2.f, 38.0/2)];
+    passwordField = [[UITextField alloc] initWithFrame:CGRectMake(170.0/2,320/2.f,370.f/2.f, 38.0/2)];
     passwordField.font = [UIFont systemFontOfSize:18];
     passwordField.keyboardType = UIKeyboardTypeDefault;
     passwordField.secureTextEntry = YES;
-    passwordField.keyboardAppearance = UIKeyboardAppearanceDefault;
+    passwordField.keyboardAppearance = UIKeyboardTypeNumberPad;
     passwordField.delegate = self;
     passwordField.backgroundColor = [UIColor whiteColor];
     passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
@@ -111,8 +111,8 @@
     [forgetPasswordButton addTarget:self action:@selector(forgetPasswordButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:forgetPasswordButton];
     
-    userNameField.text = @"宏润家政";//宏润家政 //@"13685756227/0";//@"蒋美华";@"爱源汽车服务";//'57188976666' //'99901'
-    passwordField.text = @"1234";
+    theIDNoField.text = @"330501983040201103";
+    passwordField.text = @"123";
     
 }
 
@@ -131,13 +131,13 @@
 }
 - (void)loginButtonClick:(id)sender{
     if(isEditing){ 
-        [userNameField resignFirstResponder];
+        [theIDNoField resignFirstResponder];
         [passwordField resignFirstResponder];
         isEditing = NO;
     }
     
-    if([userNameField.text isEqualToString:@""]){
-        showHUDInfo(self,self.view,@"用户姓名不能为空");
+    if([theIDNoField.text isEqualToString:@""]){
+        showHUDInfo(self,self.view,@"身份证不能为空");
         return;
     }
     
@@ -145,89 +145,68 @@
         showHUDInfo(self,self.view,@"密码不能为空");
         return;
     } 
-    
+    NSString *passwordHash = [passwordField.text stringFromMD5];
     if (appSession.networkStatus != ReachableViaWWAN && appSession.networkStatus != ReachableViaWiFi) {
         //本地登录
-        CUser *instance = [CUser loadWithName:userNameField.text andPassword:passwordField.text];
+        CMember *instance = [CMember loadWithIDNo:theIDNoField.text andPasswordHash: passwordHash];
         
         if(instance == nil){
         }
         else{
-            instance.lastLoginTime = [NSDate date];
+            instance.lastCheckIn = [NSDate date];
+            [moc save];
         }
-        [moc save];
     }
     else{
-    
-    //[passwordField.text stringFromMD5]
-        NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys:userNameField.text,@"LoginId",passwordField.text,@"PassWord",nil];
-        
-        LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(Login) WithPostData:Data];
-         
+     
+        NSDictionary *body = [NSDictionary dictionaryWithObjectsAndKeys:theIDNoField.text,@"IDNo",[passwordField.text MD5],@"PasswordHash",nil];
+        HttpAppRequest *req = buildReq(body);
         
          
-        [HttpAsynchronous httpPostWithRequestInfo:baseURL req:req sucessBlock:^(id result) {
-            DebugLog(@"message:%@",((LeblueResponse*)result).message);
-            DebugLog(@"records:%@",((LeblueResponse*)result).records);
-            NSDictionary *dict = [((LeblueResponse*)result).records objectAtIndex:0];
-            if([[dict objectForKey:@"UserId"] isEqualToString:@""]){
-               appSession.userId = @"C96FC381-E587-494C-91C9-F84B6D9B90A3";
-            }
-            else{
-                appSession.userId = [dict objectForKey:@"UserId"];
-                appSession.userName = userNameField.text;
-                if([[dict objectForKey:@"IsChild"] intValue]==1){
-                    appSession.userType = Child;
-                }
-                else if([[dict objectForKey:@"IsCompany"] intValue]==1){
-                    appSession.userType = Company;
-                    
-                }
-                else if([[dict objectForKey:@"IsEmployee"] intValue]==1){
-                    appSession.userType = Employee;
-                }
-                else if([[dict objectForKey:@"IsGov"] intValue]==1){
-                    appSession.userType = Gov;
-                }
-                else if([[dict objectForKey:@"IsOldMan"] intValue]==1){
-                    appSession.userType = OldMan; 
-                }
-                
-                [self registerDevice];
-                
-                
-                /*
-                [NSTimer scheduledTimerWithTimeInterval:10.f block:^(NSTimeInterval time) {
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{ 
-                        CLLocation *currentLocation = soc.canLocation? soc.myLocation:soc.DebugMyLocation;
-                        DebugLog(@"登记对象位置信息 %@ ",currentLocation);
-                        
-                        NSDictionary *Data1 = [NSDictionary dictionaryWithObjectsAndKeys:userNameField.text,@"LoginId",passwordField.text,@"PassWord",nil];
-                        
-                        LeblueRequest* req1 =[LeblueRequest requestWithHead:nwCode(Login) WithPostData:Data];
-                        
-                    });
-                    
-                 
-                } repeats:YES];
-                */
-            }
+        [HttpAppAsynchronous httpPostWithUrl:authUrl(AIT_Member) req:req sucessBlock:^(id result) {
+            DebugLog(@"ret:%@",((HttpAppResponse*)result).ret);
+            NSDictionary *dict = ((HttpAppResponse*)result).ret;
+            appSession.authId = [dict objectForKey:@"MemberId"];
+            appSession.authToken = [dict objectForKey:@"Token"];
+            appSession.authType = AOT_Member;
+            appSession.authNodeInfos = [dict objectForKey:@"AuthNodeInfos"];
+            
+            //推送
+            //[self registerDevice];
              
+            /*
+             [NSTimer scheduledTimerWithTimeInterval:10.f block:^(NSTimeInterval time) {
+             
+             dispatch_async(dispatch_get_main_queue(), ^{
+             CLLocation *currentLocation = soc.canLocation? soc.myLocation:soc.DebugMyLocation;
+             DebugLog(@"登记对象位置信息 %@ ",currentLocation);
+             
+             NSDictionary *Data1 = [NSDictionary dictionaryWithObjectsAndKeys:userNameField.text,@"LoginId",passwordField.text,@"PassWord",nil];
+             
+             LeblueRequest* req1 =[LeblueRequest requestWithHead:nwCode(Login) WithPostData:Data];
+             
+             });
+             
+             
+             } repeats:YES];
+             */
+
+            
             [self dismissModalViewControllerAnimated:YES];
-            // 
+            //
         } failedBlock:^(NSError *error) {
-            // 
+            //
             DebugLog(@"%@",error);
         } completionBlock:^{
             //
-            CUser *instance = [CUser objectByEntityKey:appSession.userId];
+            CMember *instance = [CMember objectByEntityKey:appSession.authId];
+            NSDictionary *dataItem = [NSDictionary dictionaryWithObjectsAndKeys:appSession.authId,@"MemberId",theIDNoField.text,@"IDNo", [passwordField.text MD5],@"PasswordHash",[appSession.authNodeInfos JSONRepresentation],@"AuthNodeInfos",[NSDate date],@"LastCheckIn",nil];
+            
             if(instance == nil){
-                NSDictionary *dataItem = [NSDictionary dictionaryWithObjectsAndKeys:appSession.userId,@"UserId",appSession.userName,@"Name",passwordField.text,@"Password",[NSDate date],@"LastLoginTime",nil];
-                [CUser createWithIEntity:dataItem];
+                [CMember createWithIEntity:dataItem];
             }
             else{
-                instance.lastLoginTime = [NSDate date];
+                [instance updateWithIEntity:dataItem]; 
             }
             [moc save];
         }];
@@ -272,7 +251,7 @@
     DebugLog(@"longitude:%@",longitude);
     DebugLog(@"latitude:%@",latitude);
       
-    NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys:soc.rom.model,@"deviceModel",soc.rom.deviceToken,@"deviceToken",soc.rom.osversion,@"iOSVersion",NI(1),@"isOnLine",longitude,@"longitude",latitude,@"latitude",soc.rom.applicationId,@"applicationId",appSession.userId,@"infoId",@"",@"comment",nil];
+    NSDictionary *Data = [NSDictionary dictionaryWithObjectsAndKeys:soc.rom.model,@"deviceModel",soc.rom.deviceToken,@"deviceToken",soc.rom.osversion,@"iOSVersion",NI(1),@"isOnLine",longitude,@"longitude",latitude,@"latitude",soc.rom.applicationId,@"applicationId",appSession.authId,@"infoId",@"",@"comment",nil];
     
     LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(RegisterDevice) WithPostData:Data];
     
@@ -316,11 +295,11 @@
 #pragma mark - CInputAssistViewDelgate Method
 -(void)inputAssistViewPerviousTapped:(UITextField*)aTextFiled{
     if (aTextFiled == passwordField) {
-        [userNameField becomeFirstResponder];
+        [theIDNoField becomeFirstResponder];
     }
 }
 -(void)inputAssistViewNextTapped:(UITextField*)aTextFiled{
-    if (aTextFiled == userNameField) {
+    if (aTextFiled == theIDNoField) {
         [passwordField becomeFirstResponder];
     }
 }
@@ -331,7 +310,7 @@
 }
 
 -(void)inputAssistViewDoneTapped:(UITextField*)aTextFiled{
-    if (aTextFiled == userNameField) {
+    if (aTextFiled == theIDNoField) {
         [passwordField becomeFirstResponder];
     } else {
         [self performSelector:@selector(loginButtonClick:) withObject:aTextFiled];

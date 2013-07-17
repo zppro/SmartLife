@@ -93,7 +93,7 @@
 - (void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    BOOL isSignIn = appSession.userId!=nil;
+    BOOL isSignIn = appSession.authId!=nil;
     if(!isSignIn){
         LoginController *loginController = [[[LoginController alloc] init] autorelease];
         UINavigationController *nav2 = [[UINavigationController alloc] initWithRootViewController:loginController];

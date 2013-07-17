@@ -146,8 +146,8 @@
 }
 
 - (void)fetchDataLocal{
-    self.arrNotReceived = [CServiceRecord listCommunityServiceNotReceivedWithUserId:appSession.userId];
-    self.arrReceived = [CServiceRecord listCommunityServiceReceivedWithUserId:appSession.userId];
+    self.arrNotReceived = [CServiceRecord listCommunityServiceNotReceivedWithUserId:appSession.authId];
+    self.arrReceived = [CServiceRecord listCommunityServiceReceivedWithUserId:appSession.authId];
     [receivedTableView reloadData];
     [notReceivedTableView reloadData];
 }
@@ -160,7 +160,7 @@
         [self closeWaitView];
     }
     else{
-        NSDictionary *postData = [NSDictionary dictionaryWithObjectsAndKeys:appSession.userId,@"UserId",nil];
+        NSDictionary *postData = [NSDictionary dictionaryWithObjectsAndKeys:appSession.authId,@"UserId",nil];
         
         LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(ReadListOfCommunityService) WithPostData:postData];
         
@@ -171,15 +171,15 @@
             
             NSArray *records = [((LeblueResponse*)result).records map:^(id obj){
                 NSMutableDictionary *newObj = [NSMutableDictionary dictionaryWithDictionary:obj];
-                [newObj setValue:appSession.userId forKey:@"FetchByUserId"];
+                [newObj setValue:appSession.authId forKey:@"FetchByUserId"];
                 [newObj setValue:[NSDate date] forKey:@"LocalSyncTime"];
-                [newObj setValue:NI(CommunityService) forKey:@"ServiceType"];
+                [newObj setValue:NI(ST_InfotainmentService) forKey:@"ServiceType"];
                 if([newObj objectForKey:@"AcceptStatus"]==nil){
                     [newObj setValue:NI(0) forKey:@"AcceptStatus"];
                 }
                 return newObj;
             }];
-            [CServiceRecord updateWithData:records By:appSession.userId type:CommunityService];
+            [CServiceRecord updateWithData:records By:appSession.authId type:ST_InfotainmentService];
         } failedBlock:^(NSError *error) {
             //
             DebugLog(@"%@",error);

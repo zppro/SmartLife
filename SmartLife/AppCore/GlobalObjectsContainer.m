@@ -9,5 +9,7 @@
 #import "GlobalObjectsContainer.h"
 
 @implementation GlobalObjectsContainer
-SYNTHESIZE_LESSER_SINGLETON_FOR_CLASS(GlobalObjectsContainer); 
+SYNTHESIZE_LESSER_SINGLETON_FOR_CLASS(GlobalObjectsContainer);
+
+
 @end

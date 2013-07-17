@@ -7,6 +7,7 @@
 //
 
 #import "ZPAppDelegate.h"
+#import "AppMacro.h"
 #import "HomeController.h"
  
 @implementation ZPAppDelegate 
@@ -19,6 +20,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [self initSettings];
     
     [theSkinManager loadWithContentsOfFile:@"SkinIndex"];
     
@@ -98,7 +100,7 @@
                            ntohl(tokenBytes[0]), ntohl(tokenBytes[1]), ntohl(tokenBytes[2]),
                            ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]),
                            ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
-    soc.rom.applicationId = @"C1B53491-00CA-4132-9C6C-FA21E214DD46";
+    soc.rom.applicationId = appId;
     
     DebugLog(@"deviceToken:%@",soc.rom.deviceToken);
 }
@@ -111,6 +113,22 @@
     DebugLog(@"%@",userInfo);
 }
 
-
+//系统第一次运行时，初始化参数
+-(void)initSettings {
+    //MARK;
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    //认证地址
+    if (![defaults objectForKey:APP_SETTING_AUTH_BASE_URL_KEY]) {
+        [NSUserDefaults setString:@"115.236.175.109:16812"  forKey:APP_SETTING_AUTH_BASE_URL_KEY];
+    }
+    //Debug Mode
+    if (![defaults objectForKey:SETTING_DEBUG_KEY]) {
+        [NSUserDefaults setBool:FALSE forKey:SETTING_DEBUG_KEY];
+    }
+    //设置版本
+    [NSUserDefaults setString:[[NSBundle mainBundle] bundleVersion]  forKey:SETTING_DEPLOY_VERSION_KEY];
+    [defaults synchronize];
+}
 
 @end

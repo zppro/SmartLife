@@ -33,7 +33,6 @@
 		AC8EB8AF169D1091001F3A06 /* SmartLifeModels.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AC8EB8AD169D1091001F3A06 /* SmartLifeModels.xcdatamodeld */; };
 		AC8EB8B2169D1308001F3A06 /* CUser.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8EB8B1169D1308001F3A06 /* CUser.m */; };
 		AC8EB8BE169D4777001F3A06 /* CServiceRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8EB8BD169D4777001F3A06 /* CServiceRecord.m */; };
-		AC8EB8C716A143C9001F3A06 /* CServiceLog.m in Sources */ = {isa = PBXBuildFile; fileRef = AC8EB8C616A143C8001F3A06 /* CServiceLog.m */; };
 		AC8EB8E016A6DDCC001F3A06 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC8EB8DF16A6DDCB001F3A06 /* AVFoundation.framework */; };
 		AC8EB94916AA7592001F3A06 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC8EB94716AA758D001F3A06 /* AddressBook.framework */; };
 		AC8EB94A16AA7592001F3A06 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC8EB94816AA758F001F3A06 /* AddressBookUI.framework */; };
@@ -70,11 +69,16 @@
 		ACAEF18F16BBD5C20037E091 /* Icon-Small-50@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ACAEF18616BBD5C20037E091 /* Icon-Small-50@2x.png */; };
 		ACAEF19016BBD5C20037E091 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ACAEF18716BBD5C20037E091 /* Icon@2x.png */; };
 		ACAEF19116BBD5C20037E091 /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ACAEF18816BBD5C20037E091 /* Icon-72@2x.png */; };
-		ACAEF19216BBD5C20037E091 /* iTunesArtwork.png in Resources */ = {isa = PBXBuildFile; fileRef = ACAEF18916BBD5C20037E091 /* iTunesArtwork.png */; };
+		ACAEF19216BBD5C20037E091 /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = ACAEF18916BBD5C20037E091 /* iTunesArtwork */; };
 		ACB1629C168043B20029E395 /* 37x-Checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = ACB1629A168043B20029E395 /* 37x-Checkmark.png */; };
 		ACB1629D168043B20029E395 /* 37x-Checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = ACB1629B168043B20029E395 /* 37x-Checkmark@2x.png */; };
 		ACB162BB1680703B0029E395 /* AppSession.m in Sources */ = {isa = PBXBuildFile; fileRef = ACB162BA1680703A0029E395 /* AppSession.m */; };
 		ACB162D116897E6D0029E395 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACB162D016897E6C0029E395 /* CoreLocation.framework */; };
+		ACC3432A178FA4BA00D5F5A1 /* CMember.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC34329178FA4BA00D5F5A1 /* CMember.m */; };
+		ACC3433F1793A6BD00D5F5A1 /* AppRequestBuilder.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC3433E1793A6BD00D5F5A1 /* AppRequestBuilder.m */; };
+		ACC3434B1795360B00D5F5A1 /* CCallService.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC3434A1795360A00D5F5A1 /* CCallService.m */; };
+		ACC343541796469800D5F5A1 /* CServiceLog.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC343531796469800D5F5A1 /* CServiceLog.m */; };
+		ACC3435B179688CF00D5F5A1 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = ACC3435A179688CF00D5F5A1 /* Settings.bundle */; };
 		ACF41BCE1692B6DD008F5F56 /* PersonalCenterIndexController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACF41BCD1692B6DD008F5F56 /* PersonalCenterIndexController.m */; };
 /* End PBXBuildFile section */
 
@@ -131,8 +135,6 @@
 		AC8EB8B1169D1308001F3A06 /* CUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CUser.m; path = AppModel/CUser.m; sourceTree = "<group>"; };
 		AC8EB8BC169D4777001F3A06 /* CServiceRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CServiceRecord.h; path = AppModel/CServiceRecord.h; sourceTree = "<group>"; };
 		AC8EB8BD169D4777001F3A06 /* CServiceRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CServiceRecord.m; path = AppModel/CServiceRecord.m; sourceTree = "<group>"; };
-		AC8EB8C516A143C7001F3A06 /* CServiceLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CServiceLog.h; path = AppModel/CServiceLog.h; sourceTree = "<group>"; };
-		AC8EB8C616A143C8001F3A06 /* CServiceLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CServiceLog.m; path = AppModel/CServiceLog.m; sourceTree = "<group>"; };
 		AC8EB8DF16A6DDCB001F3A06 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		AC8EB94716AA758D001F3A06 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		AC8EB94816AA758F001F3A06 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
@@ -140,7 +142,7 @@
 		AC96EFFA16FAB465004BD83F /* RegisterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RegisterController.m; path = LoginAndRegister/RegisterController.m; sourceTree = "<group>"; };
 		AC96F00A16FBFA4D004BD83F /* SmartControlIndexController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SmartControlIndexController.h; path = SmartControl/SmartControlIndexController.h; sourceTree = "<group>"; };
 		AC96F00B16FBFA4D004BD83F /* SmartControlIndexController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SmartControlIndexController.m; path = SmartControl/SmartControlIndexController.m; sourceTree = "<group>"; };
-		AC96F00E16FBFE0B004BD83F /* SmartLifeModels0.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = SmartLifeModels0.1.xcdatamodel; sourceTree = "<group>"; };
+		AC96F00E16FBFE0B004BD83F /* SmartLifeModels0.1.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SmartLifeModels0.1.xcdatamodel; sourceTree = "<group>"; };
 		AC96F01816FC093F004BD83F /* CDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDevice.h; path = AppModel/CDevice.h; sourceTree = "<group>"; };
 		AC96F01916FC093F004BD83F /* CDevice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDevice.m; path = AppModel/CDevice.m; sourceTree = "<group>"; };
 		AC96F01B16FC3815004BD83F /* SmartControlDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SmartControlDetailController.h; path = SmartControl/SmartControlDetailController.h; sourceTree = "<group>"; };
@@ -194,13 +196,24 @@
 		ACAEF18616BBD5C20037E091 /* Icon-Small-50@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-Small-50@2x.png"; path = "Images/AppIcon/Icon-Small-50@2x.png"; sourceTree = "<group>"; };
 		ACAEF18716BBD5C20037E091 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon@2x.png"; path = "Images/AppIcon/Icon@2x.png"; sourceTree = "<group>"; };
 		ACAEF18816BBD5C20037E091 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Icon-72@2x.png"; path = "Images/AppIcon/Icon-72@2x.png"; sourceTree = "<group>"; };
-		ACAEF18916BBD5C20037E091 /* iTunesArtwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = iTunesArtwork.png; path = Images/AppIcon/iTunesArtwork.png; sourceTree = "<group>"; };
+		ACAEF18916BBD5C20037E091 /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; name = iTunesArtwork; path = Images/AppIcon/iTunesArtwork; sourceTree = "<group>"; };
 		ACB1629A168043B20029E395 /* 37x-Checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "37x-Checkmark.png"; path = "Images/MBProgressHUD/37x-Checkmark.png"; sourceTree = "<group>"; };
 		ACB1629B168043B20029E395 /* 37x-Checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "37x-Checkmark@2x.png"; path = "Images/MBProgressHUD/37x-Checkmark@2x.png"; sourceTree = "<group>"; };
 		ACB162A7168046020029E395 /* AppMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppMacro.h; path = AppCore/AppMacro.h; sourceTree = "<group>"; };
 		ACB162B91680703A0029E395 /* AppSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppSession.h; path = AppCore/AppSession.h; sourceTree = "<group>"; };
 		ACB162BA1680703A0029E395 /* AppSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppSession.m; path = AppCore/AppSession.m; sourceTree = "<group>"; };
 		ACB162D016897E6C0029E395 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		ACC34321178FA1B400D5F5A1 /* SmartLifeModels0.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = SmartLifeModels0.2.xcdatamodel; sourceTree = "<group>"; };
+		ACC34328178FA4BA00D5F5A1 /* CMember.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMember.h; path = AppModel/CMember.h; sourceTree = "<group>"; };
+		ACC34329178FA4BA00D5F5A1 /* CMember.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMember.m; path = AppModel/CMember.m; sourceTree = "<group>"; };
+		ACC3432D17938AAC00D5F5A1 /* AppSetting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppSetting.h; path = AppCore/AppSetting.h; sourceTree = "<group>"; };
+		ACC3433D1793A6BD00D5F5A1 /* AppRequestBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppRequestBuilder.h; path = AppCore/AppRequestBuilder.h; sourceTree = "<group>"; };
+		ACC3433E1793A6BD00D5F5A1 /* AppRequestBuilder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppRequestBuilder.m; path = AppCore/AppRequestBuilder.m; sourceTree = "<group>"; };
+		ACC343491795360900D5F5A1 /* CCallService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCallService.h; path = AppModel/CCallService.h; sourceTree = "<group>"; };
+		ACC3434A1795360A00D5F5A1 /* CCallService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCallService.m; path = AppModel/CCallService.m; sourceTree = "<group>"; };
+		ACC343521796469700D5F5A1 /* CServiceLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CServiceLog.h; path = AppModel/CServiceLog.h; sourceTree = "<group>"; };
+		ACC343531796469800D5F5A1 /* CServiceLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CServiceLog.m; path = AppModel/CServiceLog.m; sourceTree = "<group>"; };
+		ACC3435A179688CF00D5F5A1 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		ACF41BCC1692B6DD008F5F56 /* PersonalCenterIndexController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PersonalCenterIndexController.h; path = PersonalCenter/PersonalCenterIndexController.h; sourceTree = "<group>"; };
 		ACF41BCD1692B6DD008F5F56 /* PersonalCenterIndexController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PersonalCenterIndexController.m; path = PersonalCenter/PersonalCenterIndexController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -306,6 +319,7 @@
 				AC15B077165B528C00E856E4 /* Default.png */,
 				AC15B079165B528C00E856E4 /* Default@2x.png */,
 				AC15B07B165B528C00E856E4 /* Default-568h@2x.png */,
+				ACC3435A179688CF00D5F5A1 /* Settings.bundle */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -328,6 +342,9 @@
 				ACB162A7168046020029E395 /* AppMacro.h */,
 				ACB162B91680703A0029E395 /* AppSession.h */,
 				ACB162BA1680703A0029E395 /* AppSession.m */,
+				ACC3432D17938AAC00D5F5A1 /* AppSetting.h */,
+				ACC3433D1793A6BD00D5F5A1 /* AppRequestBuilder.h */,
+				ACC3433E1793A6BD00D5F5A1 /* AppRequestBuilder.m */,
 			);
 			name = AppCore;
 			sourceTree = "<group>";
@@ -337,9 +354,13 @@
 			children = (
 				AC96F01816FC093F004BD83F /* CDevice.h */,
 				AC96F01916FC093F004BD83F /* CDevice.m */,
+				ACC34328178FA4BA00D5F5A1 /* CMember.h */,
+				ACC34329178FA4BA00D5F5A1 /* CMember.m */,
+				ACC343491795360900D5F5A1 /* CCallService.h */,
+				ACC3434A1795360A00D5F5A1 /* CCallService.m */,
+				ACC343521796469700D5F5A1 /* CServiceLog.h */,
+				ACC343531796469800D5F5A1 /* CServiceLog.m */,
 				AC8EB8AD169D1091001F3A06 /* SmartLifeModels.xcdatamodeld */,
-				AC8EB8C516A143C7001F3A06 /* CServiceLog.h */,
-				AC8EB8C616A143C8001F3A06 /* CServiceLog.m */,
 				AC8EB8BC169D4777001F3A06 /* CServiceRecord.h */,
 				AC8EB8BD169D4777001F3A06 /* CServiceRecord.m */,
 				AC8EB8B0169D1308001F3A06 /* CUser.h */,
@@ -466,7 +487,7 @@
 				ACAEF18616BBD5C20037E091 /* Icon-Small-50@2x.png */,
 				ACAEF18716BBD5C20037E091 /* Icon@2x.png */,
 				ACAEF18816BBD5C20037E091 /* Icon-72@2x.png */,
-				ACAEF18916BBD5C20037E091 /* iTunesArtwork.png */,
+				ACAEF18916BBD5C20037E091 /* iTunesArtwork */,
 			);
 			name = AppIcon;
 			sourceTree = "<group>";
@@ -582,7 +603,8 @@
 				ACAEF18F16BBD5C20037E091 /* Icon-Small-50@2x.png in Resources */,
 				ACAEF19016BBD5C20037E091 /* Icon@2x.png in Resources */,
 				ACAEF19116BBD5C20037E091 /* Icon-72@2x.png in Resources */,
-				ACAEF19216BBD5C20037E091 /* iTunesArtwork.png in Resources */,
+				ACAEF19216BBD5C20037E091 /* iTunesArtwork in Resources */,
+				ACC3435B179688CF00D5F5A1 /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -623,11 +645,14 @@
 				AC8EB8AF169D1091001F3A06 /* SmartLifeModels.xcdatamodeld in Sources */,
 				AC8EB8B2169D1308001F3A06 /* CUser.m in Sources */,
 				AC8EB8BE169D4777001F3A06 /* CServiceRecord.m in Sources */,
-				AC8EB8C716A143C9001F3A06 /* CServiceLog.m in Sources */,
 				AC96EFFB16FAB465004BD83F /* RegisterController.m in Sources */,
 				AC96F00C16FBFA4D004BD83F /* SmartControlIndexController.m in Sources */,
 				AC96F01A16FC093F004BD83F /* CDevice.m in Sources */,
 				AC96F01D16FC3815004BD83F /* SmartControlDetailController.m in Sources */,
+				ACC3432A178FA4BA00D5F5A1 /* CMember.m in Sources */,
+				ACC3433F1793A6BD00D5F5A1 /* AppRequestBuilder.m in Sources */,
+				ACC3434B1795360B00D5F5A1 /* CCallService.m in Sources */,
+				ACC343541796469800D5F5A1 /* CServiceLog.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -661,6 +686,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -675,6 +701,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
@@ -688,6 +715,7 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -696,6 +724,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5C4B0156-82C4-4464-A83C-1749683C299C";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -704,8 +734,8 @@
 		AC15B080165B528C00E856E4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: ping zhong (58T58G6A5E)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: ping zhong (58T58G6A5E)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SmartLife/SmartLife-Prefix.pch";
 				INFOPLIST_FILE = "SmartLife/SmartLife-Info.plist";
@@ -715,8 +745,8 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "5C4B0156-82C4-4464-A83C-1749683C299C";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5C4B0156-82C4-4464-A83C-1749683C299C";
 				USER_HEADER_SEARCH_PATHS = "../../com.zppro/core/**";
 				WRAPPER_EXTENSION = app;
 			};
@@ -725,8 +755,8 @@
 		AC15B081165B528C00E856E4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: ping zhong (58T58G6A5E)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: ping zhong (58T58G6A5E)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SmartLife/SmartLife-Prefix.pch";
 				INFOPLIST_FILE = "SmartLife/SmartLife-Info.plist";
@@ -736,8 +766,8 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "5C4B0156-82C4-4464-A83C-1749683C299C";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5C4B0156-82C4-4464-A83C-1749683C299C";
 				USER_HEADER_SEARCH_PATHS = "../../com.zppro/core/**";
 				WRAPPER_EXTENSION = app;
 			};
@@ -771,9 +801,10 @@
 			isa = XCVersionGroup;
 			children = (
 				AC96F00E16FBFE0B004BD83F /* SmartLifeModels0.1.xcdatamodel */,
+				ACC34321178FA1B400D5F5A1 /* SmartLifeModels0.2.xcdatamodel */,
 				AC8EB8AE169D1091001F3A06 /* SmartLifeModels.xcdatamodel */,
 			);
-			currentVersion = AC96F00E16FBFE0B004BD83F /* SmartLifeModels0.1.xcdatamodel */;
+			currentVersion = ACC34321178FA1B400D5F5A1 /* SmartLifeModels0.2.xcdatamodel */;
 			name = SmartLifeModels.xcdatamodeld;
 			path = AppModel/SmartLifeModels.xcdatamodeld;
 			sourceTree = "<group>";

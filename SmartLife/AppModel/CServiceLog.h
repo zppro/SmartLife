@@ -2,7 +2,7 @@
 //  CServiceLog.h
 //  SmartLife
 //
-//  Created by zppro on 13-1-12.
+//  Created by zppro on 13-7-17.
 //  Copyright (c) 2013年 zppro. All rights reserved.
 //
 
@@ -12,23 +12,19 @@
 
 @interface CServiceLog : BaseModel
 
-@property (nonatomic, retain) NSDate * localSyncTime;
-@property (nonatomic, retain) NSNumber * localSyncFlag;
-
-@property (nonatomic, retain) NSDate * checkInTime;
-@property (nonatomic, retain) NSString * logContent; 
 @property (nonatomic, retain) NSString * callServiceId;
-@property (nonatomic, retain) NSString * fetchByUserId;
-@property (nonatomic, retain) NSString * serviceTracksLogId;
-@property (nonatomic, retain) NSNumber * type;
-@property (nonatomic, retain) NSString * logSoundFile;
-@property (nonatomic, retain) NSString * logName;
-@property (nonatomic, retain) NSString * serviceTracksId;
+@property (nonatomic, retain) NSDate * checkInTime;
+@property (nonatomic, retain) NSString * belongFamilyMemberId;
+@property (nonatomic, retain) NSNumber * localSyncFlag;
+@property (nonatomic, retain) NSDate * localSyncTime;
+@property (nonatomic, retain) NSString * logContent;
+@property (nonatomic, retain) NSString * logFile;
+@property (nonatomic, retain) NSString * logId;
+@property (nonatomic, retain) NSNumber * logType;
+@property (nonatomic, retain) NSString * belongMemberId;
+@property (nonatomic, retain) NSString * logFileType;
 
-
-
-+ (NSArray *)listProcessActionByService:(NSString*) callServiceId;
-+ (NSArray *)listProcessResponseByService:(NSString*) callServiceId;
++ (NSArray *)listByService:(NSString*) callServiceId; 
 + (BOOL)updateWithData:(NSArray *)data ByService:(NSString*) callServiceId;
 
 @end

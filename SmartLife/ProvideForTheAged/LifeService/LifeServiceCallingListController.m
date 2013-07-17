@@ -146,8 +146,8 @@
 }
 
 - (void)fetchDataLocal{ 
-    self.arrNotReceived = [CServiceRecord listLifeServiceNotReceivedWithUserId:appSession.userId];
-    self.arrReceived = [CServiceRecord listLifeServiceReceivedWithUserId:appSession.userId];
+    self.arrNotReceived = [CServiceRecord listLifeServiceNotReceivedWithUserId:appSession.authId];
+    self.arrReceived = [CServiceRecord listLifeServiceReceivedWithUserId:appSession.authId];
     [receivedTableView reloadData];
     [notReceivedTableView reloadData];
 }
@@ -160,7 +160,7 @@
         [self closeWaitView];
     }
     else{
-        NSDictionary *postData = [NSDictionary dictionaryWithObjectsAndKeys:appSession.userId,@"UserId",nil];
+        NSDictionary *postData = [NSDictionary dictionaryWithObjectsAndKeys:appSession.authId,@"UserId",nil];
         
         LeblueRequest* req =[LeblueRequest requestWithHead:nwCode(ReadListOfLifeService) WithPostData:postData];
         
@@ -170,15 +170,15 @@
             
             NSArray *records = [((LeblueResponse*)result).records map:^(id obj){
                 NSMutableDictionary *newObj = [NSMutableDictionary dictionaryWithDictionary:obj];
-                [newObj setValue:appSession.userId forKey:@"FetchByUserId"];
+                [newObj setValue:appSession.authId forKey:@"FetchByUserId"];
                 [newObj setValue:[NSDate date] forKey:@"LocalSyncTime"];
-                [newObj setValue:NI(LifeService) forKey:@"ServiceType"];
+                [newObj setValue:NI(ST_LifeService) forKey:@"ServiceType"];
                 if([newObj objectForKey:@"AcceptStatus"]==nil){
                     [newObj setValue:NI(0) forKey:@"AcceptStatus"];
                 }
                 return newObj;
             }]; 
-            [CServiceRecord updateWithData:records By:appSession.userId type:LifeService];
+            [CServiceRecord updateWithData:records By:appSession.authId type:ST_LifeService];
         } failedBlock:^(NSError *error) {
             //
             DebugLog(@"%@",error);

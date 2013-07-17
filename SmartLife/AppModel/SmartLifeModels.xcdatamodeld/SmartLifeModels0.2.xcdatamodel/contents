@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="11G63" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="CCallService" representedClassName="CCallService" syncable="YES">
+        <attribute name="accessPoint" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="areaId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="belongFamilyMemberId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="belongMemberId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="callServiceId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="checkInTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="content" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="doResults" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="doStatus" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="latitudeS" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="localSyncTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="longitudeS" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="oldManId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="oldManName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="responseFlag" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="serviceType" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+    </entity>
     <entity name="CDevice" representedClassName="CDevice" syncable="YES">
         <attribute name="deviceCode" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="deviceId" optional="YES" attributeType="String" syncable="YES"/>
@@ -10,18 +28,32 @@
         <attribute name="switchOnFlag" optional="YES" attributeType="Boolean" defaultValueString="0" syncable="YES"/>
         <attribute name="userId" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="CMember" representedClassName="CMember" syncable="YES">
+        <attribute name="authNodeInfos" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="checkInCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="gender" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastCheckIn" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="memberId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="memberName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="mobile" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="passwordHash" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="registerTime" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="theIDNo" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="CServiceLog" representedClassName="CServiceLog" syncable="YES">
+        <attribute name="belongFamilyMemberId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="belongMemberId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="callServiceId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="checkInTime" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="fetchByUserId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localSyncFlag" optional="YES" attributeType="Boolean" defaultValueString="0" syncable="YES"/>
         <attribute name="localSyncTime" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="logContent" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="logName" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="logSoundFile" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="serviceTracksId" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="serviceTracksLogId" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="type" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="logFile" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="logFileType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="logId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="logType" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
     </entity>
     <entity name="CServiceRecord" representedClassName="CServiceRecord" syncable="YES">
         <attribute name="acceptStatus" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
@@ -53,10 +85,14 @@
         <attribute name="userId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userName" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="Entity" syncable="YES"/>
     <elements>
         <element name="CDevice" positionX="160" positionY="192" width="128" height="165"/>
         <element name="CServiceLog" positionX="160" positionY="192" width="128" height="210"/>
         <element name="CServiceRecord" positionX="160" positionY="192" width="128" height="375"/>
         <element name="CUser" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="CMember" positionX="160" positionY="192" width="128" height="225"/>
+        <element name="CCallService" positionX="160" positionY="192" width="128" height="285"/>
+        <element name="Entity" positionX="160" positionY="192" width="128" height="45"/>
     </elements>
 </model>

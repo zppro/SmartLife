@@ -9,11 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-typedef enum{ 
-    EmergencyService,
-    CommunityService,
-    LifeService
-}ServiceType;
 
 @interface CServiceRecord : BaseModel
 
