@@ -65,6 +65,7 @@
     switch (button.tag) {
         case 1:{
             [self navigationTo:[[[CallListController alloc] init] autorelease]];
+            //[self navigationTo:[[CallListController alloc] init]];
             break;
         }
         case 2: {

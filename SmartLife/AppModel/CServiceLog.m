@@ -50,8 +50,7 @@
 
 + (NSArray *)listByService:(NSString*) callServiceId{
     DKPredicateBuilder *builder = [[[DKPredicateBuilder alloc] init] autorelease];
-    [builder where:@"callServiceId" equals:callServiceId];
-    [builder where:@"logType" equals:NI(0)];
+    [builder where:@"callServiceId" equals:callServiceId]; 
     return [CServiceLog fetchWithSortBy:@"checkInTime" ascending:YES predicateWithFormat:builder.compoundPredicate.predicateFormat];
 }
 + (BOOL)updateWithData:(NSArray *)data ByService:(NSString*) callServiceId{

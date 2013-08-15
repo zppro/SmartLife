@@ -94,6 +94,7 @@
 #pragma mark 收到远程通知以后注册到CNS
 - (void) application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken{
     //将来地址可以通过配置解决
+    /*
     DebugLog(@"deviceToken:%@",deviceToken); 
     const unsigned *tokenBytes = [deviceToken bytes]; 
     soc.rom.deviceToken = [NSString stringWithFormat:@"%08x%08x%08x%08x%08x%08x%08x%08x",
@@ -103,6 +104,7 @@
     soc.rom.applicationId = appId;
     
     DebugLog(@"deviceToken:%@",soc.rom.deviceToken);
+    */
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error{

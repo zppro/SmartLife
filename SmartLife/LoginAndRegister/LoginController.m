@@ -167,10 +167,13 @@
             DebugLog(@"ret:%@",((HttpAppResponse*)result).ret);
             NSDictionary *dict = ((HttpAppResponse*)result).ret;
             appSession.authId = [dict objectForKey:@"MemberId"];
+            appSession.authName = [dict objectForKey:@"MemberName"];
             appSession.authToken = [dict objectForKey:@"Token"];
             appSession.authType = AOT_Member;
             appSession.authNodeInfos = [dict objectForKey:@"AuthNodeInfos"];
             
+            
+                        
             //推送
             //[self registerDevice];
              
@@ -208,7 +211,8 @@
             else{
                 [instance updateWithIEntity:dataItem]; 
             }
-            [moc save];
+            [moc save]; 
+            
         }];
     }
     /*

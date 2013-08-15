@@ -32,9 +32,12 @@ typedef enum {
 }AuthenticationInterfaceType;
 
 typedef enum {
+    BIT_GetRelationNamesWithOldMan,
     BIT_GetEmergencyServices,
     BIT_GetServiceLogs,
-    BIT_ResponseByFamilyMember
+    BIT_ResponseByFamilyMember,
+    BIT_LogByFamilyMember,
+    BIT_GetCallByOldMan
 }BizInterfaceType;
 
 typedef enum {
@@ -43,6 +46,8 @@ typedef enum {
     ST_InfotainmentService,//娱乐资讯
     ST_LifeService//生活服务
 }ServiceType;
+
+@class CCallService;
 
 @interface AppSession : NSObject
 SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(AppSession);
@@ -56,11 +61,14 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(AppSession);
 @property (nonatomic) AuthenticationObjectType authType;
 @property (nonatomic, retain) NSArray *authNodeInfos;
 
+
 + (BOOL)whetherIsDebug;
 
 - (NSString*) getAuthUrl:(AuthenticationInterfaceType) aType;
 
 - (NSString*) getBizUrl:(BizInterfaceType) aType withAccessPoint:(NSString*) accessPoint;
+
+- (void) logText:(NSString*) logContent ToService:(CCallService*) callService  sucessBlock:(SuccessBlock)sucessBlock failedBlock:(FailedBlock)failedBlock completionBlock:(FinalBlock)completionBlock;
 
 - (NSInteger)getNWCode:(BizInterfaceType2) biz;
 

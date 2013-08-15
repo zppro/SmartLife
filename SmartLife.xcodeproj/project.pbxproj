@@ -203,7 +203,7 @@
 		ACB162B91680703A0029E395 /* AppSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppSession.h; path = AppCore/AppSession.h; sourceTree = "<group>"; };
 		ACB162BA1680703A0029E395 /* AppSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppSession.m; path = AppCore/AppSession.m; sourceTree = "<group>"; };
 		ACB162D016897E6C0029E395 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		ACC34321178FA1B400D5F5A1 /* SmartLifeModels0.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = SmartLifeModels0.2.xcdatamodel; sourceTree = "<group>"; };
+		ACC34321178FA1B400D5F5A1 /* SmartLifeModels0.2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SmartLifeModels0.2.xcdatamodel; sourceTree = "<group>"; };
 		ACC34328178FA4BA00D5F5A1 /* CMember.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMember.h; path = AppModel/CMember.h; sourceTree = "<group>"; };
 		ACC34329178FA4BA00D5F5A1 /* CMember.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMember.m; path = AppModel/CMember.m; sourceTree = "<group>"; };
 		ACC3432D17938AAC00D5F5A1 /* AppSetting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppSetting.h; path = AppCore/AppSetting.h; sourceTree = "<group>"; };
@@ -700,7 +700,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -722,10 +722,10 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5C4B0156-82C4-4464-A83C-1749683C299C";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -734,10 +734,11 @@
 		AC15B080165B528C00E856E4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: ping zhong (58T58G6A5E)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: ping zhong (58T58G6A5E)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SmartLife/SmartLife-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "SmartLife/SmartLife-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_LDFLAGS = (
@@ -745,8 +746,8 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5C4B0156-82C4-4464-A83C-1749683C299C";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5C4B0156-82C4-4464-A83C-1749683C299C";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				USER_HEADER_SEARCH_PATHS = "../../com.zppro/core/**";
 				WRAPPER_EXTENSION = app;
 			};
@@ -755,10 +756,11 @@
 		AC15B081165B528C00E856E4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: ping zhong (58T58G6A5E)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: ping zhong (58T58G6A5E)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SmartLife/SmartLife-Prefix.pch";
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "SmartLife/SmartLife-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
 				OTHER_LDFLAGS = (
@@ -766,8 +768,8 @@
 					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5C4B0156-82C4-4464-A83C-1749683C299C";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5C4B0156-82C4-4464-A83C-1749683C299C";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				USER_HEADER_SEARCH_PATHS = "../../com.zppro/core/**";
 				WRAPPER_EXTENSION = app;
 			};

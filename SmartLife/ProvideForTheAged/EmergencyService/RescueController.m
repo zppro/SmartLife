@@ -34,6 +34,9 @@
 @property (nonatomic, retain) EGORefreshTableHeaderView     *logTableHeaderView;
 @property (nonatomic, retain) UIButton *responseButton;
 @property (nonatomic, retain) UIButton *callButton;
+@property (nonatomic, retain) NSMutableArray *arrOldPhones;
+@property (nonatomic, retain) NSString *relationNameOfOldMan;
+@property (nonatomic, retain) NSString *relationNameOfFamily;
 @end
 
 @implementation RescueController
@@ -44,7 +47,9 @@
 @synthesize responseButton;
 @synthesize callButton;
 @synthesize arrLogs;  
-
+@synthesize arrOldPhones;
+@synthesize relationNameOfOldMan;
+@synthesize relationNameOfFamily;
 - (void)dealloc {
     self.callService = nil;  
     self.titleProcessLabel = nil;
@@ -53,7 +58,9 @@
     self.responseButton = nil;
     self.callButton = nil;
     self.arrLogs = nil;
-
+    self.arrOldPhones = nil;
+    self.relationNameOfOldMan = nil;
+    self.relationNameOfFamily = nil;
     [super dealloc];
 }
 
@@ -68,22 +75,7 @@
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-    /*
-    self.arrProcessActions = [NSMutableArray arrayWithObjects:
-                     [NSDictionary dictionaryWithObjectsAndKeys:@"2012-11-11 15:30:01",@"ActionTime", @"120已接通",@"Description",nil],
-                     [NSDictionary dictionaryWithObjectsAndKeys:@"2012-11-11 15:32:01",@"ActionTime", @"社区医生已接通",@"Description",nil],
-                     [NSDictionary dictionaryWithObjectsAndKeys:@"2012-11-11 15:32:01",@"ActionTime", @"老人大儿子已接通",@"Description",nil],
-                     [NSDictionary dictionaryWithObjectsAndKeys:@"2012-11-11 15:32:01",@"ActionTime", @"老人小儿子已接通",@"Description",nil],
-                     nil];
-
-    self.arrProcessResponses = [NSMutableArray arrayWithObjects:
-                              [NSDictionary dictionaryWithObjectsAndKeys:@"2012-11-11 15:33:20",@"ResponseTime", @"社区医生预计5分钟后到",@"ResponseContent",@"text",@"ResponseType",nil],
-                              [NSDictionary dictionaryWithObjectsAndKeys:@"2012-11-11 15:34:01",@"ResponseTime", @"老人小女儿已响应",@"ResponseContent",@"text",@"ResponseType",nil],
-                              [NSDictionary dictionaryWithObjectsAndKeys:@"2012-11-11 15:35:01",@"ResponseTime", @"01.mp3",@"ResponseContent",@"audio",@"ResponseType",nil],
-                              [NSDictionary dictionaryWithObjectsAndKeys:@"2012-11-11 15:35:10",@"ResponseTime", @"02.mp3",@"ResponseContent",@"audio",@"ResponseType",nil],
-                              nil];
-    */
+    [super viewDidLoad]; 
     
 	// Do any additional setup after loading the view.
     self.headerView.headerLabel.text = callService.content;
@@ -136,8 +128,11 @@
     [logTableHeaderView release];
     [self.logTableHeaderView refreshLastUpdatedDate];
 	//  update the last update date
-         
+    
+    [self fetchRelationNamesWithOldMan];
+    [self fetchPhoneRemote];
     [self fetchData];
+    
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self fetchCamera];
@@ -177,6 +172,44 @@
 }
 
 #pragma mark - 数据处理 
+- (void) fetchRelationNamesWithOldMan{
+    
+    NSString *url = JOIN2(bizUrl(BIT_GetRelationNamesWithOldMan,callService.accessPoint),@"/",callService.oldManId);
+    NSDictionary *head = [NSDictionary dictionaryWithObjectsAndKeys:callService.belongFamilyMemberId,@"FamilyMemberId",nil];
+    HttpAppRequest *req = buildReq2(head);
+    
+    [HttpAppAsynchronous httpGetWithUrl:url req:req sucessBlock:^(id result) {
+        NSDictionary *dict = ((HttpAppResponse*)result).ret;
+        if(dict != nil){
+            self.relationNameOfOldMan = [dict objectForKey:@"RelationNameOfOldMan"];
+            self.relationNameOfFamily = [dict objectForKey:@"RelationNameOfFamily"];
+        }
+    } failedBlock:^(NSError *error) {
+        DebugLog(@"%@",error);
+    } completionBlock:^{
+        
+    }];
+    
+}
+
+- (void) fetchPhoneRemote{
+    NSString *url = JOIN2(bizUrl(BIT_GetCallByOldMan,callService.accessPoint),@"/",callService.oldManId);
+    NSDictionary *head = [NSDictionary dictionaryWithObjectsAndKeys:callService.belongFamilyMemberId,@"FamilyMemberId",nil];
+    HttpAppRequest *req = buildReq2(head);
+    [HttpAppAsynchronous httpGetWithUrl:url req:req sucessBlock:^(id result) {
+        self.arrOldPhones = [NSMutableArray arrayWithArray: ((HttpAppResponse*)result).rows];
+        [arrOldPhones insertObject:[NSDictionary dictionaryWithObjectsAndKeys:@"119",@"Text",@"119",@"PhoneNo", nil] atIndex:0];
+        [arrOldPhones insertObject:[NSDictionary dictionaryWithObjectsAndKeys:@"120",@"Text",@"120",@"PhoneNo", nil] atIndex:0];
+        [arrOldPhones insertObject:[NSDictionary dictionaryWithObjectsAndKeys:@"110",@"Text",@"110",@"PhoneNo", nil] atIndex:0];
+                
+    } failedBlock:^(NSError *error) {
+        DebugLog(@"%@",error);
+    } completionBlock:^{
+        
+    }];
+
+}
+
 - (void) fetchCamera{
     if (appSession.networkStatus != ReachableViaWWAN && appSession.networkStatus != ReachableViaWiFi) {
         //无网络
@@ -302,85 +335,91 @@ static NSString * cellKey = @"acell";
     NSDictionary *head = [NSDictionary dictionaryWithObjectsAndKeys:callService.belongFamilyMemberId,@"FamilyMemberId",nil];
     HttpAppRequest *req = buildReq2(head);
     
+    NSString *logContent = MF_SWF(@"老人的%@(%@)通过手机响应",relationNameOfOldMan,appSession.authName);
     
     [HttpAppAsynchronous httpPostWithUrl:url req:req sucessBlock:^(id result) {
         DebugLog(@"ret:%@",((HttpAppResponse*)result).ret);
         callService.responseFlag = NB(1);  
         [moc save];
         isResponsed = [callService.responseFlag boolValue];
+        
+        //记录日志
+        logContent(logContent,callService,^(id result) {
+            [self fetchData];
+        },^(NSError *error) {
+            DebugLog(@"%@",error);
+        },^{
+            
+        });
         //
     } failedBlock:^(NSError *error) {
         //
-        DebugLog(@"%@",error);
-        ShowError(error.localizedDescription);
+        DebugLog(@"%@",error); 
     } completionBlock:^{
         //
         [responseButton setEnabled: (([callService.doStatus intValue] != 2) && ![callService.responseFlag boolValue])];
         [callButton setEnabled: (([callService.doStatus intValue] != 2) && [callService.responseFlag boolValue])];
         
-        [self closeWaitView];
+        
+        [self closeWaitView]; 
     }];
 
 }
 
 - (void)doCall:(id)sender {
     UIImage *bg = MF_PngOfDefaultSkin(@"ProvideForTheAged/EmergencyService/99.png");
-    callSheet = [ZPUIActionSheet zSheetWithHeight:bg.size.height/2.f withSheetTitle:@""];
+    
+    int ext = 0;
+    if([arrOldPhones count]>=7){
+        ext = ([arrOldPhones count] - 5)/2;
+    } 
+    
+    DebugLog(@"phone ext %d / count %d",ext,[arrOldPhones count]);
+    callSheet = [ZPUIActionSheet zSheetWithHeight:(bg.size.height/2.f + 105.f*ext) withSheetTitle:@""];
     UIImageView *bgView = makeImageViewByFrame(callSheet.contentView.bounds);
     bgView.image = bg;
     [callSheet.contentView addSubview:bgView];
+   
+    float w = 148.f;
+    float h = 45.f;
+    float x1 = 8.f;
+    float x2 = 164.f;
+    float deltaH = 60.f;
     
-    SkinContainer *container = [[[SkinManager sharedInstance] currentSkin] getContainer:NSStringFromClass([ZPUIActionSheet class])];
-    for (SkinElement *skinElement in container.elements) {
-        if ([skinElement.elementType isEqualToString:NSStringFromClass([UIButton class])]) {
-            UIButton *btn = [skinElement generateObject];
-            [btn addTarget:self action:@selector(moduleClick:) forControlEvents:UIControlEventTouchUpInside];
-            [callSheet.contentView addSubview:btn];
-        }
+    
+    for (int i=0; i<[arrOldPhones count]; i++) {
+        CGRect frame = CGRectMake((i%2==0)?x1:x2, 45+(i/2)*deltaH, w, h);
+        UIButton *button = [[[UIButton alloc] initWithFrame:frame] autorelease];
+        [button setTag:i]; 
+        [button setTitle:[[arrOldPhones objectAtIndex:i] objectForKey:@"Text"] forState:UIControlStateNormal];
+        [button setTitleColor:MF_ColorFromRGB(0, 0, 0) forState:UIControlStateNormal];
+        [button setBackgroundImage:MF_PngOfDefaultSkin(@"ProvideForTheAged/EmergencyService/CallBtnBg.png") forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(moduleClick:) forControlEvents:UIControlEventTouchUpInside];
+        [callSheet.contentView addSubview:button];
     }
+
     
     [callSheet showInView:self.view];
 
 }
- 
- 
+
+
 - (void) moduleClick:(id) sender{
     UIButton *button = (UIButton*) sender;
-    
-    switch (button.tag) {
-        case 1:{
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"telprompt://110"]];
-            break;
-        }
-        case 2: {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"telprompt://120"]];
-            break;
-        }
-        case 3: {
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"telprompt://119"]];
-            break;
-        }
-        case 4:{
-            break;
-        }
-        case 5:{
-            
-            break;
-        }
-        case 6: {
-            
-            break;
-        }
-        case 7: {
-            break;
-        }
-        case 8:{
-            break;
-        }
-        default:
-            break;
-    }
-    
+    NSDictionary *oldPhone =  [arrOldPhones objectAtIndex:button.tag];
+    NSString *telCommand = JOIN(@"telprompt://",[oldPhone objectForKey:@"PhoneNo"]);
+    //DebugLog(@"telCommand:%@",telCommand);
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:telCommand]];
+    //记录日志
+    NSString *format = button.tag >5 ?@"老人的%@(%@)呼叫老人的%@":@"老人的%@(%@)呼叫%@";
+    NSString *logContent = MF_SWF(format,relationNameOfOldMan,appSession.authName,[oldPhone objectForKey:@"Text"]);
+    logContent(logContent,callService,^(id result) {
+        [self fetchData];
+    },^(NSError *error) {
+        DebugLog(@"%@",error);
+    },^{
+        [self closeWaitView];
+    });
     [callSheet docancel];
 }
   

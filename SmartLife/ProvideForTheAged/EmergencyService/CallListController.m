@@ -51,6 +51,7 @@
     myTableView.dataSource = self;
     myTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     [self.containerView addSubview:myTableView];
+    [myTableView release];
      
     refreshTableHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f,0.0f - myTableView.height,self.containerView.width,myTableView.height)];
     refreshTableHeaderView.delegate = self;
@@ -99,7 +100,7 @@
                 NSArray *records = [((HttpAppResponse*)result).rows map:^(id obj){
                     NSMutableDictionary *newObj = [NSMutableDictionary dictionaryWithDictionary:obj];
                     [newObj setValue:appSession.authId forKey:@"BelongMemberId"];
-                    [newObj setValue:appSession.authId forKey:@"BelongFamilyMemberId"];
+                    [newObj setValue:familyMemberId forKey:@"BelongFamilyMemberId"];
                     [newObj setValue:[NSDate date] forKey:@"LocalSyncTime"];
                     [newObj setValue:NI(ST_EmergencyService) forKey:@"ServiceType"];
                     [newObj setValue:accessPoint forKey:@"AccessPoint"];
@@ -197,14 +198,14 @@
 -(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 52;
 }
-
+static NSString *aCell=@"myCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"acell"];
+     
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:aCell];
     CCallService *dataItem = (CCallService*)[arrCalls objectAtIndex:indexPath.row];
     if (cell == nil) {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                       reuseIdentifier:@"acell"] autorelease];
+                                       reuseIdentifier:aCell] autorelease];
         UILabel *valueCallTime = [[UILabel alloc] initWithFrame:CGRectMake(14, 0, 150, 45)];
         //valueCallTime.textColor = MF_ColorFromRGB(140, 137, 111);
         valueCallTime.backgroundColor = [UIColor clearColor];
@@ -239,7 +240,8 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //[tableView deselectRowAtIndexPath:indexPath animated:YES];
+    DebugLog(@"didSelect %d",indexPath.row);
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     CCallService *dataItem = (CCallService*)[arrCalls objectAtIndex:indexPath.row];
     [self navigationTo:[[[RescueController alloc] initWithCallService:dataItem] autorelease]];
 }

@@ -43,9 +43,11 @@
     [self.view addSubview:_containerView];
     _containerDefaultCenter = _containerView.center;
     
+    
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapContainerView:)];
     [_containerView addGestureRecognizer:tapGesture];
     [tapGesture release];
+     
     
     self.waitView = [[[MBProgressHUD alloc] initWithView:self.view] autorelease];
     [self.waitView setFrame:CGRectMake(0, 0, 320, 920)];
@@ -89,7 +91,7 @@
 }
 
 - (void)tapContainerView:(UIGestureRecognizer *)gestureRecognizer {
-    
+    gestureRecognizer.cancelsTouchesInView = NO;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {

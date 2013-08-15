@@ -19,6 +19,7 @@
 
 #define authUrl(x) [appSession getAuthUrl:x]
 #define bizUrl(x,y) [appSession getBizUrl:x withAccessPoint:y]
+#define logContent(x,y,s,f,c) [appSession logText:x ToService:y sucessBlock:s failedBlock:f completionBlock:c]
 
 #define buildReq(body) [AppRequestBuilder createWithHead:nil andBody:body]
 #define buildReq2(head) [AppRequestBuilder createWithHead:head andBody:nil]
