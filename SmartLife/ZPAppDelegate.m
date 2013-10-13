@@ -124,6 +124,12 @@
     if (![defaults objectForKey:APP_SETTING_AUTH_BASE_URL_KEY]) {
         [NSUserDefaults setString:@"115.236.175.109:16812"  forKey:APP_SETTING_AUTH_BASE_URL_KEY];
     }
+    
+    //认证地址
+    if (![defaults objectForKey:APP_SETTING_AUTHENENTICATION_INTERFACE_TYPE_KEY]) {
+        [NSUserDefaults setInt:0 forKey:APP_SETTING_AUTHENENTICATION_INTERFACE_TYPE_KEY];
+    }
+    
     //Debug Mode
     if (![defaults objectForKey:SETTING_DEBUG_KEY]) {
         [NSUserDefaults setBool:FALSE forKey:SETTING_DEBUG_KEY];

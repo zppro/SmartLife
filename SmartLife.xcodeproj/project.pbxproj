@@ -79,6 +79,7 @@
 		ACC3434B1795360B00D5F5A1 /* CCallService.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC3434A1795360A00D5F5A1 /* CCallService.m */; };
 		ACC343541796469800D5F5A1 /* CServiceLog.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC343531796469800D5F5A1 /* CServiceLog.m */; };
 		ACC3435B179688CF00D5F5A1 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = ACC3435A179688CF00D5F5A1 /* Settings.bundle */; };
+		ACD8195C17F01BFE009F9155 /* CServiceStation.m in Sources */ = {isa = PBXBuildFile; fileRef = ACD8195B17F01BFD009F9155 /* CServiceStation.m */; };
 		ACF41BCE1692B6DD008F5F56 /* PersonalCenterIndexController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACF41BCD1692B6DD008F5F56 /* PersonalCenterIndexController.m */; };
 /* End PBXBuildFile section */
 
@@ -214,6 +215,9 @@
 		ACC343521796469700D5F5A1 /* CServiceLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CServiceLog.h; path = AppModel/CServiceLog.h; sourceTree = "<group>"; };
 		ACC343531796469800D5F5A1 /* CServiceLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CServiceLog.m; path = AppModel/CServiceLog.m; sourceTree = "<group>"; };
 		ACC3435A179688CF00D5F5A1 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		ACD8195917F01B03009F9155 /* SmartLifeModels0.3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = file; path = SmartLifeModels0.3.xcdatamodel; sourceTree = "<group>"; };
+		ACD8195A17F01BFD009F9155 /* CServiceStation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CServiceStation.h; path = AppModel/CServiceStation.h; sourceTree = "<group>"; };
+		ACD8195B17F01BFD009F9155 /* CServiceStation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CServiceStation.m; path = AppModel/CServiceStation.m; sourceTree = "<group>"; };
 		ACF41BCC1692B6DD008F5F56 /* PersonalCenterIndexController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PersonalCenterIndexController.h; path = PersonalCenter/PersonalCenterIndexController.h; sourceTree = "<group>"; };
 		ACF41BCD1692B6DD008F5F56 /* PersonalCenterIndexController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PersonalCenterIndexController.m; path = PersonalCenter/PersonalCenterIndexController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -361,6 +365,8 @@
 				ACC343521796469700D5F5A1 /* CServiceLog.h */,
 				ACC343531796469800D5F5A1 /* CServiceLog.m */,
 				AC8EB8AD169D1091001F3A06 /* SmartLifeModels.xcdatamodeld */,
+				ACD8195A17F01BFD009F9155 /* CServiceStation.h */,
+				ACD8195B17F01BFD009F9155 /* CServiceStation.m */,
 				AC8EB8BC169D4777001F3A06 /* CServiceRecord.h */,
 				AC8EB8BD169D4777001F3A06 /* CServiceRecord.m */,
 				AC8EB8B0169D1308001F3A06 /* CUser.h */,
@@ -653,6 +659,7 @@
 				ACC3433F1793A6BD00D5F5A1 /* AppRequestBuilder.m in Sources */,
 				ACC3434B1795360B00D5F5A1 /* CCallService.m in Sources */,
 				ACC343541796469800D5F5A1 /* CServiceLog.m in Sources */,
+				ACD8195C17F01BFE009F9155 /* CServiceStation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -734,19 +741,19 @@
 		AC15B080165B528C00E856E4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: ping zhong";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SmartLife/SmartLife-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "SmartLife/SmartLife-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "D4EF7785-3F07-477C-95C5-2D2A719CC1F0";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				USER_HEADER_SEARCH_PATHS = "../../com.zppro/core/**";
 				WRAPPER_EXTENSION = app;
@@ -756,19 +763,19 @@
 		AC15B081165B528C00E856E4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: ping zhong";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "SmartLife/SmartLife-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "SmartLife/SmartLife-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-all_load",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "D4EF7785-3F07-477C-95C5-2D2A719CC1F0";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				USER_HEADER_SEARCH_PATHS = "../../com.zppro/core/**";
 				WRAPPER_EXTENSION = app;
@@ -802,11 +809,12 @@
 		AC8EB8AD169D1091001F3A06 /* SmartLifeModels.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				ACD8195917F01B03009F9155 /* SmartLifeModels0.3.xcdatamodel */,
 				AC96F00E16FBFE0B004BD83F /* SmartLifeModels0.1.xcdatamodel */,
 				ACC34321178FA1B400D5F5A1 /* SmartLifeModels0.2.xcdatamodel */,
 				AC8EB8AE169D1091001F3A06 /* SmartLifeModels.xcdatamodel */,
 			);
-			currentVersion = ACC34321178FA1B400D5F5A1 /* SmartLifeModels0.2.xcdatamodel */;
+			currentVersion = ACD8195917F01B03009F9155 /* SmartLifeModels0.3.xcdatamodel */;
 			name = SmartLifeModels.xcdatamodeld;
 			path = AppModel/SmartLifeModels.xcdatamodeld;
 			sourceTree = "<group>";

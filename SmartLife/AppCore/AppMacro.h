@@ -16,6 +16,7 @@
 #define appId @"MM101"
 
 #define isDebug [AppSession whetherIsDebug]
+#define whichAIT [AppSession whichAuthenticationInterfaceType]
 
 #define authUrl(x) [appSession getAuthUrl:x]
 #define bizUrl(x,y) [appSession getBizUrl:x withAccessPoint:y]

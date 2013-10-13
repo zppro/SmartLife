@@ -11,7 +11,8 @@
 
 typedef enum {
     AOT_None,
-    AOT_Member
+    AOT_Member,
+    AOT_Merchant
 }AuthenticationObjectType;
  
 
@@ -28,7 +29,8 @@ typedef enum {
 }BizInterfaceType2;
 
 typedef enum {
-    AIT_Member
+    AIT_Member,
+    AIT_Merchant
 }AuthenticationInterfaceType;
 
 typedef enum {
@@ -46,6 +48,7 @@ typedef enum {
     ST_InfotainmentService,//娱乐资讯
     ST_LifeService//生活服务
 }ServiceType;
+ 
 
 @class CCallService;
 
@@ -63,6 +66,8 @@ SYNTHESIZE_SINGLETON_FOR_CLASS_HEADER(AppSession);
 
 
 + (BOOL)whetherIsDebug;
+
++ (AuthenticationInterfaceType) whichAuthenticationInterfaceType;
 
 - (NSString*) getAuthUrl:(AuthenticationInterfaceType) aType;
 

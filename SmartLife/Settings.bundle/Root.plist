@@ -20,6 +20,32 @@
 		</dict>
 		<dict>
 			<key>Title</key>
+			<string>登录设置</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Title</key>
+			<string>用户类型</string>
+			<key>Key</key>
+			<string>authentication_interface_type</string>
+			<key>DefaultValue</key>
+			<integer>0</integer>
+			<key>Titles</key>
+			<array>
+				<string>个人会员</string>
+				<string>服务商家</string>
+			</array>
+			<key>Values</key>
+			<array>
+				<integer>0</integer>
+				<integer>1</integer>
+			</array>
+		</dict>
+		<dict>
+			<key>Title</key>
 			<string>调试设置</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>

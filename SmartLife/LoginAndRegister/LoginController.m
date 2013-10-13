@@ -10,6 +10,7 @@
 #import "AppMacro.h"
 #import "RegisterController.h"
 #import "CMember.h"
+#import "CServiceStation.h"
 
 @interface LoginController(){
     BOOL isEditing;
@@ -66,7 +67,12 @@
     [self.view addSubview:lineView];
      
     UIImageView *theIDNoLabel = makeImageView(40.f/2.f, 240/2.f, 114.f/2.f, 33.f/2.f);
-    theIDNoLabel.image = MF_PngOfDefaultSkin(@"Index/sign_03.png");
+    if(whichAIT== AIT_Member){
+        theIDNoLabel.image = MF_PngOfDefaultSkin(@"Index/sign_03.png");
+    }
+    else {
+        theIDNoLabel.image = MF_PngOfDefaultSkin(@"Index/sign_03B.png");
+    }
     [self.view addSubview:theIDNoLabel];
     
     UIImageView *passwordLabel = makeImageView(40.f/2.f, 320/2.f, 114.f/2.f, 33.f/2.f);
@@ -146,74 +152,148 @@
         return;
     } 
     NSString *passwordHash = [passwordField.text stringFromMD5];
+    AuthenticationInterfaceType currentAIType = whichAIT;
     if (appSession.networkStatus != ReachableViaWWAN && appSession.networkStatus != ReachableViaWiFi) {
         //本地登录
-        CMember *instance = [CMember loadWithIDNo:theIDNoField.text andPasswordHash: passwordHash];
-        
-        if(instance == nil){
+        if(currentAIType == AIT_Member){
+            CMember *instance = [CMember loadWithIDNo:theIDNoField.text andPasswordHash: passwordHash];
+            
+            if(instance == nil){
+            }
+            else{
+                instance.lastCheckIn = [NSDate date];
+                [moc save];
+            }
         }
-        else{
-            instance.lastCheckIn = [NSDate date];
-            [moc save];
+        else if(currentAIType == AIT_Merchant){
+            CServiceStation *instance = [CServiceStation loadWithStationCode:theIDNoField.text  andPasswordHash:passwordHash];
+            
+            if(instance == nil){
+            }
+            else{
+                instance.lastCheckIn = [NSDate date];
+                [moc save];
+            }
         }
     }
     else{
      
-        NSDictionary *body = [NSDictionary dictionaryWithObjectsAndKeys:theIDNoField.text,@"IDNo",[passwordField.text MD5],@"PasswordHash",nil];
-        HttpAppRequest *req = buildReq(body);
+        //
         
-         
-        [HttpAppAsynchronous httpPostWithUrl:authUrl(AIT_Member) req:req sucessBlock:^(id result) {
-            DebugLog(@"ret:%@",((HttpAppResponse*)result).ret);
-            NSDictionary *dict = ((HttpAppResponse*)result).ret;
-            appSession.authId = [dict objectForKey:@"MemberId"];
-            appSession.authName = [dict objectForKey:@"MemberName"];
-            appSession.authToken = [dict objectForKey:@"Token"];
-            appSession.authType = AOT_Member;
-            appSession.authNodeInfos = [dict objectForKey:@"AuthNodeInfos"];
+        if(currentAIType == AIT_Member){
+            NSDictionary *body = [NSDictionary dictionaryWithObjectsAndKeys:theIDNoField.text,@"IDNo",[passwordField.text MD5],@"PasswordHash",nil];
+            HttpAppRequest *req = buildReq(body);
             
-            
-                        
-            //推送
-            //[self registerDevice];
              
-            /*
-             [NSTimer scheduledTimerWithTimeInterval:10.f block:^(NSTimeInterval time) {
-             
-             dispatch_async(dispatch_get_main_queue(), ^{
-             CLLocation *currentLocation = soc.canLocation? soc.myLocation:soc.DebugMyLocation;
-             DebugLog(@"登记对象位置信息 %@ ",currentLocation);
-             
-             NSDictionary *Data1 = [NSDictionary dictionaryWithObjectsAndKeys:userNameField.text,@"LoginId",passwordField.text,@"PassWord",nil];
-             
-             LeblueRequest* req1 =[LeblueRequest requestWithHead:nwCode(Login) WithPostData:Data];
-             
-             });
-             
-             
-             } repeats:YES];
-             */
+            [HttpAppAsynchronous httpPostWithUrl:authUrl(AIT_Member) req:req sucessBlock:^(id result) {
+                DebugLog(@"ret:%@",((HttpAppResponse*)result).ret);
+                NSDictionary *dict = ((HttpAppResponse*)result).ret;
+                appSession.authId = [dict objectForKey:@"StationCode"];
+                appSession.authName = [dict objectForKey:@"StationName"];
+                appSession.authToken = [dict objectForKey:@"Token"];
+                appSession.authType = AOT_Merchant;
+                appSession.authNodeInfos = [dict objectForKey:@"AuthNodeInfos"];
+                
+                
+                            
+                //推送
+                //[self registerDevice];
+                 
+                /*
+                 [NSTimer scheduledTimerWithTimeInterval:10.f block:^(NSTimeInterval time) {
+                 
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                 CLLocation *currentLocation = soc.canLocation? soc.myLocation:soc.DebugMyLocation;
+                 DebugLog(@"登记对象位置信息 %@ ",currentLocation);
+                 
+                 NSDictionary *Data1 = [NSDictionary dictionaryWithObjectsAndKeys:userNameField.text,@"LoginId",passwordField.text,@"PassWord",nil];
+                 
+                 LeblueRequest* req1 =[LeblueRequest requestWithHead:nwCode(Login) WithPostData:Data];
+                 
+                 });
+                 
+                 
+                 } repeats:YES];
+                 */
 
+                
+                [self dismissModalViewControllerAnimated:YES];
+                //
+            } failedBlock:^(NSError *error) {
+                //
+                DebugLog(@"%@",error);
+            } completionBlock:^{
+                //
+                CMember *instance = [CMember objectByEntityKey:appSession.authId];
+                NSDictionary *dataItem = [NSDictionary dictionaryWithObjectsAndKeys:appSession.authId,@"MemberId",theIDNoField.text,@"IDNo", [passwordField.text MD5],@"PasswordHash",[appSession.authNodeInfos JSONRepresentation],@"AuthNodeInfos",[NSDate date],@"LastCheckIn",nil];
+                
+                if(instance == nil){
+                    [CMember createWithIEntity:dataItem];
+                }
+                else{
+                    [instance updateWithIEntity:dataItem]; 
+                }
+                [moc save]; 
+                
+            }];
+        }
+        else if(currentAIType == AIT_Merchant){
+            NSDictionary *body = [NSDictionary dictionaryWithObjectsAndKeys:theIDNoField.text,@"StationCode",[passwordField.text MD5],@"PasswordHash",nil];
+            HttpAppRequest *req = buildReq(body);
             
-            [self dismissModalViewControllerAnimated:YES];
-            //
-        } failedBlock:^(NSError *error) {
-            //
-            DebugLog(@"%@",error);
-        } completionBlock:^{
-            //
-            CMember *instance = [CMember objectByEntityKey:appSession.authId];
-            NSDictionary *dataItem = [NSDictionary dictionaryWithObjectsAndKeys:appSession.authId,@"MemberId",theIDNoField.text,@"IDNo", [passwordField.text MD5],@"PasswordHash",[appSession.authNodeInfos JSONRepresentation],@"AuthNodeInfos",[NSDate date],@"LastCheckIn",nil];
             
-            if(instance == nil){
-                [CMember createWithIEntity:dataItem];
-            }
-            else{
-                [instance updateWithIEntity:dataItem]; 
-            }
-            [moc save]; 
-            
-        }];
+            [HttpAppAsynchronous httpPostWithUrl:authUrl(AIT_Merchant) req:req sucessBlock:^(id result) {
+                DebugLog(@"ret:%@",((HttpAppResponse*)result).ret);
+                NSDictionary *dict = ((HttpAppResponse*)result).ret;
+                appSession.authId = [dict objectForKey:@"MemberId"];
+                appSession.authName = [dict objectForKey:@"MemberName"];
+                appSession.authToken = [dict objectForKey:@"Token"];
+                appSession.authType = AOT_Member;
+                appSession.authNodeInfos = [dict objectForKey:@"AuthNodeInfos"];
+                
+                
+                
+                //推送
+                //[self registerDevice];
+                
+                /*
+                 [NSTimer scheduledTimerWithTimeInterval:10.f block:^(NSTimeInterval time) {
+                 
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                 CLLocation *currentLocation = soc.canLocation? soc.myLocation:soc.DebugMyLocation;
+                 DebugLog(@"登记对象位置信息 %@ ",currentLocation);
+                 
+                 NSDictionary *Data1 = [NSDictionary dictionaryWithObjectsAndKeys:userNameField.text,@"LoginId",passwordField.text,@"PassWord",nil];
+                 
+                 LeblueRequest* req1 =[LeblueRequest requestWithHead:nwCode(Login) WithPostData:Data];
+                 
+                 });
+                 
+                 
+                 } repeats:YES];
+                 */
+                
+                
+                [self dismissModalViewControllerAnimated:YES];
+                //
+            } failedBlock:^(NSError *error) {
+                //
+                DebugLog(@"%@",error);
+            } completionBlock:^{
+                //
+                CMember *instance = [CMember objectByEntityKey:appSession.authId];
+                NSDictionary *dataItem = [NSDictionary dictionaryWithObjectsAndKeys:appSession.authId,@"MemberId",theIDNoField.text,@"IDNo", [passwordField.text MD5],@"PasswordHash",[appSession.authNodeInfos JSONRepresentation],@"AuthNodeInfos",[NSDate date],@"LastCheckIn",nil];
+                
+                if(instance == nil){
+                    [CMember createWithIEntity:dataItem];
+                }
+                else{
+                    [instance updateWithIEntity:dataItem];
+                }
+                [moc save];
+                
+            }];
+        }
     }
     /*
     UIButton *button = (UIButton*)sender;

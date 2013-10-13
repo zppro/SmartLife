@@ -27,6 +27,11 @@ SYNTHESIZE_LESSER_SINGLETON_FOR_CLASS(AppSession);
     return NO;
 }
 
++ (AuthenticationInterfaceType) whichAuthenticationInterfaceType{
+    AuthenticationInterfaceType type = [AppSetting(APP_SETTING_AUTHENENTICATION_INTERFACE_TYPE_KEY) intValue];
+    return type;
+}
+
 - (NSString*) getAuthUrl:(AuthenticationInterfaceType) aType{
     NSString *_authUrl;
     NSString *baseAuthUrl = isDebug ? @"http://192.168.101.2/SmartLife.Auth.Mobile.Services":AppSetting(APP_SETTING_AUTH_BASE_URL_KEY);

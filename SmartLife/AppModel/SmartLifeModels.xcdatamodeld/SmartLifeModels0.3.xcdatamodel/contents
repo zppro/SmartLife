@@ -79,6 +79,14 @@
         <attribute name="tel" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="zipCode" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
+    <entity name="CServiceStation" representedClassName="CServiceStation" syncable="YES">
+        <attribute name="authNodeInfos" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastCheckIn" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="passwordHash" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="stationCode" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="stationName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="token" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <entity name="CUser" representedClassName="CUser" syncable="YES">
         <attribute name="lastLoginTime" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
@@ -92,5 +100,6 @@
         <element name="CServiceLog" positionX="160" positionY="192" width="128" height="210"/>
         <element name="CServiceRecord" positionX="160" positionY="192" width="128" height="375"/>
         <element name="CUser" positionX="160" positionY="192" width="128" height="105"/>
+        <element name="CServiceStation" positionX="160" positionY="192" width="128" height="135"/>
     </elements>
 </model>
